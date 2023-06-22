@@ -1,0 +1,13 @@
+// Copyright RemRemRemRe, All Rights Reserved.
+
+
+#include "Trait/RemMassRespawnTrait.h"
+
+#include "MassEntityTemplateRegistry.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnTrait)
+
+void URemMassRespawnTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+{
+	BuildContext.AddFragment(FConstStructView::Make(RespawnRadius));
+}

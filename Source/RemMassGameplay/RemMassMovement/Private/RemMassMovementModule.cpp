@@ -1,25 +1,25 @@
 // Copyright RemRemRemRe, All Rights Reserved.
 
-#include "RemMassModule.h"
+#include "RemMassMovementModule.h"
 
-class FRemMassModule : public IRemMassModule
+class FRemMassMovementModule : public IRemMassMovementModule
 {
 	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 };
 
-IMPLEMENT_MODULE(FRemMassModule, RemMass)
+IMPLEMENT_MODULE(FRemMassMovementModule, RemMassMovement)
 
-void FRemMassModule::StartupModule()
+void FRemMassMovementModule::StartupModule()
 {
 	// This code will execute after your module is loaded into memory (but after global variables are initialized, of course.)
-	IRemMassModule::StartupModule();
+	IRemMassMovementModule::StartupModule();
 }
 
-void FRemMassModule::ShutdownModule()
+void FRemMassMovementModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
-	IRemMassModule::ShutdownModule();
+	IRemMassMovementModule::ShutdownModule();
 }

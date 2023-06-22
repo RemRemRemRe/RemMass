@@ -8,7 +8,7 @@
 /**
  * The public interface to this module
  */
-class IRemMassModule : public IModuleInterface
+class IRemMassMovementModule : public IModuleInterface
 {
 
 public:
@@ -19,9 +19,9 @@ public:
 	 *
 	 * @return Returns singleton instance, loading the module on demand if needed
 	 */
-	static IRemMassModule& Get()
+	static IRemMassMovementModule& Get()
 	{
-		return FModuleManager::LoadModuleChecked< IRemMassModule >( "RemMass" );
+		return FModuleManager::LoadModuleChecked< IRemMassMovementModule >( "RemMassMovement" );
 	}
 
 	/**
@@ -31,7 +31,7 @@ public:
 	 */
 	static bool IsAvailable()
 	{
-		return FModuleManager::Get().IsModuleLoaded( "RemMass" );
+		return FModuleManager::Get().IsModuleLoaded( "RemMassMovement" );
 	}
 	
 };
