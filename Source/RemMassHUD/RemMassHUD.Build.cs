@@ -3,9 +3,9 @@
 
 namespace UnrealBuildTool.Rules
 {
-	public class RemMass : ModuleRules
+	public class RemMassHUD : ModuleRules
 	{
-		public RemMass(ReadOnlyTargetRules target) : base(target)
+		public RemMassHUD(ReadOnlyTargetRules target) : base(target)
 		{
 			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 			ShadowVariableWarningLevel = WarningLevel.Error;
@@ -19,9 +19,9 @@ namespace UnrealBuildTool.Rules
 				new[]
 				{
 					"Core",
-					
 					"CoreUObject",
 					"Engine",
+					"UMG",
 					
 					"MassEntity",
 					"MassSpawner",
@@ -30,6 +30,10 @@ namespace UnrealBuildTool.Rules
 					"GameplayTags",
 					
 					"RemCommon",
+					"RemMass",
+					"RemMassAbility",
+					"RemMassMovement",
+					"RemWidgetComponent",
 				}
 			);
 		}

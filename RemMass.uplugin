@@ -31,6 +31,11 @@
 			"Name": "RemMassMovement",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "RemMassHUD",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -44,6 +49,10 @@
 		},
 		{
 			"Name": "RemCommon",
+			"Enabled": true
+		},
+		{
+			"Name": "RemUniversalData",
 			"Enabled": true
 		}
 	]

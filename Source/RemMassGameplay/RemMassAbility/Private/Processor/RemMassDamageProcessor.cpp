@@ -16,6 +16,7 @@
 URemMassDamageProcessor::URemMassDamageProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ProcessingPhase = EMassProcessingPhase::EndPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Damage;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Movement);
 }
@@ -24,7 +25,8 @@ void URemMassDamageProcessor::ConfigureQueries()
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassHealthFragment>(EMassFragmentAccess::ReadWrite)
-		.AddTagRequirement<FRemMassDamageTargetTag>(EMassFragmentPresence::All);
+		.AddTagRequirement<FRemMassDamageTargetTag>(EMassFragmentPresence::All)
+		.AddTagRequirement<FRemMassDeadTag>(EMassFragmentPresence::None);
 	
 	EntityQuery.RegisterWithProcessor(*this);
 

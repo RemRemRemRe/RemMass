@@ -26,9 +26,12 @@ namespace UnrealBuildTool.Rules
 					"MassCommon",
 					"MassSpawner",
 					"StructUtils",
+					"DeveloperSettings",
+					"GameplayTags",
 					
 					"RemCommon",
 					"RemMass",
+					"RemUniversalData",
 				}
 			);
 		}
