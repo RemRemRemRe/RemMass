@@ -6,6 +6,7 @@
 #include "MassEntityConfigAsset.h"
 #include "Fragment/RemMassHUDFragments.h"
 #include "Macro/RemAssertionMacros.h"
+#include "Processor/RemMassHUDInitializerProcessor.h"
 
 void URemMassHUDEntityGenerator::Generate(UObject& QueryOwner, const TConstArrayView<FMassSpawnedEntityType> EntityTypes,
 	const int32 Count, FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const
@@ -34,16 +35,16 @@ bool URemMassHUDEntityGenerator::CanGenerate() const
 
 void URemMassHUDEntityGenerator::GenerateInternal() const
 {
-	RemCheckVariable(SavedQueryOwner.IsValid(), return;);
+	RemCheckVariable(SavedQueryOwner, return;);
 
 	for (int32 Index = 0; Index < SavedEntityTypes.Num(); ++Index)
 	{
 		const auto & SavedEntityType = SavedEntityTypes[Index];
-		const auto* EntityConfig = SavedEntityType.GetEntityConfig();
+		const auto* EntityConfig = SavedEntityType.EntityConfig.Get();
 		RemCheckCondition(EntityConfig, continue;);
 
 		if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
-			!Template.HasFragment<FRemMassHUDTextBlockBindingFragment>())
+			!Template.HasFragment<FRemMassHUDBindingFragment>())
 		{
 			continue;
 		}
@@ -51,7 +52,7 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 		FMassEntitySpawnDataGeneratorResult Result
 		{
 			.SpawnData = {FInstancedStruct::Make(SpawnDataContainer)},
-			.SpawnDataProcessor = {},
+			.SpawnDataProcessor = URemMassHUDInitializerProcessor::StaticClass(),
 			.EntityConfigIndex = Index,
 			.NumEntities = SavedCount,
 		};
@@ -61,8 +62,7 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 	}
 }
 
-void URemMassHUDEntityGenerator::AddSpawnData(const FGameplayTag& WidgetTag,
-	TConstArrayView<FRemMassHUDTextBlockBindingFragment> SpawnData)
+void URemMassHUDEntityGenerator::AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData)
 {
 	ReceivedHUDTags.AddTag(WidgetTag);
 	SpawnDataContainer.SpawnData.Append(SpawnData);

@@ -13,31 +13,29 @@ class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnData
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Rem|HUD")
+	UPROPERTY(EditAnywhere, Category = "Tags", meta = (Categories = "HUD"))
 	FGameplayTagContainer HUDTags;
 
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|HUD")
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	FGameplayTagContainer ReceivedHUDTags;
 	
-	UPROPERTY(VisibleInstanceOnly, Transient)
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	FRemMassHUDEntitySpawnDataContainer SpawnDataContainer;
 
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	TWeakObjectPtr<UObject> SavedQueryOwner;
 
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
 	TConstArrayView<FMassSpawnedEntityType> SavedEntityTypes;
 	
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	int32 SavedCount;
 	
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
 	FFinishedGeneratingSpawnDataSignature SavedFinishedGeneratingSpawnPointsDelegate;
 	
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	bool bCachedData;
 
-	UPROPERTY(Transient, Category = "Rem|HUD|State")
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	bool bHUDTagsAllReceived;
 	
 protected:
@@ -49,5 +47,5 @@ protected:
 	void GenerateInternal() const;
 	
 public:
-	void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDTextBlockBindingFragment> SpawnData);
+	void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);
 };

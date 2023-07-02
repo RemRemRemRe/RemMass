@@ -19,13 +19,15 @@ URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 
 void URemMassHUDInitializerProcessor::ConfigureQueries()
 {
-	EntityQuery.AddRequirement<FRemMassHUDTextBlockBindingFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FRemMassHUDBindingFragment>(EMassFragmentAccess::ReadWrite);
 		
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
+	QUICK_SCOPE_CYCLE_COUNTER(URemMassHUDInitializerProcessor);
+	
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
@@ -34,7 +36,7 @@ void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 
 		RemCheckCondition(SpawnData.Num() <= NumEntities, return);
 
-		const auto HUDBindingView = Context.GetMutableFragmentView<FRemMassHUDTextBlockBindingFragment>();
+		const auto HUDBindingView = Context.GetMutableFragmentView<FRemMassHUDBindingFragment>();
 
 		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{

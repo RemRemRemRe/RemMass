@@ -4,7 +4,7 @@
 
 #include "RemMassHUDEntitySpawnData.generated.h"
 
-struct FRemMassHUDTextBlockBindingFragment;
+struct FRemMassHUDBindingFragment;
 
 USTRUCT(BlueprintType)
 struct FRemMassHUDEntitySpawnDataContainer
@@ -12,5 +12,5 @@ struct FRemMassHUDEntitySpawnDataContainer
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	TArray<FRemMassHUDTextBlockBindingFragment> SpawnData;
+	TArray<FRemMassHUDBindingFragment> SpawnData;
 };

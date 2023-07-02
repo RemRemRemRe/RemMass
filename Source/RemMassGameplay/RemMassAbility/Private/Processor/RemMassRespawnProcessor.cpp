@@ -9,8 +9,8 @@
 #include "Fragment/RemMassAbilityFragments.h"
 #include "RemMassProcessorGroupNames.h"
 #include "Engine/CurveTable.h"
-#include "Fragment/RemMassGameFrameworkFragment.h"
 #include "Macro/RemAssertionMacros.h"
+#include "Subsystem/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnProcessor)
 
@@ -30,51 +30,22 @@ void URemMassRespawnProcessor::ConfigureQueries()
 		.AddRequirement<FRemMassRespawnRadiusFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassExperienceTypeFragment>(EMassFragmentAccess::ReadOnly)
 		.AddTagRequirement<FRemMassDeadTag>(EMassFragmentPresence::All);
+
+	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
 	
 	EntityQuery.RegisterWithProcessor(*this);
-
-	PlayerEntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassLevelCurveTableFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassExperienceFragment>(EMassFragmentAccess::ReadWrite)
-		.AddRequirement<FRemMassLevelFragment>(EMassFragmentAccess::ReadWrite)
-		.AddTagRequirement<FRemMassLocalPlayerTag>(EMassFragmentPresence::All);
-	
-	PlayerEntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassRespawnProcessor);
 	
-	int32 NumPlayers{};
-
-	// respawn
-	TConstArrayView<FTransformFragment> PlayerTransformView{};
-
-	// experience handling
-	TConstArrayView<FRemMassLevelCurveTableFragment> PlayerCurveTableView{};
-	TArrayView<FRemMassExperienceFragment> PlayerExperienceView{};
-	TArrayView<FRemMassLevelFragment> PlayerLevelView{};
-	
-	// ReSharper disable once CppDeclarationHidesLocal
-	PlayerEntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
-	{
-		NumPlayers = Context.GetNumEntities();
-
-		// respawn
-		PlayerTransformView = Context.GetFragmentView<FTransformFragment>();
-
-		// experience handling
-		PlayerCurveTableView = Context.GetFragmentView<FRemMassLevelCurveTableFragment>();
-		PlayerExperienceView = Context.GetMutableFragmentView<FRemMassExperienceFragment>();
-		PlayerLevelView = Context.GetMutableFragmentView<FRemMassLevelFragment>();
-	});
-	
-	RemCheckCondition(NumPlayers > 0, return;);
-	
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
+		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
+		const auto& Manager = Context.GetEntityManagerChecked();
+		
 		const int32 NumEntities = Context.GetNumEntities();
 
 		// respawn
@@ -85,10 +56,11 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 		// experience handling
 		const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
-		for (int32 PlayerIndex = 0; PlayerIndex < NumPlayers; ++PlayerIndex)
+		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
-			const auto PlayerLocation = PlayerTransformView[PlayerIndex].GetTransform().GetLocation();
-			const auto ForwardDirection = PlayerTransformView[PlayerIndex].GetTransform().GetRotation().GetForwardVector();
+			const auto& PlayerTransform = Manager.GetFragmentDataChecked<FTransformFragment>(PlayerEntityHandle);
+			const auto PlayerLocation = PlayerTransform.GetTransform().GetLocation();
+			const auto ForwardDirection = PlayerTransform.GetTransform().GetRotation().GetForwardVector();
 
 			for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 			{
@@ -114,33 +86,36 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 				{
 					const auto& RemMassAbilityTags = Rem::Common::GetDefaultRef<URemMassAbilityTags>();
 
+					auto& PlayerExperience = Manager.GetFragmentDataChecked<FRemMassExperienceFragment>(PlayerEntityHandle);
+					
 					// adding experience value
 					{
 						static const auto ContextString = FString{TEXTVIEW("adding experience value")};
-						const auto* Curve = PlayerCurveTableView[PlayerIndex].Value->FindCurve(
-							RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(), ContextString);
+						const auto* Curve = Manager.GetFragmentDataChecked<FRemMassLevelCurveTableFragment>(PlayerEntityHandle)
+							.Value->FindCurve(RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(), ContextString);
 						
 						RemCheckVariable(Curve, continue;);
 						
 						const auto ExpGain = Curve->Eval(static_cast<float>(ExperienceTypeView[EntityIndex].Value) + 1.0f, 0.0f);
 
-						PlayerExperienceView[PlayerIndex].Value += static_cast<int32>(ExpGain);
+						PlayerExperience.Value += static_cast<int32>(ExpGain);
 					}
 
 					// level up
 					{
 						static const auto ContextString = FString{TEXTVIEW("level up")};
-						const auto* Curve = PlayerCurveTableView[PlayerIndex].Value->FindCurve(
-							RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
+						const auto* Curve = Manager.GetFragmentDataChecked<FRemMassLevelCurveTableFragment>(PlayerEntityHandle)
+							.Value->FindCurve(RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
 						
 						RemCheckVariable(Curve, continue;);
 
-						if (const auto RequiredExpToLevelUp = Curve->Eval(PlayerLevelView[PlayerIndex].Value,
+						auto& PlayerLevel = Manager.GetFragmentDataChecked<FRemMassLevelFragment>(PlayerEntityHandle);
+						if (const auto RequiredExpToLevelUp = Curve->Eval(PlayerLevel.Value,
 							std::numeric_limits<float>::max());
-							PlayerExperienceView[PlayerIndex].Value >= static_cast<int32>(RequiredExpToLevelUp))
+							PlayerExperience.Value >= static_cast<int32>(RequiredExpToLevelUp))
 						{
-							PlayerExperienceView[PlayerIndex].Value = {};
-							PlayerLevelView[PlayerIndex].Value++;
+							PlayerExperience.Value = {};
+							PlayerLevel.Value++;
 						}
 					}
 				}

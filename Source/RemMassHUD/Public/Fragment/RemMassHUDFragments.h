@@ -5,23 +5,21 @@
 #include "Fragment/RemMassGameFrameworkFragment.h"
 #include "RemMassHUDFragments.generated.h"
 
-class UTextBlock;
+class UWidget;
 
 USTRUCT()
-struct FRemMassHUDBindingFragment : FRemMassFragment
+struct FRemMassHUDBindingFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	
-};
-
-USTRUCT()
-struct FRemMassHUDTextBlockBindingFragment : FRemMassHUDBindingFragment
-{
-	GENERATED_BODY()
-	
-	UPROPERTY(EditAnywhere)
-	TSoftObjectPtr<UTextBlock> TextBlock;
+	UPROPERTY(EditAnywhere, Category = "test")
+	TSoftObjectPtr<UWidget> Widget;
 
 	UPROPERTY(EditAnywhere)
 	TWeakObjectPtr<UScriptStruct> FragmentType;
+	
+	UPROPERTY(EditAnywhere, meta = (BaseStruct = "/Script/RemMassHUD.RemMassHUDTask", ExcludeBaseStruct))
+	FInstancedStruct Task;
+
+	void UpdateWidget(FConstStructView StructView) const;
 };

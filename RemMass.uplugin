@@ -54,6 +54,10 @@
 		{
 			"Name": "RemUniversalData",
 			"Enabled": true
+		},
+		{
+			"Name": "RemWidgetComponent",
+			"Enabled": true
 		}
 	]
 }

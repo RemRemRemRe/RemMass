@@ -13,4 +13,7 @@ UCLASS()
 class REMMASSHUD_API URemMassHUDTrait : public URemMassEntityTraitBase
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
 };

@@ -7,9 +7,9 @@
 #include "MassCommonTypes.h"
 #include "MassExecutionContext.h"
 #include "RemMassProcessorGroupNames.h"
+#include "RemMassStatics.inl"
 #include "Fragment/RemMassAbilityFragments.h"
-#include "Fragment/RemMassGameFrameworkFragment.h"
-#include "Macro/RemAssertionMacros.h"
+#include "Subsystem/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassDamageProcessor)
 
@@ -27,61 +27,40 @@ void URemMassDamageProcessor::ConfigureQueries()
 		.AddRequirement<FRemMassHealthFragment>(EMassFragmentAccess::ReadWrite)
 		.AddTagRequirement<FRemMassDamageTargetTag>(EMassFragmentPresence::All)
 		.AddTagRequirement<FRemMassDeadTag>(EMassFragmentPresence::None);
+
+	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
 	
 	EntityQuery.RegisterWithProcessor(*this);
-
-	PlayerEntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassDamageRadiusFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassDamageFragment>(EMassFragmentAccess::ReadOnly)
-		.AddTagRequirement<FRemMassLocalPlayerTag>(EMassFragmentPresence::All)
-		.AddTagRequirement<FRemMassDamageSourceTag>(EMassFragmentPresence::All);
-	
-	PlayerEntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassDamageProcessor);
-
-	int32 NumPlayers{};
-	TConstArrayView<FTransformFragment> PlayerTransformView{};
-	TConstArrayView<FRemMassDamageRadiusFragment> PlayerDamageRadiusView{};
-	TConstArrayView<FRemMassDamageFragment> PlayerDamageView{};
-	
-	// ReSharper disable once CppDeclarationHidesLocal
-	PlayerEntityQuery.ForEachEntityChunk(EntityManager, Context, [&](const FMassExecutionContext& Context)
-	{
-		NumPlayers = Context.GetNumEntities();
-
-		PlayerTransformView = Context.GetFragmentView<FTransformFragment>();
-		PlayerDamageRadiusView = Context.GetFragmentView<FRemMassDamageRadiusFragment>();
-		PlayerDamageView = Context.GetFragmentView<FRemMassDamageFragment>();
-	});
-	
-	RemCheckCondition(NumPlayers > 0, return;);
 	
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
+		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
+		const auto& Manager = Context.GetEntityManagerChecked();
+		
 		const int32 NumEntities = Context.GetNumEntities();
 
 		const auto TransformView = Context.GetFragmentView<FTransformFragment>();
 		const auto HealthView = Context.GetMutableFragmentView<FRemMassHealthFragment>();
-
-		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
+		
+		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
-			const auto EntityLocation = TransformView[EntityIndex].GetTransform().GetLocation();
-			
-			for (int32 PlayerIndex = 0; PlayerIndex < NumPlayers; ++PlayerIndex)
+			for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 			{
-				const auto PlayerLocation = PlayerTransformView[PlayerIndex].GetTransform().GetLocation();
+				const auto EntityLocation = TransformView[EntityIndex].GetTransform().GetLocation();
+				const auto PlayerLocation = Manager.GetFragmentDataChecked<FTransformFragment>(PlayerEntityHandle).GetTransform().GetLocation();
 
 				const auto Distance = FVector::Dist2D(PlayerLocation, EntityLocation);
 
-				if (const auto DamageRadius = PlayerDamageRadiusView[PlayerIndex].Value;
+				if (const auto DamageRadius = Manager.GetFragmentDataChecked<FRemMassDamageRadiusFragment>(PlayerEntityHandle).Value;
 					Distance < DamageRadius)
 				{
-					HealthView[EntityIndex].Value -= PlayerDamageView[PlayerIndex].Value;
+					HealthView[EntityIndex].Value -= Manager.GetFragmentDataChecked<FRemMassDamageFragment>(PlayerEntityHandle).Value;
 
 					if (HealthView[EntityIndex].IsDead())
 					{

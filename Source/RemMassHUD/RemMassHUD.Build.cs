@@ -28,12 +28,14 @@ namespace UnrealBuildTool.Rules
 					"MassActors",
 					"StructUtils",
 					"GameplayTags",
+					"DeveloperSettings",
 					
 					"RemCommon",
 					"RemMass",
 					"RemMassAbility",
 					"RemMassMovement",
 					"RemWidgetComponent",
+					"RemUniversalData",
 				}
 			);
 		}
