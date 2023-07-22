@@ -13,7 +13,7 @@ DEFINE_LOG_CATEGORY(LogRemMassGameState)
 
 auto URemMassGameStateSubsystem::GetLocalPlayerEntity() const -> FMassEntityHandle
 {
-	FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_ReadOnly};
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
 	if (!PlayerActors.IsEmpty() && PlayerActors[0] && PlayerActors[0]->IsLocallyControlled())
 	{
@@ -24,7 +24,7 @@ auto URemMassGameStateSubsystem::GetLocalPlayerEntity() const -> FMassEntityHand
 
 auto URemMassGameStateSubsystem::GetLocalPlayerPawn() const -> const APawn*
 {
-	FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_ReadOnly};
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
 	if (!PlayerActors.IsEmpty() && PlayerActors[0] && PlayerActors[0]->IsLocallyControlled())
 	{
@@ -35,20 +35,22 @@ auto URemMassGameStateSubsystem::GetLocalPlayerPawn() const -> const APawn*
 
 auto URemMassGameStateSubsystem::GetPlayerEntityView() const -> TConstArrayView<FMassEntityHandle>
 {
-	FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_ReadOnly};
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
 	return {PlayerEntityHandles};
 }
 
 auto URemMassGameStateSubsystem::GetPlayerActorView() const -> TConstArrayView<APawn*>
 {
-	FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_ReadOnly};
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
 	return {PlayerActors};
 }
 
 auto URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const -> ARemMassSpawner*
 {
+	FRWScopeLock ScopeLock{MassSpawnerLock, FRWScopeLockType::SLT_ReadOnly};
+	
 	for (auto* Spawner : MassSpawners)
 	{
 		RemCheckVariable(Spawner, continue;);
@@ -64,6 +66,7 @@ auto URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQuery& Spawner
 
 auto URemMassGameStateSubsystem::RegisterMassSpawner(ARemMassSpawner& MassSpawner) -> void
 {
+	FRWScopeLock ScopeLock{MassSpawnerLock, FRWScopeLockType::SLT_Write};
 	MassSpawners.Add(&MassSpawner);
 }
 
@@ -77,7 +80,7 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 	RemCheckCondition(!Agent->IsEntityPendingCreation(), return;);
 	
 	{
-		FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_Write};
+		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
 		
 		if (PlayerActors.Contains(PlayerPawn))
 		{
@@ -110,14 +113,14 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 
 	auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
 	
-	RemCheckVariable(Pawn, return;);
+	RemCheckVariable(Pawn, return;, REM_NO_LOG_AND_ASSERTION);
 	
 	const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();
 	RemCheckVariable(Agent, return;);
 
 	if (!Agent->IsEntityPendingCreation())
 	{
-		FRWScopeLock ScopeLock{Lock, FRWScopeLockType::SLT_Write};
+		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
 		
 		PlayerActors.Insert(Pawn, 0);
 		PlayerEntityHandles.Insert(Agent->GetEntityHandle(), 0);

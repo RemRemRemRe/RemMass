@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "MassProcessor.h"
-#include "RemMassProcessorBase.generated.h"
+#include "RemMassProcessor.generated.h"
 
 /**
  * 
  */
 UCLASS(Abstract)
-class REMMASS_API URemMassProcessorBase : public UMassProcessor
+class REMMASS_API URemMassProcessor : public UMassProcessor
 {
 	GENERATED_BODY()
 	

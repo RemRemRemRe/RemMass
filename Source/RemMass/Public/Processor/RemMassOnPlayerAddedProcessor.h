@@ -2,21 +2,23 @@
 
 #pragma once
 
-#include "Processor/RemMassProcessor.h"
-#include "RemMassHUDInitializerProcessor.generated.h"
+#include "CoreMinimal.h"
+#include "Processor/RemMassObserverProcessor.h"
+#include "RemMassOnPlayerAddedProcessor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class REMMASSHUD_API URemMassHUDInitializerProcessor : public URemMassProcessor
+class REMMASS_API URemMassOnPlayerAddedProcessor : public URemMassObserverProcessor
 {
 	GENERATED_BODY()
 
 public:
-	URemMassHUDInitializerProcessor();
+	URemMassOnPlayerAddedProcessor();
 
 protected:
+	virtual void Register() override;
 	virtual void ConfigureQueries() override;
 	virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
 

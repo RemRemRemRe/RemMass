@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Component/RemMassHUDBinder.h"
@@ -6,9 +6,37 @@
 #include "GameplayTagContainer.h"
 #include "RemMassHUDTags.h"
 #include "RemMassSpawner.h"
+#include "Components/Widget.h"
 #include "Macro/RemAssertionMacros.h"
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
+
+auto FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment
+{
+	if (auto TransformedBinding = TransformBindings({Binding});
+		!TransformedBinding.IsEmpty())
+	{
+		return TransformedBinding.Top();
+	}
+	
+	return {};
+}
+
+auto FRemMassHUDBinding::TransformBindings(const TConstArrayView<FRemMassHUDBinding> Bindings) -> TArray<FRemMassHUDBindingFragment>
+{
+	TArray<FRemMassHUDBindingFragment> TransformedBindings;
+	TransformedBindings.Reserve(Bindings.Num());
+
+	Algo::Transform(Bindings, TransformedBindings, [](const FRemMassHUDBinding& Binding)
+	{
+		return FRemMassHUDBindingFragment{
+			.Widget = Binding.Widget.Get(),
+			.FragmentTypes = FRemMassHUDBindingFragment::FFragmentArrayType{Binding.FragmentTypes},
+			.Task = Binding.Task};
+	});
+
+	return TransformedBindings;
+}
 
 void URemMassHUDBinder::BeginPlay()
 {
@@ -33,6 +61,34 @@ void URemMassHUDBinder::BeginPlay()
 			continue;	
 		}
 
-		//HUDEntityGenerator->AddSpawnData(WidgetTag, Bindings);
+		HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
+		break;
+	}
+}
+
+void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeChainProperty(PropertyChangedEvent);
+
+	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_AND_ASSERTION);
+	
+	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments))
+	{
+		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_CHECKED(ThisClass, Bindings));
+
+		RemCheckCondition(Bindings.IsValidIndex(Index), return;, REM_NO_LOG_AND_ASSERTION);
+		
+		auto& Binding = Bindings[Index];
+			
+		TArray<TObjectPtr<const UScriptStruct>> FragmentTypes{};
+		const TConstArrayView<FInstancedStruct> InstancedStructs = Binding.SelectedFragments;
+		FragmentTypes.Reserve(InstancedStructs.Num());
+
+		Algo::Transform(InstancedStructs, FragmentTypes, [](const FInstancedStruct& Struct)
+		{
+			return Struct.GetScriptStruct();
+		});
+		
+		Binding.FragmentTypes = std::move(FragmentTypes);
 	}
 }

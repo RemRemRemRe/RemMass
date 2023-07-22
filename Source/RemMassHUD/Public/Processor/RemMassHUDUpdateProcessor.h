@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Processor/RemMassProcessorBase.h"
+#include "Processor/RemMassProcessor.h"
 #include "RemMassHUDUpdateProcessor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class REMMASSHUD_API URemMassHUDUpdateProcessor : public URemMassProcessorBase
+class REMMASSHUD_API URemMassHUDUpdateProcessor : public URemMassProcessor
 {
 	GENERATED_BODY()
 	

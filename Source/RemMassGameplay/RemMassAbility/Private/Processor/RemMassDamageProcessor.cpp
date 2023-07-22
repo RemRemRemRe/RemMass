@@ -5,6 +5,7 @@
 
 #include "MassCommonFragments.h"
 #include "MassCommonTypes.h"
+#include "MassEntityView.h"
 #include "MassExecutionContext.h"
 #include "RemMassProcessorGroupNames.h"
 #include "RemMassStatics.inl"
@@ -41,7 +42,6 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
-		const auto& Manager = Context.GetEntityManagerChecked();
 		
 		const int32 NumEntities = Context.GetNumEntities();
 
@@ -50,20 +50,25 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 		
 		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
+			auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
+			
 			for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 			{
 				const auto EntityLocation = TransformView[EntityIndex].GetTransform().GetLocation();
-				const auto PlayerLocation = Manager.GetFragmentDataChecked<FTransformFragment>(PlayerEntityHandle).GetTransform().GetLocation();
+				const auto PlayerLocation = PlayerEntityView.GetFragmentData<FTransformFragment>().GetTransform().GetLocation();
 
 				const auto Distance = FVector::Dist2D(PlayerLocation, EntityLocation);
 
-				if (const auto DamageRadius = Manager.GetFragmentDataChecked<FRemMassDamageRadiusFragment>(PlayerEntityHandle).Value;
+				if (const auto DamageRadius = PlayerEntityView.GetFragmentData<FRemMassDamageRadiusFragment>().Value;
 					Distance < DamageRadius)
 				{
-					HealthView[EntityIndex].Value -= Manager.GetFragmentDataChecked<FRemMassDamageFragment>(PlayerEntityHandle).Value;
+					HealthView[EntityIndex].Value -= PlayerEntityView.GetFragmentData<FRemMassDamageFragment>().Value;
 
 					if (HealthView[EntityIndex].IsDead())
 					{
+						// lose health when killing
+						PlayerEntityView.GetFragmentData<FRemMassHealthFragment>().Value -= FMath::RandRange(0.0f, 1.0f);
+						
 						Context.Defer().AddTag<FRemMassDeadTag>(Context.GetEntity(EntityIndex));
 					}
 				}

@@ -3,6 +3,7 @@
 
 #include "Processor/RemMassHUDUpdateProcessor.h"
 
+#include "MassEntityView.h"
 #include "MassExecutionContext.h"
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassHUDFragments.h"
@@ -15,6 +16,8 @@ URemMassHUDUpdateProcessor::URemMassHUDUpdateProcessor()
 	ProcessingPhase = EMassProcessingPhase::FrameEnd;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::HUD;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Respawn);
+
+	bRequiresGameThreadExecution = true;
 }
 
 void URemMassHUDUpdateProcessor::ConfigureQueries()
@@ -34,21 +37,46 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
-		const auto& Manager = Context.GetEntityManagerChecked();
 		const auto LocalPlayerEntity = GameStateSubsystem.GetLocalPlayerEntity();
+
+		
+		RemEnsureVariable(LocalPlayerEntity, return;, REM_NO_LOG_AND_ASSERTION);
+
+		const auto LocalPlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), LocalPlayerEntity};
 		
 		const auto NumEntities = Context.GetNumEntities();
-
+		
 		const auto HUDBindingView = Context.GetFragmentView<FRemMassHUDBindingFragment>();
 
+		TMap<const UScriptStruct*, FConstStructView> StructViewCache;
+		
 		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{
 			auto& Binding = HUDBindingView[EntityIndex];
 
-			const auto StructView = Manager.GetFragmentDataStruct(LocalPlayerEntity, Binding.FragmentType.Get());
-			RemCheckVariable(StructView, continue;);
+			RemEnsureVariable(Binding, continue;, REM_NO_LOG_AND_ASSERTION);
+
+			TArray<FConstStructView> Views{};
+			Views.Reserve(Binding.FragmentTypes.Num());
+
+			Algo::Transform(Binding.FragmentTypes, Views, [&](const TWeakObjectPtr<const UScriptStruct> ScriptStruct)
+			{
+				auto* Key = ScriptStruct.Get();
+				if (const auto* View = StructViewCache.Find(Key))
+				{
+					return *View;
+				}
+				
+				const auto StructView = LocalPlayerEntityView.GetFragmentDataStruct(Key);
+
+				RemCheckVariable(StructView, , REM_NO_LOG_AND_ASSERTION);
+
+				StructViewCache.Add(Key, StructView);
+				
+				return FConstStructView{StructView};
+			});
 			
-			Binding.UpdateWidget(StructView);
+			Binding.UpdateWidget(Views);
 		}
 	});
 }

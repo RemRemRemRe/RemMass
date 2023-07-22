@@ -2,14 +2,14 @@
 
 #pragma once
 
-#include "Processor/RemMassProcessorBase.h"
+#include "Processor/RemMassProcessor.h"
 #include "RemMassDamageProcessor.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class REMMASSABILITY_API URemMassDamageProcessor : public URemMassProcessorBase
+class REMMASSABILITY_API URemMassDamageProcessor : public URemMassProcessor
 {
 	GENERATED_BODY()
 

@@ -11,6 +11,7 @@
 
 URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 {
+	bAutoRegisterWithProcessingPhases = false;
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Client);
 	ProcessingPhase = EMassProcessingPhase::FrameEnd;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::HUD;
@@ -38,7 +39,8 @@ void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 
 		const auto HUDBindingView = Context.GetMutableFragmentView<FRemMassHUDBindingFragment>();
 
-		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
+		const auto MinNum = FMath::Min(NumEntities, SpawnData.Num());
+		for(int32 EntityIndex = 0; EntityIndex < MinNum; ++EntityIndex)
 		{
 			auto& Binding = HUDBindingView[EntityIndex];
 			Binding = SpawnData[EntityIndex];

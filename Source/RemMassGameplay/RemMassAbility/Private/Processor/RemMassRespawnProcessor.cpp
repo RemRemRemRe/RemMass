@@ -4,6 +4,7 @@
 #include "Processor/RemMassRespawnProcessor.h"
 
 #include "MassCommonFragments.h"
+#include "MassEntityView.h"
 #include "MassExecutionContext.h"
 #include "RemMassAbilityTags.h"
 #include "Fragment/RemMassAbilityFragments.h"
@@ -44,7 +45,6 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
-		const auto& Manager = Context.GetEntityManagerChecked();
 		
 		const int32 NumEntities = Context.GetNumEntities();
 
@@ -58,7 +58,9 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 
 		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
-			const auto& PlayerTransform = Manager.GetFragmentDataChecked<FTransformFragment>(PlayerEntityHandle);
+			auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
+			
+			const auto& PlayerTransform = PlayerEntityView.GetFragmentData<FTransformFragment>();
 			const auto PlayerLocation = PlayerTransform.GetTransform().GetLocation();
 			const auto ForwardDirection = PlayerTransform.GetTransform().GetRotation().GetForwardVector();
 
@@ -86,13 +88,16 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 				{
 					const auto& RemMassAbilityTags = Rem::Common::GetDefaultRef<URemMassAbilityTags>();
 
-					auto& PlayerExperience = Manager.GetFragmentDataChecked<FRemMassExperienceFragment>(PlayerEntityHandle);
+					auto& PlayerExperience = PlayerEntityView.GetFragmentData<FRemMassExperienceFragment>();
+
+					const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
+
+					RemCheckVariable(CurveTable, continue;, REM_NO_LOG_AND_ASSERTION);
 					
 					// adding experience value
 					{
 						static const auto ContextString = FString{TEXTVIEW("adding experience value")};
-						const auto* Curve = Manager.GetFragmentDataChecked<FRemMassLevelCurveTableFragment>(PlayerEntityHandle)
-							.Value->FindCurve(RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(), ContextString);
+						const auto* Curve = CurveTable->FindCurve(RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(), ContextString);
 						
 						RemCheckVariable(Curve, continue;);
 						
@@ -103,19 +108,19 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 
 					// level up
 					{
-						static const auto ContextString = FString{TEXTVIEW("level up")};
-						const auto* Curve = Manager.GetFragmentDataChecked<FRemMassLevelCurveTableFragment>(PlayerEntityHandle)
-							.Value->FindCurve(RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
-						
-						RemCheckVariable(Curve, continue;);
-
-						auto& PlayerLevel = Manager.GetFragmentDataChecked<FRemMassLevelFragment>(PlayerEntityHandle);
-						if (const auto RequiredExpToLevelUp = Curve->Eval(PlayerLevel.Value,
-							std::numeric_limits<float>::max());
-							PlayerExperience.Value >= static_cast<int32>(RequiredExpToLevelUp))
+						if (auto& LevelUpExperience = PlayerEntityView.GetFragmentData<FRemMassLevelUpExperienceFragment>();
+							PlayerExperience.Value >= LevelUpExperience.Value)
 						{
+							static const auto ContextString = FString{TEXTVIEW("level up")};
+							const auto* Curve = CurveTable->FindCurve(RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
+							RemCheckVariable(Curve, continue;);
+							
+							auto& PlayerLevel = PlayerEntityView.GetFragmentData<FRemMassLevelFragment>();
+							
 							PlayerExperience.Value = {};
 							PlayerLevel.Value++;
+
+							LevelUpExperience.Value = Curve->Eval(PlayerLevel.Value, std::numeric_limits<int32>::max());
 						}
 					}
 				}

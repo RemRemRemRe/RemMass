@@ -12,14 +12,16 @@ struct FRemMassHUDBindingFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditAnywhere, Category = "test")
-	TSoftObjectPtr<UWidget> Widget;
+	UPROPERTY()
+	TWeakObjectPtr<UWidget> Widget;
 
-	UPROPERTY(EditAnywhere)
-	TWeakObjectPtr<UScriptStruct> FragmentType;
+	using FFragmentArrayType = TArray<TWeakObjectPtr<const UScriptStruct>, TInlineAllocator<4>>;
+	FFragmentArrayType FragmentTypes;
 	
-	UPROPERTY(EditAnywhere, meta = (BaseStruct = "/Script/RemMassHUD.RemMassHUDTask", ExcludeBaseStruct))
+	UPROPERTY()
 	FInstancedStruct Task;
 
-	void UpdateWidget(FConstStructView StructView) const;
+	void UpdateWidget(TConstArrayView<FConstStructView> StructViews) const;
+
+	bool IsValid() const;
 };

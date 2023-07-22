@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "Fragment/RemMassAbilityFragments.h"
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassPlayerStatsTrait.generated.h"
 
@@ -15,7 +14,7 @@ class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBa
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, Category = "Stats", meta = (ShowOnlyInnerProperties))
-	FRemMassLevelCurveTableFragment CurveTable;
+	TObjectPtr<UCurveTable> CurveTable;
 
 protected:
 	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;

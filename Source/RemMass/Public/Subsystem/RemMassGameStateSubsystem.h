@@ -33,7 +33,8 @@ class REMMASS_API URemMassGameStateSubsystem : public UWorldSubsystem
 	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
 	TArray<ARemMassSpawner*> MassSpawners;
 	
-	mutable FRWLock Lock;
+	mutable FRWLock PlayerEntityLock;
+	mutable FRWLock MassSpawnerLock;
 	
 public:
 	auto GetLocalPlayerEntity() const -> FMassEntityHandle;

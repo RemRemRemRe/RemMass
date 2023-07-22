@@ -84,6 +84,15 @@ struct FRemMassExperienceFragment : public FRemMassFragment
 };
 
 USTRUCT()
+struct FRemMassLevelUpExperienceFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	int32 Value{0};
+};
+
+USTRUCT()
 struct FRemMassLevelCurveTableFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
@@ -103,5 +112,5 @@ struct FRemMassLevelFragment : public FRemMassFragment
 
 inline bool FRemMassHealthFragment::IsDead() const
 {
-	return Value <= ZERO_ANIMWEIGHT_THRESH;
+	return FMath::IsNearlyZero(Value);
 }

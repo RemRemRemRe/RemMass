@@ -35,3 +35,15 @@ struct FRemMassLocalPlayerTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
+
+USTRUCT()
+struct FRemMassPlayerTag : public FRemMassTag
+{
+	GENERATED_BODY()
+};
+
+USTRUCT()
+struct FRemMassPlayerFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+};

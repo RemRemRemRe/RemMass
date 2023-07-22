@@ -16,5 +16,5 @@ struct FRemMassHUDTask
 	
 	virtual ~FRemMassHUDTask() = default;
 
-	virtual void DoWork(UWidget& OwningWidget, const FConstStructView DataBinding) const REM_VIRTUAL_WARN(LogRemMassHUD);
+	virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const REM_VIRTUAL_WARN(LogRemMassHUD);
 };
