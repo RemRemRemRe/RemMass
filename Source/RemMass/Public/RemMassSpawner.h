@@ -24,4 +24,19 @@ public:
 	REM_DEFINE_GETTERS_RETURN_REFERENCE(SpawnDataGenerators, TArray<FMassSpawnDataGenerator>, &SpawnDataGenerators)
 
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ActorTags, FGameplayTagContainer, &ActorTags)
+
+	template<typename T>
+	requires std::is_base_of_v<UMassEntitySpawnDataGeneratorBase, T>
+	auto GetSpawnDataGenerator() -> T*
+	{
+		if (auto* Generator = SpawnDataGenerators.FindByPredicate([](const FMassSpawnDataGenerator& Element)
+			{
+				return Element.GeneratorInstance && Element.GeneratorInstance.IsA<T>();
+			}))
+		{
+			return Cast<T>(Generator->GeneratorInstance);
+		}
+
+		return nullptr;
+	}
 };

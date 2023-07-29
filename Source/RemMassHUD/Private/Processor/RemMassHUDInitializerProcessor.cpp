@@ -7,7 +7,6 @@
 #include "RemMassHUDEntitySpawnData.h"
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassHUDFragments.h"
-#include "Macro/RemAssertionMacros.h"
 
 URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 {
@@ -35,12 +34,9 @@ void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 		const auto& [SpawnData] = Context.GetAuxData().Get<FRemMassHUDEntitySpawnDataContainer>();
 		const auto NumEntities = Context.GetNumEntities();
 
-		RemCheckCondition(SpawnData.Num() <= NumEntities, return);
-
 		const auto HUDBindingView = Context.GetMutableFragmentView<FRemMassHUDBindingFragment>();
 
-		const auto MinNum = FMath::Min(NumEntities, SpawnData.Num());
-		for(int32 EntityIndex = 0; EntityIndex < MinNum; ++EntityIndex)
+		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{
 			auto& Binding = HUDBindingView[EntityIndex];
 			Binding = SpawnData[EntityIndex];

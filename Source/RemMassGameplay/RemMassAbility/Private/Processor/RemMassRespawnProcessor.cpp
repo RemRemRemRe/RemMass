@@ -9,11 +9,10 @@
 #include "RemMassAbilityTags.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "RemMassProcessorGroupNames.h"
-#include "Engine/CurveTable.h"
+#include "RemMassStatics.inl"
 #include "Macro/RemAssertionMacros.h"
+#include "SpawnDataGenerator/RemMassExperienceRegenerator.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
-
-#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnProcessor)
 
 URemMassRespawnProcessor::URemMassRespawnProcessor()
 {
@@ -56,75 +55,46 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 		// experience handling
 		const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
-		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
+		const auto PlayerView = GameStateSubsystem.GetPlayerEntityView();
+		RemCheckCondition(PlayerView.Num() > 0, return, REM_NO_LOG_BUT_ENSURE);
+
+		const auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerView[0]};
+
+		const auto& PlayerTransform = PlayerEntityView.GetFragmentData<FTransformFragment>();
+		const auto PlayerLocation = PlayerTransform.GetTransform().GetLocation();
+		const auto ForwardDirection = PlayerTransform.GetTransform().GetRotation().GetForwardVector();
+
+		TArray<FTransformFragment> SavedTransformArray{TransformView};
+		for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{
-			auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
-			
-			const auto& PlayerTransform = PlayerEntityView.GetFragmentData<FTransformFragment>();
-			const auto PlayerLocation = PlayerTransform.GetTransform().GetLocation();
-			const auto ForwardDirection = PlayerTransform.GetTransform().GetRotation().GetForwardVector();
+			auto& EntityTransform = TransformView[EntityIndex].GetMutableTransform();
 
-			for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
-			{
-				// respawn
-				{
-					auto& EntityTransform = TransformView[EntityIndex].GetMutableTransform();
+			const auto SpawnYawAngle = FMath::RandRange(0.0f, 360.0f);
 
-					const auto SpawnYawAngle = FMath::RandRange(0.0f, 360.0f);
+			const FRotator YawOffset = {0.0f, SpawnYawAngle, 0.0f};
 
-					const FRotator YawOffset = {0.0f, SpawnYawAngle, 0.0f};
+			const auto RotatedForward = YawOffset.RotateVector(ForwardDirection);
 
-					const auto RotatedForward = YawOffset.RotateVector(ForwardDirection);
+			const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
 
-					const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
-					
-					EntityTransform.SetLocation(RespawnLocation);
-					HealthView[EntityIndex] = {};
-					
-					Context.Defer().RemoveTag<FRemMassDeadTag>(Context.GetEntity(EntityIndex));
-				}
+			EntityTransform.SetLocation(RespawnLocation);
+			HealthView[EntityIndex] = {};
 
-				// experience handling
-				{
-					const auto& RemMassAbilityTags = Rem::Common::GetDefaultRef<URemMassAbilityTags>();
-
-					auto& PlayerExperience = PlayerEntityView.GetFragmentData<FRemMassExperienceFragment>();
-
-					const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
-
-					RemCheckVariable(CurveTable, continue;, REM_NO_LOG_AND_ASSERTION);
-					
-					// adding experience value
-					{
-						static const auto ContextString = FString{TEXTVIEW("adding experience value")};
-						const auto* Curve = CurveTable->FindCurve(RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(), ContextString);
-						
-						RemCheckVariable(Curve, continue;);
-						
-						const auto ExpGain = Curve->Eval(static_cast<float>(ExperienceTypeView[EntityIndex].Value) + 1.0f, 0.0f);
-
-						PlayerExperience.Value += static_cast<int32>(ExpGain);
-					}
-
-					// level up
-					{
-						if (auto& LevelUpExperience = PlayerEntityView.GetFragmentData<FRemMassLevelUpExperienceFragment>();
-							PlayerExperience.Value >= LevelUpExperience.Value)
-						{
-							static const auto ContextString = FString{TEXTVIEW("level up")};
-							const auto* Curve = CurveTable->FindCurve(RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
-							RemCheckVariable(Curve, continue;);
-							
-							auto& PlayerLevel = PlayerEntityView.GetFragmentData<FRemMassLevelFragment>();
-							
-							PlayerExperience.Value = {};
-							PlayerLevel.Value++;
-
-							LevelUpExperience.Value = Curve->Eval(PlayerLevel.Value, std::numeric_limits<int32>::max());
-						}
-					}
-				}
-			}
+			Context.Defer().RemoveTag<FRemMassDeadTag>(Context.GetEntity(EntityIndex));
 		}
+
+		Context.Defer().PushCommand<FMassDeferredCreateCommand>([ExperienceTypeView, MovedTransformArray = std::move(SavedTransformArray)]
+		(const FMassEntityManager& Manager)
+		{
+			auto* EntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassExperienceRegenerator>(
+				Manager.GetOwner(),
+				FGameplayTagQuery::MakeQuery_MatchTag(
+					Rem::Common::GetDefaultRef<URemMassAbilityTags>().GetExpMassSpawnerTag()));
+			RemCheckVariable(EntityGenerator, return;);
+
+			Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedEntityRegeneration{*EntityGenerator};
+			
+			EntityGenerator->AddSpawnData({ExperienceTypeView,  std::move(MovedTransformArray)});
+		});
 	});
 }

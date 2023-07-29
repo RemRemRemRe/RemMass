@@ -1,0 +1,25 @@
+﻿// Copyright RemRemRemRe, All Rights Reserved.
+
+
+#include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
+
+void URemMassEntitySpawnDataRegenerator::Generate(UObject& QueryOwner,
+	const TConstArrayView<FMassSpawnedEntityType> EntityTypes, const int32 Count,
+	FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const
+{
+	Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedGenerate{*this};
+	
+	auto* MutableThis = const_cast<ThisClass*>(this);
+	
+	MutableThis->SavedQueryOwner = &QueryOwner;
+	MutableThis->SavedEntityTypes = EntityTypes;
+	MutableThis->SavedCount = Count;
+	MutableThis->SavedFinishedGeneratingSpawnPointsDelegate = FinishedGeneratingSpawnPointsDelegate;
+
+	MutableThis->bCachedData = true;
+}
+
+bool URemMassEntitySpawnDataRegenerator::CanGenerate() const
+{
+	return bCachedData;
+}

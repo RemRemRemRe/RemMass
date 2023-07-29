@@ -2,19 +2,17 @@
 
 #pragma once
 
+#include "CoreMinimal.h"
 #include "Trait/RemMassEntityTraitBase.h"
-#include "RemMassPlayerStatsTrait.generated.h"
+#include "RemMassExperienceItemTrait.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBase
+class REMMASSABILITY_API URemMassExperienceItemTrait : public URemMassEntityTraitBase
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere, Category = "Stats", meta = (ShowOnlyInnerProperties))
-	TObjectPtr<UCurveTable> CurveTable;
 
 protected:
 	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;

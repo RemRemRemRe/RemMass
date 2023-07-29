@@ -110,6 +110,22 @@ struct FRemMassLevelFragment : public FRemMassFragment
 	uint8 Value{1};
 };
 
+USTRUCT()
+struct FRemMassExpItemTag : public FRemMassTag
+{
+	GENERATED_BODY()
+};
+
+USTRUCT()
+struct FRemMassExpCollectRadiusFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	float Value{100.0f};
+};
+
+
 inline bool FRemMassHealthFragment::IsDead() const
 {
 	return FMath::IsNearlyZero(Value);

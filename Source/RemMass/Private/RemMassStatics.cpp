@@ -3,9 +3,11 @@
 
 #include "RemMassStatics.h"
 
+#include "GameplayTagContainer.h"
 #include "MassEntitySubsystem.h"
 #include "Macro/RemAssertionMacros.h"
 #include "MassAgentComponent.h"
+#include "Subsystem/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassStatics)
 
@@ -30,4 +32,17 @@ FInstancedStruct URemMassStatics::GetMassFragmentFromAgent(const UObject* WorldC
 {
 	RemCheckVariable(Agent, return {});
 	return GetMassFragmentFromHandle(WorldContextObject, Agent->GetEntityHandle(), Struct);
+}
+
+ARemMassSpawner* URemMassStatics::GetMassSpawner(const UObject* WorldContextObject, const FGameplayTagQuery& Query)
+{
+	RemCheckVariable(WorldContextObject, return {};);
+	
+	const auto* World = WorldContextObject->GetWorld();
+	RemCheckVariable(World, return {};);
+
+	auto* GameStateSubsystem = World->GetSubsystem<URemMassGameStateSubsystem>();
+	RemCheckVariable(GameStateSubsystem, return {};);
+
+	return GameStateSubsystem->GetMassSpawner(Query);
 }

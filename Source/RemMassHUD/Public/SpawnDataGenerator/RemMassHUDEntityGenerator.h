@@ -2,14 +2,13 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
 #include "RemMassHUDEntitySpawnData.h"
-#include "SpawnDataGenerator/RemMassEntitySpawnDataGeneratorBase.h"
+#include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
 #include "RemMassHUDEntityGenerator.generated.h"
 
 UCLASS(BlueprintType)
-class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnDataGeneratorBase
+class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnDataRegenerator
 {
 	GENERATED_BODY()
 
@@ -23,28 +22,12 @@ class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnData
 	FRemMassHUDEntitySpawnDataContainer SpawnDataContainer;
 
 	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	TWeakObjectPtr<UObject> SavedQueryOwner;
-
-	TConstArrayView<FMassSpawnedEntityType> SavedEntityTypes;
-	
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	int32 SavedCount;
-	
-	FFinishedGeneratingSpawnDataSignature SavedFinishedGeneratingSpawnPointsDelegate;
-	
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	bool bCachedData;
-
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
 	bool bHUDTagsAllReceived;
 	
 protected:
-	virtual void Generate(UObject& QueryOwner, TConstArrayView<FMassSpawnedEntityType> EntityTypes,
-		int32 Count, FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const override;
+	virtual bool CanGenerate() const override;
 
-	bool CanGenerate() const;
-
-	void GenerateInternal() const;
+	virtual void GenerateInternal() const override;
 	
 public:
 	void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);

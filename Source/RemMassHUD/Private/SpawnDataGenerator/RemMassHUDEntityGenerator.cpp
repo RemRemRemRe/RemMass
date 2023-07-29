@@ -8,29 +8,9 @@
 #include "Macro/RemAssertionMacros.h"
 #include "Processor/RemMassHUDInitializerProcessor.h"
 
-void URemMassHUDEntityGenerator::Generate(UObject& QueryOwner, const TConstArrayView<FMassSpawnedEntityType> EntityTypes,
-	const int32 Count, FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const
-{
-	RemCheckCondition(Count > 0, return;);
-	
-	ThisClass* MutableThis = const_cast<ThisClass*>(this);
-	
-	MutableThis->SavedQueryOwner = &QueryOwner;
-	MutableThis->SavedEntityTypes = EntityTypes;
-	MutableThis->SavedCount = Count;
-	MutableThis->SavedFinishedGeneratingSpawnPointsDelegate = FinishedGeneratingSpawnPointsDelegate;
-
-	MutableThis->bCachedData = true;
-	
-	if (CanGenerate())
-	{
-		MutableThis->GenerateInternal();
-	}
-}
-
 bool URemMassHUDEntityGenerator::CanGenerate() const
 {
-	return bCachedData && bHUDTagsAllReceived;
+	return bHUDTagsAllReceived && Super::CanGenerate();
 }
 
 void URemMassHUDEntityGenerator::GenerateInternal() const
@@ -39,7 +19,7 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 
 	for (int32 Index = 0; Index < SavedEntityTypes.Num(); ++Index)
 	{
-		const auto & SavedEntityType = SavedEntityTypes[Index];
+		const auto& SavedEntityType = SavedEntityTypes[Index];
 		const auto* EntityConfig = SavedEntityType.EntityConfig.Get();
 		RemCheckCondition(EntityConfig, continue;);
 
@@ -54,7 +34,7 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 			.SpawnData = {FInstancedStruct::Make(SpawnDataContainer)},
 			.SpawnDataProcessor = URemMassHUDInitializerProcessor::StaticClass(),
 			.EntityConfigIndex = Index,
-			.NumEntities = SavedCount,
+			.NumEntities = SpawnDataContainer.SpawnData.Num(),
 		};
 		
 		SavedFinishedGeneratingSpawnPointsDelegate.Execute({Result});

@@ -4,7 +4,12 @@
 
 #include "MassEntityTypes.h"
 #include "MassEntitySubsystem.h"
+#include "RemMassSpawner.h"
+#include "RemMassStatics.h"
 #include "Macro/RemAssertionMacros.h"
+
+class UMassEntitySpawnDataGeneratorBase;
+class ARemMassSpawner;
 
 namespace Rem::Mass
 {
@@ -26,6 +31,16 @@ namespace Rem::Mass
 	auto GetFragmentData(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle) -> decltype(auto)
 	{
 		return *GetFragmentDataPtr<FragmentType>(WorldContextObject, EntityHandle);
+	}
+
+	template<typename GeneratorType>
+	requires std::is_base_of_v<UMassEntitySpawnDataGeneratorBase, GeneratorType>
+	auto GetSpawnDataGenerator(const UObject* WorldContextObject, const FGameplayTagQuery& SpawnerQuery) -> GeneratorType*
+	{
+		auto* HUDSpawner = URemMassStatics::GetMassSpawner(WorldContextObject, SpawnerQuery);
+		RemCheckVariable(HUDSpawner, return {};);
+
+		return HUDSpawner->GetSpawnDataGenerator<GeneratorType>();
 	}
 
 }
