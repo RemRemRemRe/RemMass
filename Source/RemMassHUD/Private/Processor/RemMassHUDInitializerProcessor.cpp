@@ -10,11 +10,10 @@
 
 URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 {
-	bAutoRegisterWithProcessingPhases = false;
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Client);
-	ProcessingPhase = EMassProcessingPhase::FrameEnd;
-	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::HUD;
-	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Respawn);
+	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
+	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
+	bAutoRegisterWithProcessingPhases = false;
 }
 
 void URemMassHUDInitializerProcessor::ConfigureQueries()

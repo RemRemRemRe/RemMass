@@ -16,7 +16,7 @@
 URemMassExperienceCollectorProcessor::URemMassExperienceCollectorProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
-	ProcessingPhase = EMassProcessingPhase::FrameEnd;
+	ProcessingPhase = EMassProcessingPhase::PostPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Experience;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Respawn);
 }
@@ -42,7 +42,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 
-		const int32 NumEntities = Context.GetNumEntities();
+		const auto NumEntities = Context.GetNumEntities();
 
 		const auto TransformView = Context.GetFragmentView<FTransformFragment>();
 		const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
@@ -51,7 +51,8 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 
 		TArray<FMassEntityHandle> CollectedExpEntities;
 		bool bCheckIfCollected = false;
-		
+
+		FRWScopeLock ScopeLock{GameStateSubsystem.PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
 			auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};

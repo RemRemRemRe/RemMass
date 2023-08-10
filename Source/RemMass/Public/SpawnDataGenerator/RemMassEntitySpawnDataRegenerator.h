@@ -41,6 +41,7 @@ protected:
 	
 	virtual bool CanGenerate() const;
 	virtual void GenerateInternal() const REM_VIRTUAL_WARN(LogRemMass);
+	virtual void CleanUp() REM_VIRTUAL_WARN(LogRemMass);
 };
 
 namespace Rem::Mass
@@ -49,10 +50,10 @@ namespace Rem::Mass
 struct FScopedEntitySpawnDataRegeneration
 {
 private:
-	const URemMassEntitySpawnDataRegenerator& Regenerator;
+	URemMassEntitySpawnDataRegenerator& Regenerator;
 	
 public:
-	explicit FScopedEntitySpawnDataRegeneration(const URemMassEntitySpawnDataRegenerator& InRegenerator)
+	explicit FScopedEntitySpawnDataRegeneration(URemMassEntitySpawnDataRegenerator& InRegenerator)
 		: Regenerator(InRegenerator) {}
 	
 	~FScopedEntitySpawnDataRegeneration();
@@ -65,5 +66,6 @@ inline Rem::Mass::FScopedEntitySpawnDataRegeneration::~FScopedEntitySpawnDataReg
 	if (Regenerator.CanGenerate())
 	{
 		Regenerator.GenerateInternal();
+		Regenerator.CleanUp();
 	}
 }

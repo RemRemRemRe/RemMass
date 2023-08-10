@@ -17,7 +17,7 @@
 URemMassDamageProcessor::URemMassDamageProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
-	ProcessingPhase = EMassProcessingPhase::EndPhysics;
+	ProcessingPhase = EMassProcessingPhase::PostPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Damage;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Movement);
 }
@@ -43,11 +43,12 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 		
-		const int32 NumEntities = Context.GetNumEntities();
+		const auto NumEntities = Context.GetNumEntities();
 
 		const auto TransformView = Context.GetFragmentView<FTransformFragment>();
 		const auto HealthView = Context.GetMutableFragmentView<FRemMassHealthFragment>();
-		
+
+		FRWScopeLock ScopeLock{GameStateSubsystem.PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 		for (auto& PlayerEntityHandle : GameStateSubsystem.GetPlayerEntityView())
 		{
 			auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};

@@ -14,6 +14,7 @@
 URemMassMovementProcessor::URemMassMovementProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ProcessingPhase = EMassProcessingPhase::PrePhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Movement;
 	ExecutionOrder.ExecuteBefore.Add(UE::Mass::ProcessorGroupNames::Movement);
 }
@@ -35,7 +36,7 @@ void URemMassMovementProcessor::Execute(FMassEntityManager& EntityManager, FMass
 	// ReSharper disable once CppDeclarationHidesUncapturedLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [](FMassExecutionContext& Context)
 	{
-		const int32 NumEntities = Context.GetNumEntities();
+		const auto NumEntities = Context.GetNumEntities();
 
 		const auto LocationList = Context.GetMutableFragmentView<FTransformFragment>();
 		const auto ForceList = Context.GetFragmentView<FMassForceFragment>();

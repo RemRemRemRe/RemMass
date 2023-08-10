@@ -26,8 +26,8 @@ class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnData
 	
 protected:
 	virtual bool CanGenerate() const override;
-
 	virtual void GenerateInternal() const override;
+	virtual void CleanUp() override;
 	
 public:
 	void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);

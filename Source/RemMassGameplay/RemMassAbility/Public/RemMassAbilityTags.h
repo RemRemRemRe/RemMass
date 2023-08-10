@@ -25,8 +25,12 @@ class REMMASSABILITY_API URemMassAbilityTags : public URemMetaTags
 	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (Categories = "MassSpawner"))
 	FGameplayTag ExpMassSpawnerTag;
 
+	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (Categories = "MassSpawner"))
+	FGameplayTag ProjectileMassSpawnerTag;
+
 public:
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(RequiredExpToLevelUpTag, FGameplayTag, &RequiredExpToLevelUpTag);
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ExpGainPerLevelTag, FGameplayTag, &ExpGainPerLevelTag);
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ExpMassSpawnerTag, FGameplayTag, &ExpMassSpawnerTag);
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ProjectileMassSpawnerTag, FGameplayTag, &ProjectileMassSpawnerTag);
 };

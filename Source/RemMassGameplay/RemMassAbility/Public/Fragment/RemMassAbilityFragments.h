@@ -5,6 +5,7 @@
 #include "Fragment/RemMassGameFrameworkFragment.h"
 #include "RemMassAbilityFragments.generated.h"
 
+class UMassEntityConfigAsset;
 enum class ERemMassAbilitySizeType : uint8;
 
 class UCurveTable;
@@ -125,8 +126,52 @@ struct FRemMassExpCollectRadiusFragment : public FRemMassFragment
 	float Value{100.0f};
 };
 
+USTRUCT()
+struct FRemMassProjectileSpawnerFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	float SpawnInterval{1.0f};
+	
+	UPROPERTY(EditAnywhere)
+	float InitialSpeed{500.0f};
+	
+	UPROPERTY(EditInstanceOnly)
+	TWeakObjectPtr<UMassEntityConfigAsset> ProjectileConfigAsset;
+};
+
+USTRUCT()
+struct FRemMassProjectileNextSpawnTimeFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	float Value{0.0f};
+};
 
 inline bool FRemMassHealthFragment::IsDead() const
 {
 	return FMath::IsNearlyZero(Value);
 }
+
+USTRUCT()
+struct FRemMassMonsterTag : public FRemMassTag
+{
+	GENERATED_BODY()
+};
+
+USTRUCT()
+struct FRemMassProjectileTag : public FRemMassTag
+{
+	GENERATED_BODY()
+};
+
+USTRUCT()
+struct FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+	
+	UPROPERTY(EditInstanceOnly)
+	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
+};

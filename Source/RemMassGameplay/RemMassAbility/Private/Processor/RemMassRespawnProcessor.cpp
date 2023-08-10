@@ -17,7 +17,7 @@
 URemMassRespawnProcessor::URemMassRespawnProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
-	ProcessingPhase = EMassProcessingPhase::PostPhysics;
+	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Respawn;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Damage);
 }
@@ -45,7 +45,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 		
-		const int32 NumEntities = Context.GetNumEntities();
+		const auto NumEntities = Context.GetNumEntities();
 
 		// respawn
 		const auto TransformView = Context.GetMutableFragmentView<FTransformFragment>();
@@ -87,7 +87,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 		(const FMassEntityManager& Manager)
 		{
 			auto* EntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassExperienceRegenerator>(
-				Manager.GetOwner(),
+				Manager.GetWorld(),
 				FGameplayTagQuery::MakeQuery_MatchTag(
 					Rem::Common::GetDefaultRef<URemMassAbilityTags>().GetExpMassSpawnerTag()));
 			RemCheckVariable(EntityGenerator, return;);

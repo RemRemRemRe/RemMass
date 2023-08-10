@@ -24,7 +24,9 @@ namespace UnrealBuildTool.Rules
 					
 					"MassEntity",
 					"MassCommon",
+					"MassMovement",
 					"MassSpawner",
+					"MassActors",
 					"StructUtils",
 					"DeveloperSettings",
 					"GameplayTags",

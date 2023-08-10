@@ -11,11 +11,37 @@
 
 DEFINE_LOG_CATEGORY(LogRemMassGameState)
 
+
+auto URemMassGameStateSubsystem::IsLocalPlayerPawnValid() const -> bool
+{
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
+	
+	if (!PlayerPawns.IsEmpty())
+	{
+		if (PlayerPawns[0] && PlayerPawns[0]->IsLocallyControlled())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+auto URemMassGameStateSubsystem::IsLocalPlayerEntityValid() const -> bool
+{
+	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
+	
+	if (!PlayerEntityHandles.IsEmpty())
+	{
+		return PlayerEntityHandles[0].IsValid();
+	}
+	return false;
+}
+
 auto URemMassGameStateSubsystem::GetLocalPlayerEntity() const -> FMassEntityHandle
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
-	if (!PlayerActors.IsEmpty() && PlayerActors[0] && PlayerActors[0]->IsLocallyControlled())
+	if (IsLocalPlayerEntityValid())
 	{
 		return PlayerEntityHandles[0];
 	}
@@ -26,9 +52,9 @@ auto URemMassGameStateSubsystem::GetLocalPlayerPawn() const -> const APawn*
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
-	if (!PlayerActors.IsEmpty() && PlayerActors[0] && PlayerActors[0]->IsLocallyControlled())
+	if (IsLocalPlayerPawnValid())
 	{
-		return PlayerActors[0];
+		return PlayerPawns[0];
 	}
 	return {};
 }
@@ -44,7 +70,64 @@ auto URemMassGameStateSubsystem::GetPlayerActorView() const -> TConstArrayView<A
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
-	return {PlayerActors};
+	return {PlayerPawns};
+}
+
+auto URemMassGameStateSubsystem::GetNearbyMonsterEntityData(
+	const FMassEntityHandle PlayerEntityHandle) const -> FRemMassNearbyMonsterEntityData
+{
+	int32 Index;
+
+	{
+		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
+		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
+	}
+	
+	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
+	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index))
+	{
+		return NearbyMonsterEntityDataContainer.Get()[Index];
+	}
+	
+	return {};
+}
+
+auto URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntityHandle PlayerEntityHandle) const -> FVector
+{
+	int32 Index;
+
+	{
+		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
+		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
+	}
+	
+	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
+	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index) && !NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections.IsEmpty())
+	{
+		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections[0];
+	}
+
+	RemCheckCondition(false, , REM_NO_LOG_BUT_ENSURE);
+	return {};
+}
+
+auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEntityHandle PlayerEntityHandle) const -> float
+{
+	int32 Index;
+
+	{
+		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
+		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
+	}
+	
+	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
+	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index) && !NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections.IsEmpty())
+	{
+		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDistancesSquared[0];
+	}
+
+	RemCheckCondition(false, , REM_NO_LOG_BUT_ENSURE);
+	return {};
 }
 
 auto URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const -> ARemMassSpawner*
@@ -82,7 +165,7 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 	{
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
 		
-		if (PlayerActors.Contains(PlayerPawn))
+		if (PlayerPawns.Contains(PlayerPawn))
 		{
 			REM_LOG_FUNCTION(LogRemMassGameState, Log, TEXT("Pawn{0} already exist"), PlayerPawn);
 			return;
@@ -90,12 +173,12 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 		
 		if (PlayerPawn->IsLocallyControlled())
 		{
-			PlayerActors.Insert(PlayerPawn, 0);
+			PlayerPawns.Insert(PlayerPawn, 0);
 			PlayerEntityHandles.Insert(Agent->GetEntityHandle(), 0);
 		}
 		else
 		{
-			PlayerActors.Add(PlayerPawn);
+			PlayerPawns.Add(PlayerPawn);
 			PlayerEntityHandles.Add(Agent->GetEntityHandle());
 		}
 	}
@@ -122,7 +205,7 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	{
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
 		
-		PlayerActors.Insert(Pawn, 0);
+		PlayerPawns.Insert(Pawn, 0);
 		PlayerEntityHandles.Insert(Agent->GetEntityHandle(), 0);
 	}
 	else

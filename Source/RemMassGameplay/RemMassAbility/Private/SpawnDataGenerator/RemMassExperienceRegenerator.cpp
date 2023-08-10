@@ -41,6 +41,11 @@ void URemMassExperienceRegenerator::GenerateInternal() const
 	}
 }
 
+void URemMassExperienceRegenerator::CleanUp()
+{
+	SpawnDataContainer = {};
+}
+
 void URemMassExperienceRegenerator::AddSpawnData(const FRemExperienceSpawnDataContainer& SpawnData)
 {
 	SpawnDataContainer = SpawnData;

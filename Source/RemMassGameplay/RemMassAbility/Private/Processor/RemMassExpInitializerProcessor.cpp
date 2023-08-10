@@ -11,9 +11,10 @@
 
 URemMassExpInitializerProcessor::URemMassExpInitializerProcessor()
 {
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
+	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
+	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
 	bAutoRegisterWithProcessingPhases = false;
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
-	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Respawn;
 }
 
 void URemMassExpInitializerProcessor::ConfigureQueries()

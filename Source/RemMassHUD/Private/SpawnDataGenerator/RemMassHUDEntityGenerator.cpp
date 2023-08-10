@@ -42,6 +42,13 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 	}
 }
 
+void URemMassHUDEntityGenerator::CleanUp()
+{
+	ReceivedHUDTags = {};
+	SpawnDataContainer = {};
+	bHUDTagsAllReceived = {};
+}
+
 void URemMassHUDEntityGenerator::AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData)
 {
 	ReceivedHUDTags.AddTag(WidgetTag);

@@ -13,9 +13,9 @@
 URemMassHUDUpdateProcessor::URemMassHUDUpdateProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Client);
-	ProcessingPhase = EMassProcessingPhase::FrameEnd;
+	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::HUD;
-	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Respawn);
+	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Experience);
 
 	bRequiresGameThreadExecution = true;
 }
@@ -38,7 +38,6 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 		const auto LocalPlayerEntity = GameStateSubsystem.GetLocalPlayerEntity();
-
 		
 		RemEnsureVariable(LocalPlayerEntity, return;, REM_NO_LOG_AND_ASSERTION);
 

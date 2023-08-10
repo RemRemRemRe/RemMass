@@ -47,3 +47,18 @@ struct FRemMassPlayerFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 };
+
+USTRUCT()
+struct FRemMassOwnerFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	FMassEntityHandle Value;
+};
+
+USTRUCT()
+struct FRemMassPlayerRegisteredTag : public FRemMassTag
+{
+	GENERATED_BODY()
+};

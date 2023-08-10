@@ -7,9 +7,9 @@ void URemMassEntitySpawnDataRegenerator::Generate(UObject& QueryOwner,
 	const TConstArrayView<FMassSpawnedEntityType> EntityTypes, const int32 Count,
 	FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const
 {
-	Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedGenerate{*this};
-	
 	auto* MutableThis = const_cast<ThisClass*>(this);
+	
+	Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedGenerate{*MutableThis};
 	
 	MutableThis->SavedQueryOwner = &QueryOwner;
 	MutableThis->SavedEntityTypes = EntityTypes;

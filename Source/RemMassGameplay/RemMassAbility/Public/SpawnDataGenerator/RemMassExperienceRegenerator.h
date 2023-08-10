@@ -11,12 +11,13 @@ class REMMASSABILITY_API URemMassExperienceRegenerator : public URemMassEntitySp
 {
 	GENERATED_BODY()
 
-	UPROPERTY(Transient)
+	UPROPERTY(Transient, VisibleInstanceOnly)
 	FRemExperienceSpawnDataContainer SpawnDataContainer;
 
 protected:
 	virtual bool CanGenerate() const override;
 	virtual void GenerateInternal() const override;
+	virtual void CleanUp() override;
 
 public:
 	void AddSpawnData(const FRemExperienceSpawnDataContainer& SpawnData);

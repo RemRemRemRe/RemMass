@@ -14,5 +14,6 @@ struct REMMASSABILITY_API FRemExperienceSpawnDataContainer
 
 	TConstArrayView<FRemMassExperienceTypeFragment> ExpTypeData;
 
+	UPROPERTY(EditAnywhere)
 	TArray<FTransformFragment> TransformData;
 };
