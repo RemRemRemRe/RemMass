@@ -43,12 +43,6 @@ struct FRemMassPlayerTag : public FRemMassTag
 };
 
 USTRUCT()
-struct FRemMassPlayerFragment : public FRemMassFragment
-{
-	GENERATED_BODY()
-};
-
-USTRUCT()
 struct FRemMassOwnerFragment : public FRemMassFragment
 {
 	GENERATED_BODY()

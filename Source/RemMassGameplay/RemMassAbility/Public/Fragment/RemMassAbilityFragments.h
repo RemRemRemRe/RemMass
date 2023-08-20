@@ -152,7 +152,7 @@ struct FRemMassProjectileNextSpawnTimeFragment : public FRemMassFragment
 
 inline bool FRemMassHealthFragment::IsDead() const
 {
-	return FMath::IsNearlyZero(Value);
+	return !FAnimWeight::IsRelevant(Value);
 }
 
 USTRUCT()
