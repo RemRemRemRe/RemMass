@@ -3,9 +3,9 @@
 
 namespace UnrealBuildTool.Rules
 {
-	public class RemMassAbility : ModuleRules
+	public class RemMassInventory : ModuleRules
 	{
-		public RemMassAbility(ReadOnlyTargetRules target) : base(target)
+		public RemMassInventory(ReadOnlyTargetRules target) : base(target)
 		{
 			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 			ShadowVariableWarningLevel = WarningLevel.Error;
@@ -23,22 +23,13 @@ namespace UnrealBuildTool.Rules
 					"Engine",
 					
 					"MassEntity",
-					"MassCommon",
-					"MassMovement",
 					"MassSpawner",
-					"MassActors",
-					"StructUtils",
-					"DeveloperSettings",
 					"GameplayTags",
-					"MassAIBehavior",
-					"StateTreeModule",
+					"StructUtils",
 					
-					"RemCommon",
 					"RemMass",
-					"RemUniversalData",
-					"RemMassInventory",
+					"RemCommon",
 					"RemEventScheduler",
-					"RemDataRegistry",
 				}
 			);
 		}

@@ -23,7 +23,7 @@ void URemMassExperienceRegenerator::GenerateInternal() const
 		RemCheckCondition(EntityConfig, continue;);
 
 		if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
-			!Template.HasFragment<FRemMassExperienceTypeFragment>())
+			!Template.GetTemplateData().HasFragment<FRemMassExperienceTypeFragment>())
 		{
 			continue;
 		}

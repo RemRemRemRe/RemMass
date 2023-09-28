@@ -24,7 +24,7 @@ void URemMassHUDEntityGenerator::GenerateInternal() const
 		RemCheckCondition(EntityConfig, continue;);
 
 		if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
-			!Template.HasFragment<FRemMassHUDBindingFragment>())
+			!Template.GetTemplateData().HasFragment<FRemMassHUDBindingFragment>())
 		{
 			continue;
 		}

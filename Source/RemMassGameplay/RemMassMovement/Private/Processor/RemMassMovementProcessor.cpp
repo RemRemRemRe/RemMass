@@ -13,7 +13,7 @@
 
 URemMassMovementProcessor::URemMassMovementProcessor()
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::AllNetModes);
 	ProcessingPhase = EMassProcessingPhase::PrePhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Movement;
 	ExecutionOrder.ExecuteBefore.Add(UE::Mass::ProcessorGroupNames::Movement);

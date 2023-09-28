@@ -175,3 +175,23 @@ struct FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
 	UPROPERTY(EditInstanceOnly)
 	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
 };
+
+USTRUCT()
+struct FRemMassAbilityTreeLeafsFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	/**
+	 * leaf entity handles per tree, 16 x 16, support up to 16 trees, 16 leafs nodes per tree, arbitrary levels
+	 */
+	TStaticArray<TStaticArray<FMassEntityHandle, 16>, 16> Values;
+};
+
+USTRUCT()
+struct FRemMassAbilityTreePreviousNodeFragment : public FRemMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere)
+	FMassEntityHandle Value;
+};

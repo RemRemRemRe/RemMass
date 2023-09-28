@@ -12,7 +12,7 @@
 
 URemMassNearbyMonsterDataProcessor::URemMassNearbyMonsterDataProcessor()
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::AllNetModes);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::NearbyMonsterData;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Movement);

@@ -16,7 +16,7 @@
 
 URemMassDamageProcessor::URemMassDamageProcessor()
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::PostPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Damage;
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Movement);

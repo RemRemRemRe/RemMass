@@ -7,43 +7,43 @@
 #include "RemMassGameFrameworkFragment.generated.h"
 
 USTRUCT()
-struct FRemMassFragment : public FMassFragment
+struct REMMASS_API FRemMassFragment : public FMassFragment
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassTag : public FMassTag
+struct REMMASS_API FRemMassTag : public FMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassChunkFragment : public FMassChunkFragment
+struct REMMASS_API FRemMassChunkFragment : public FMassChunkFragment
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassSharedFragment : public FMassSharedFragment
+struct REMMASS_API FRemMassSharedFragment : public FMassSharedFragment
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassLocalPlayerTag : public FRemMassTag
+struct REMMASS_API FRemMassLocalPlayerTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassPlayerTag : public FRemMassTag
+struct REMMASS_API FRemMassPlayerTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassOwnerFragment : public FRemMassFragment
+struct REMMASS_API FRemMassOwnerFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -52,7 +52,7 @@ struct FRemMassOwnerFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassPlayerRegisteredTag : public FRemMassTag
+struct REMMASS_API FRemMassPlayerRegisteredTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };

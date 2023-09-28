@@ -17,7 +17,7 @@
 
 URemMassProjectileSpawnerProcessor::URemMassProjectileSpawnerProcessor()
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::All);
+	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
 	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::SpawnProjectile;
 	ExecutionOrder.ExecuteBefore.Add(Rem::Mass::ProcessorGroup::Name::Movement);

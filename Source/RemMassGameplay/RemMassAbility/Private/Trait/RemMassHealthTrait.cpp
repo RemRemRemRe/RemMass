@@ -3,7 +3,7 @@
 
 #include "Trait/RemMassHealthTrait.h"
 
-#include "MassSpawner/Public/MassEntityTemplateRegistry.h"
+#include "MassEntityTemplateRegistry.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHealthTrait)
 

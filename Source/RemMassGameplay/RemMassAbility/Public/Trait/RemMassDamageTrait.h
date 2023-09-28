@@ -4,7 +4,7 @@
 
 #include "Trait/RemMassEntityTraitBase.h"
 #include "Fragment/RemMassAbilityFragments.h"
-#include "MassSpawner/Public/MassEntityTraitBase.h"
+#include "MassEntityTraitBase.h"
 #include "RemMassDamageTrait.generated.h"
 
 /**

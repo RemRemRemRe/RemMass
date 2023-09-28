@@ -36,6 +36,11 @@
 			"Name": "RemMassHUD",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "RemMassInventory",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -48,6 +53,10 @@
 			"Enabled": true
 		},
 		{
+			"Name": "MassAI",
+			"Enabled": true
+		},
+		{
 			"Name": "RemCommon",
 			"Enabled": true
 		},
@@ -57,6 +66,10 @@
 		},
 		{
 			"Name": "RemWidgetComponent",
+			"Enabled": true
+		},
+		{
+			"Name": "RemEventScheduler",
 			"Enabled": true
 		}
 	]
