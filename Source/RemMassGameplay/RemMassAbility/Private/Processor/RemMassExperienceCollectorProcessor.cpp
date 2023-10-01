@@ -83,7 +83,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 
 				const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
 
-				RemCheckVariable(CurveTable, continue;, REM_NO_LOG_AND_ASSERTION);
+				RemCheckVariable(CurveTable, continue;, REM_NO_LOG_BUT_ENSURE);
 
 				// adding experience value
 				{

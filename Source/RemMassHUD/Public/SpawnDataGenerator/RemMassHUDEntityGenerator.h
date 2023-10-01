@@ -5,6 +5,7 @@
 #include "GameplayTagContainer.h"
 #include "RemMassHUDEntitySpawnData.h"
 #include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
+
 #include "RemMassHUDEntityGenerator.generated.h"
 
 UCLASS(BlueprintType)

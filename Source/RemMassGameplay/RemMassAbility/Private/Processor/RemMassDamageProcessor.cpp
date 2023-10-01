@@ -45,7 +45,7 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassDamageProcessor);
 
-	int32 DamageSourceNum;
+	int32 DamageSourceNum{0};
 	TConstArrayView<FMassEntityHandle> DamageSourceEntityView;
 	TConstArrayView<FTransformFragment> DamageSourceTransformView;
 	TConstArrayView<FRemMassDamageRadiusFragment> DamageSourceRadiusView;

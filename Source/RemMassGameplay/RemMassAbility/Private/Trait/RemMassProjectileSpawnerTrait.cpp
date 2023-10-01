@@ -4,16 +4,15 @@
 #include "Trait/RemMassProjectileSpawnerTrait.h"
 
 #include "MassEntityTemplateRegistry.h"
+#include "MassEntityConfigAsset.h"
 
 void URemMassProjectileSpawnerTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
 {
-	auto& SpawnerFragment = BuildContext.AddFragment_GetRef<FRemMassProjectileSpawnerFragment>();
-
-	SpawnerFragment.SpawnInterval = SpawnInterval;
-	SpawnerFragment.InitialSpeed = InitialSpeed;
-	SpawnerFragment.ProjectileConfigAsset = ProjectileConfigAsset;
+	Super::BuildTemplate(BuildContext, World);
 	
-	BuildContext.AddFragment<FRemMassProjectileNextSpawnTimeFragment>();
-	BuildContext.AddFragment<FRemMassOwnerFragment>();
+	auto& ProjectileConfigAssetFragment = BuildContext.AddFragment_GetRef<FRemMassProjectileConfigAssetFragment>();
+	ProjectileConfigAssetFragment.ProjectileConfigAsset = ProjectileConfigAsset;
+
+	BuildContext.AddFragment<FRemMassProjectileTriggerStateFragment>();
 }

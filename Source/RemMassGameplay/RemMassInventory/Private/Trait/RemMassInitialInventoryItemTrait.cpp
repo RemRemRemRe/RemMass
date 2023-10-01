@@ -53,10 +53,10 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 					const auto& Handle = Handles[Index];
 					FMassEntityView View{Manager, Handle};
 
-					const auto& [Tag, Count] = Pairs[Index];
+					const auto& Pair = Pairs[Index];
 					View.GetFragmentData<FRemMassOwnerFragment>().Value = OwnerHandle;
-					View.GetFragmentData<FRemMassInventoryItemTagFragment>().Value = Tag;
-					View.GetFragmentData<FRemMassInventoryItemCountFragment>().Value = Count;
+					View.GetFragmentData<FRemMassInventoryItemTagFragment>().Value = Pair.Tag;
+					View.GetFragmentData<FRemMassInventoryItemCountFragment>().Value = Pair.Count;
 				}
 
 				EventScheduler->SendEvent(&Object, FInstancedStruct::Make<FRemMassInventoryItemsInitialized>(&Manager, OwnerHandle, &InitialItemEntitiesPair));

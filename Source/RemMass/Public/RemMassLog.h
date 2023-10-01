@@ -2,4 +2,4 @@
 
 #pragma once
 
-DECLARE_LOG_CATEGORY_EXTERN(LogRemMass, Log, All)
+REMMASS_API DECLARE_LOG_CATEGORY_EXTERN(LogRemMass, Log, All)

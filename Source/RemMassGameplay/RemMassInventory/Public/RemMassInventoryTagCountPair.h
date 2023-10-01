@@ -27,5 +27,5 @@ struct FRemMassInventoryTagCountPairContainer
 	TObjectPtr<UMassEntityConfigAsset> ConfigAsset;
 
 	UPROPERTY(EditAnywhere)
-	TArray<FRemMassTagCountPair> Pairs;
+	TArray<FRemMassInventoryTagCountPair> Pairs;
 };

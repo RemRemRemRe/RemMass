@@ -2,24 +2,16 @@
 
 #pragma once
 
-#include "Fragment/RemMassAbilityFragments.h"
-#include "Trait/RemMassEntityTraitBase.h"
+#include "RemMassProjectileBoosterTrait.h"
 #include "RemMassProjectileSpawnerTrait.generated.h"
 
-/**
- * 
- */
+class UMassEntityConfigAsset;
+
 UCLASS()
-class REMMASSABILITY_API URemMassProjectileSpawnerTrait : public URemMassEntityTraitBase
+class REMMASSABILITY_API URemMassProjectileSpawnerTrait : public URemMassProjectileBoosterTrait
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
-	float SpawnInterval{1.0f};
-	
-	UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
-	float InitialSpeed{500.0f};
-	
 	UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
 	TObjectPtr<UMassEntityConfigAsset> ProjectileConfigAsset;
 	

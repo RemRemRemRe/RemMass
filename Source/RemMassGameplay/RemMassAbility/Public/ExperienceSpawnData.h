@@ -2,9 +2,10 @@
 
 #pragma once
 
+#include "MassCommonFragments.h"
+
 #include "ExperienceSpawnData.generated.h"
 
-struct FTransformFragment;
 struct FRemMassExperienceTypeFragment;
 
 USTRUCT()

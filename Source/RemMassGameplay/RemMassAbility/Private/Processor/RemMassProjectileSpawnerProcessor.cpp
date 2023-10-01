@@ -25,9 +25,11 @@ URemMassProjectileSpawnerProcessor::URemMassProjectileSpawnerProcessor()
 
 void URemMassProjectileSpawnerProcessor::ConfigureQueries()
 {
-	EntityQuery.AddRequirement<FRemMassProjectileSpawnerFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassOwnerFragment>(EMassFragmentAccess::ReadOnly)
-		.AddRequirement<FRemMassProjectileNextSpawnTimeFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FRemMassProjectileConfigAssetFragment>(EMassFragmentAccess::ReadOnly)
+		.AddRequirement<FRemMassProjectileInfoFragment>(EMassFragmentAccess::ReadOnly)
+		.AddRequirement<FRemMassProjectileTriggerInfoFragment>(EMassFragmentAccess::ReadOnly)
+		.AddRequirement<FRemMassProjectileTriggerStateFragment>(EMassFragmentAccess::ReadWrite)
+		.AddRequirement<FRemMassOwnerFragment>(EMassFragmentAccess::ReadOnly);
 
 	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
 	
@@ -46,9 +48,11 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 		const auto NumEntities = Context.GetNumEntities();
 		const auto TimeSeconds = GameStateSubsystem.GetWorld()->GetTimeSeconds();
 
-		const auto SpawnerView = Context.GetFragmentView<FRemMassProjectileSpawnerFragment>();
+		const auto ConfigAssetView = Context.GetFragmentView<FRemMassProjectileConfigAssetFragment>();
+		const auto ProjectileInfoView = Context.GetFragmentView<FRemMassProjectileInfoFragment>();
+		const auto TriggerInfoView = Context.GetFragmentView<FRemMassProjectileTriggerInfoFragment>();
+		const auto TriggerStateView = Context.GetMutableFragmentView<FRemMassProjectileTriggerStateFragment>();
 		const auto OwnerView = Context.GetFragmentView<FRemMassOwnerFragment>();
-		const auto NextSpawnTimeView = Context.GetMutableFragmentView<FRemMassProjectileNextSpawnTimeFragment>();
 
 		auto* ProjectileSpawner = GameStateSubsystem.GetMassSpawner(FGameplayTagQuery::MakeQuery_MatchAnyTags(
 				Rem::Common::GetDefaultRef<URemMassAbilityTags>().GetProjectileMassSpawnerTag().GetSingleTagContainer()));
@@ -76,35 +80,94 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 			}
 
 			RemCheckVariable(NearbyMonsterEntityData, continue;, REM_NO_LOG_BUT_ENSURE);
+
+			auto& TriggerInfo = TriggerInfoView[Index];
+			auto& TriggerState = TriggerStateView[Index];
+
+			auto CanTrigger = [](const FRemMassProjectileTriggerInfoFragment& Info, const FRemMassProjectileTriggerStateFragment& State, const double Time)
+			{
+				// only one round, or max round reached
+				if ((Info.RoundsPerInterval <= 1 || Info.RoundsPerInterval == State.CurrentRounds) && (Info.ShotsPerRound <= 1 || Info.ShotsPerRound == State.CurrentShots))
+				{
+					return Time > State.NextTriggeringTime;
+				}
+
+				return Time > State.NextShotTime;
+			};
+
+			auto IncrementShotCount = [](const FRemMassProjectileTriggerInfoFragment& Info, FRemMassProjectileTriggerStateFragment& State, const double Time)
+			{
+				if (const auto NewShotCount = ++State.CurrentShots;
+					NewShotCount == Info.ShotsPerRound)
+				{
+					State.CurrentShots = 0;
+					
+					++State.CurrentRounds;
+					if (State.CurrentRounds == Info.RoundsPerInterval)
+					{
+						// clear state
+						State.NextShotTime = 0.0f;	
+					}
+					else
+					{
+						State.NextShotTime = Time + Info.RoundsInterval;
+					}
+				}
+				else
+				{
+					State.CurrentShots = NewShotCount;
+					State.NextShotTime = Time + Info.ShotsInterval;
+				}
+			};
 			
-			if (const auto NextSpawnTime = NextSpawnTimeView[Index];
-				TimeSeconds < NextSpawnTime.Value)
+			if (TimeSeconds > TriggerState.NextTriggeringTime)
+			{
+				TriggerState = {};
+				TriggerState.NextTriggeringTime = TimeSeconds + TriggerInfo.TriggerInterval;
+			}
+			
+			if (!CanTrigger(TriggerInfo, TriggerState, TimeSeconds))
 			{
 				continue;
 			}
 
-			NextSpawnTimeView[Index].Value = TimeSeconds + SpawnerView[Index].SpawnInterval;
-
-			const auto ConfigAsset = SpawnerView[Index].ProjectileConfigAsset;
+			const auto ConfigAsset = ConfigAssetView[Index].ProjectileConfigAsset;
 			RemCheckVariable(ConfigAsset, return;, REM_NO_LOG_BUT_ENSURE);
 			
 			const auto Owner = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
-			const auto& OwnerTransform = Owner.GetFragmentData<FTransformFragment>();
+			const auto& OwnerTransform = Owner.GetFragmentData<FTransformFragment>().GetTransform();
 
 			const int32 ContainerIndex = SpawnDataContainer.FindOrAdd(ConfigAsset);
 			auto& [Locations, Rotations, InitialVelocities]
 				= SpawnDataContainer.SpawnData[ContainerIndex];
-			
-			Locations.Add(OwnerTransform.GetTransform().GetLocation());
-			
-			const auto RotationQuat = OwnerTransform.GetTransform().GetRotation();
-			Rotations.Add(RotationQuat);
 
-			const auto Velocity = SpawnerView[Index].InitialSpeed * (NearbyMonsterEntityData->NearbyMonsterDirections.IsEmpty()
-				                      ? RotationQuat.GetForwardVector()
-				                      : NearbyMonsterEntityData->NearbyMonsterDirections[0]);
+			const uint8 LoopCount = TriggerInfo.ShotsInterval > 0 ? 1: TriggerInfo.ShotsPerRound;
 			
-			InitialVelocities.Add(Velocity);
+			constexpr float Degree = 180.0f;
+			const float AverageDegree = Degree / (TriggerInfo.ShotsPerRound + 1);
+
+			const auto& OwnerLocation = OwnerTransform.GetLocation();
+			const auto& OwnerRotation = OwnerTransform.GetRotation();
+			const auto& ProjectileDirection = NearbyMonsterEntityData->NearbyMonsterDirections.IsEmpty()
+										  ? OwnerRotation
+										  : NearbyMonsterEntityData->NearbyMonsterDirections[0].Rotation().Quaternion();
+			for (uint8 Counter = 0; Counter < LoopCount; ++Counter)
+			{
+				IncrementShotCount(TriggerInfo, TriggerState, TimeSeconds);
+				
+				Locations.Add(OwnerLocation);
+				{
+					const float AngleToRotate = TriggerState.CurrentShots * AverageDegree;
+
+					const FQuat AngleToRotateQuat{ProjectileDirection.GetUpVector(), AngleToRotate};
+
+					auto FinalQuat = AngleToRotateQuat * ProjectileDirection;
+					Rotations.Add(FinalQuat);
+					
+					const auto Velocity = ProjectileInfoView[Index].InitialSpeed * FinalQuat.GetForwardVector();
+					InitialVelocities.Add(Velocity);
+				}
+			}
 		}
 
 		if (SpawnDataContainer.ConfigAssets.Num() > 0)

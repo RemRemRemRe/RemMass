@@ -5,6 +5,8 @@
 
 #include "RemMassInventoryInitialized.generated.h"
 
+class UMassEntityConfigAsset;
+
 USTRUCT()
 struct REMMASSINVENTORY_API FRemMassInventoryInitialized
 {

@@ -7,6 +7,7 @@
 #include "Macro/RemGenerateMembersMacro.h"
 #include "RemMassGameStateSubsystem.generated.h"
 
+class UMassEntitySubsystem;
 struct FGameplayTagQuery;
 class ARemMassSpawner;
 
@@ -62,6 +63,9 @@ class REMMASS_API URemMassGameStateSubsystem : public UWorldSubsystem
 
 	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
 	TArray<ARemMassSpawner*> MassSpawners;
+
+	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
+	UMassEntitySubsystem* EntitySubsystem;
 
 public:
 	mutable FRWLock PlayerEntityLock;

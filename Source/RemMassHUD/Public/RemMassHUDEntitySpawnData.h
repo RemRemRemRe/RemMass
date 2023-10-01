@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include "RemMassHUDEntitySpawnData.generated.h"
+#include "Fragment/RemMassHUDFragments.h"
 
-struct FRemMassHUDBindingFragment;
+#include "RemMassHUDEntitySpawnData.generated.h"
 
 USTRUCT(BlueprintType)
 struct FRemMassHUDEntitySpawnDataContainer

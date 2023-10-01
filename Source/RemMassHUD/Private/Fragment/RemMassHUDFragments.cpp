@@ -5,6 +5,7 @@
 
 #include "Macro/RemAssertionMacros.h"
 #include "Task/RemMassHUDTask.h"
+#include "Components/Widget.h"
 
 void FRemMassHUDBindingFragment::UpdateWidget(const TConstArrayView<FConstStructView> StructViews) const
 {
@@ -22,8 +23,8 @@ void FRemMassHUDBindingFragment::UpdateWidget(const TConstArrayView<FConstStruct
 
 bool FRemMassHUDBindingFragment::IsValid() const
 {
-	RemCheckCondition(FragmentTypes.Num() > 0, return false, REM_NO_LOG_AND_ASSERTION);
-	RemCheckVariable(Task, return false, REM_NO_LOG_AND_ASSERTION);
+	RemCheckCondition(FragmentTypes.Num() > 0, return false, REM_NO_LOG_BUT_ENSURE);
+	RemCheckVariable(Task, return false, REM_NO_LOG_BUT_ENSURE);
 	
 	return Widget.Get() != nullptr;
 }

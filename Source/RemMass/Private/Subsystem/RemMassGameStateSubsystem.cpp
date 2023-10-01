@@ -4,6 +4,7 @@
 #include "Subsystem/RemMassGameStateSubsystem.h"
 
 #include "MassAgentComponent.h"
+#include "MassEntitySubsystem.h"
 #include "RemMassSpawner.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
@@ -30,9 +31,9 @@ auto URemMassGameStateSubsystem::IsLocalPlayerEntityValid() const -> bool
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	
-	if (!PlayerEntityHandles.IsEmpty())
+	if (IsValid(EntitySubsystem) && !PlayerEntityHandles.IsEmpty() && PlayerEntityHandles[0].IsValid())
 	{
-		return PlayerEntityHandles[0].IsValid();
+		return EntitySubsystem->GetEntityManager().IsEntityValid(PlayerEntityHandles[0]);
 	}
 	return false;
 }
@@ -107,7 +108,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntityHan
 		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections[0];
 	}
 
-	RemCheckCondition(false, , REM_NO_LOG_BUT_ENSURE);
+	RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
 	return {};
 }
 
@@ -126,7 +127,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEnt
 		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDistancesSquared[0];
 	}
 
-	RemCheckCondition(false, , REM_NO_LOG_BUT_ENSURE);
+	RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
 	return {};
 }
 
@@ -189,13 +190,12 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	Super::Initialize(Collection);
 
 	const auto* World = GetWorld();
-	if (World->IsNetMode(NM_DedicatedServer))
-	{
-		return;
-	}
-
-	auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
+	RemCheckVariable(World, return;, REM_NO_LOG_BUT_ENSURE);
 	
+	EntitySubsystem = World->GetSubsystem<UMassEntitySubsystem>();
+	RemCheckVariable(EntitySubsystem, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
+	
+	auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
 	RemCheckVariable(Pawn, return;, REM_NO_LOG_AND_ASSERTION);
 	
 	const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();

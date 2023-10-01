@@ -6,6 +6,8 @@
 #include "MassEntityConfigAsset.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Processor/RemMassExpInitializerProcessor.h"
+#include "ExperienceSpawnData.h"
+#include "Fragment/RemMassAbilityFragments.h"
 
 bool URemMassExperienceRegenerator::CanGenerate() const
 {

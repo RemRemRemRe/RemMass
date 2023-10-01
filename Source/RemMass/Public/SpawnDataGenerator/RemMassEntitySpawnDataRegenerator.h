@@ -9,7 +9,7 @@
 
 namespace Rem::Mass
 {
-struct FScopedEntitySpawnDataRegeneration;
+	struct FScopedEntitySpawnDataRegeneration;
 }
 
 /**

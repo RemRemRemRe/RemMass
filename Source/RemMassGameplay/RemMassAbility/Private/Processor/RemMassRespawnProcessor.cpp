@@ -14,6 +14,17 @@
 #include "SpawnDataGenerator/RemMassExperienceRegenerator.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
 
+namespace
+{
+
+#if !UE_BUILD_TEST && !UE_BUILD_SHIPPING
+
+	FAutoConsoleVariable CVarDisableRespawnRandomYawOffset{TEXT("Rem.Mass.Respawn.DisableRandomYawOffset"), false, TEXT(""), ECVF_Cheat};
+
+#endif
+
+}
+
 URemMassRespawnProcessor::URemMassRespawnProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
@@ -75,8 +86,17 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 
 			const auto RotatedForward = YawOffset.RotateVector(ForwardDirection);
 
-			const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
+#if !UE_BUILD_TEST && !UE_BUILD_SHIPPING
+			
+			const auto RespawnLocation = PlayerLocation +
+				(CVarDisableRespawnRandomYawOffset->GetBool() ? ForwardDirection : RotatedForward) * RespawnRadiusView[EntityIndex].Value;
+			
+#elif
 
+			const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
+			
+#endif
+			
 			EntityTransform.SetLocation(RespawnLocation);
 			HealthView[EntityIndex] = {};
 
