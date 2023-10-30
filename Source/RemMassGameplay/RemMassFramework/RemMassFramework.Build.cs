@@ -1,0 +1,36 @@
+// Copyright RemRemRemRe, All Rights Reserved.
+
+
+namespace UnrealBuildTool.Rules
+{
+	public class RemMassFramework : ModuleRules
+	{
+		public RemMassFramework(ReadOnlyTargetRules target) : base(target)
+		{
+			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+			ShadowVariableWarningLevel = WarningLevel.Error;
+			IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
+			DefaultBuildSettings = BuildSettingsVersion.Latest;
+			CppStandard = CppStandardVersion.Cpp20;
+
+			bEnableNonInlinedGenCppWarnings = true;
+			bUseUnity = false;
+
+			PrivateDependencyModuleNames.AddRange(
+				new[]
+				{
+					"Core",
+					"CoreUObject",
+					"Engine",
+					
+					"DeveloperSettings",
+					"MassActors",
+					"GameplayAbilities",
+
+					"RemCommon",
+					"RemInputHandling",
+				}
+			);
+		}
+	}
+}

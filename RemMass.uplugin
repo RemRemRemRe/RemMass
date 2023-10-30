@@ -28,6 +28,11 @@
 			"LoadingPhase": "Default"
 		},
 		{
+			"Name": "RemMassFramework",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
 			"Name": "RemMassMovement",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
@@ -70,6 +75,10 @@
 		},
 		{
 			"Name": "RemEventScheduler",
+			"Enabled": true
+		},
+		{
+			"Name": "RemInputHandling",
 			"Enabled": true
 		}
 	]
