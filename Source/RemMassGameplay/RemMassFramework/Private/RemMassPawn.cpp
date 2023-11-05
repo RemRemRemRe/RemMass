@@ -23,7 +23,7 @@ ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 		const TSubclassOf<UAbilitySystemComponent> AbilitySystemClass = GameFrameworkSettings.GetAbilitySystemClass();
 		
 		// Create ability system component, and set it to be explicitly replicated
-		AbilitySystem = Cast<UAbilitySystemComponent>(CreateDefaultSubobject(TEXT("AbilitySystem"),
+		AbilitySystem = Cast<UAbilitySystemComponent>(ObjectInitializer.CreateDefaultSubobject(this, FName{TEXTVIEW("AbilitySystem")},
 				AbilitySystemClass, AbilitySystemClass, true, false));
 
 		RemCheckVariable(AbilitySystem, return);
@@ -39,7 +39,7 @@ ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 	// construct InputHandling
 	{
 		const TSubclassOf<URemInputHandlingComponent> InputHandlingClass = GameFrameworkSettings.GetInputHandlingClass();
-		InputHandling = Cast<URemInputHandlingComponent>(CreateDefaultSubobject(TEXT("InputHandling"),
+		InputHandling = Cast<URemInputHandlingComponent>(ObjectInitializer.CreateDefaultSubobject(this, FName{TEXTVIEW("InputHandling")},
 			InputHandlingClass, InputHandlingClass, true, false));
 
 		RemCheckVariable(InputHandling);

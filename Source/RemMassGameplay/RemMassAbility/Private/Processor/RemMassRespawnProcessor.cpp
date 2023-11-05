@@ -17,7 +17,7 @@
 namespace
 {
 
-#if !UE_BUILD_TEST && !UE_BUILD_SHIPPING
+#if REM_WITH_DEVELOPMENT_ONLY_CODE
 
 	FAutoConsoleVariable CVarDisableRespawnRandomYawOffset{TEXT("Rem.Mass.Respawn.DisableRandomYawOffset"), false, TEXT(""), ECVF_Cheat};
 
@@ -86,7 +86,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 
 			const auto RotatedForward = YawOffset.RotateVector(ForwardDirection);
 
-#if !UE_BUILD_TEST && !UE_BUILD_SHIPPING
+#if REM_WITH_DEVELOPMENT_ONLY_CODE
 			
 			const auto RespawnLocation = PlayerLocation +
 				(CVarDisableRespawnRandomYawOffset->GetBool() ? ForwardDirection : RotatedForward) * RespawnRadiusView[EntityIndex].Value;
