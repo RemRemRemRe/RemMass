@@ -58,14 +58,14 @@ void URemMassNearbyMonsterDataProcessor::Execute(FMassEntityManager& EntityManag
 
 				const auto DistanceSquared = FVector::DistSquared(PlayerLocation, EntityLocation);
 
-				auto& MonsterData = GameStateSubsystem.GetPlayerEntityDataContainer();
+				auto& MonsterData = GameStateSubsystem.GetNearbyMonsterEntityDataContainer();
 
-				if (!LIKELY(MonsterData.Get().IsValidIndex(PlayerIndex)))
+				if (!LIKELY(MonsterData.NearbyMonsterEntityData.IsValidIndex(PlayerIndex)))
 				{
-					MonsterData.Get().AddDefaulted();
+					MonsterData.NearbyMonsterEntityData.AddDefaulted();
 				}
 				
-				auto& NearbyMonsterEntityData = MonsterData.Get()[PlayerIndex];
+				auto& NearbyMonsterEntityData = MonsterData.NearbyMonsterEntityData[PlayerIndex];
 
 				if (const auto ExistingIndex = NearbyMonsterEntityData.NearbyMonsterHandles.Find(Context.GetEntity(EntityIndex));
 					ExistingIndex != INDEX_NONE)

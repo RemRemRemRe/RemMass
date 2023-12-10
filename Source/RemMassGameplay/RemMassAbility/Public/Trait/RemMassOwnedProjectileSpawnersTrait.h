@@ -6,9 +6,7 @@
 #include "RemMassOwnedProjectileSpawnersTrait.generated.h"
 
 class UMassEntityConfigAsset;
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassOwnedProjectileSpawnersTrait : public URemMassEntityTraitBase
 {

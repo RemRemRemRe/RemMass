@@ -23,6 +23,6 @@ class REMMASSFRAMEWORK_API URemMassFrameworkSettings : public UDeveloperSettings
 public:
 	URemMassFrameworkSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 	
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(AbilitySystemClass, TSubclassOf<UAbilitySystemComponent>, &AbilitySystemClass)
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(InputHandlingClass, TSubclassOf<URemInputHandlingComponent>, &InputHandlingClass)
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(AbilitySystemClass)
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(InputHandlingClass)
 };

@@ -5,9 +5,7 @@
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassPlayerStatsTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBase
 {

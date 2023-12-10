@@ -6,9 +6,7 @@
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassRespawnTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassRespawnTrait : public URemMassEntityTraitBase
 {

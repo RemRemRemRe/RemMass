@@ -85,9 +85,9 @@ auto URemMassGameStateSubsystem::GetNearbyMonsterEntityData(
 	}
 	
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index))
+	if (NearbyMonsterEntityDataContainer.NearbyMonsterEntityData.IsValidIndex(Index))
 	{
-		return NearbyMonsterEntityDataContainer.Get()[Index];
+		return NearbyMonsterEntityDataContainer.NearbyMonsterEntityData[Index];
 	}
 	
 	return {};
@@ -103,9 +103,10 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntityHan
 	}
 	
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index) && !NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections.IsEmpty())
+	if (auto& MassNearbyMonsterEntityData = NearbyMonsterEntityDataContainer.NearbyMonsterEntityData;
+		MassNearbyMonsterEntityData.IsValidIndex(Index) && !MassNearbyMonsterEntityData[Index].NearbyMonsterDirections.IsEmpty())
 	{
-		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections[0];
+		return MassNearbyMonsterEntityData[Index].NearbyMonsterDirections[0];
 	}
 
 	RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
@@ -122,9 +123,10 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEnt
 	}
 	
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	if (NearbyMonsterEntityDataContainer.Get().IsValidIndex(Index) && !NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDirections.IsEmpty())
+	if (auto& MassNearbyMonsterEntityData = NearbyMonsterEntityDataContainer.NearbyMonsterEntityData;
+	 MassNearbyMonsterEntityData.IsValidIndex(Index) && !MassNearbyMonsterEntityData[Index].NearbyMonsterDirections.IsEmpty())
 	{
-		return NearbyMonsterEntityDataContainer.Get()[Index].NearbyMonsterDistancesSquared[0];
+		return MassNearbyMonsterEntityData[Index].NearbyMonsterDistancesSquared[0];
 	}
 
 	RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);

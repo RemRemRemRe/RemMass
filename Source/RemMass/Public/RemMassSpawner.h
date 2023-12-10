@@ -21,9 +21,9 @@ public:
 
 	virtual void PreInitializeComponents() override;
 
-	REM_DEFINE_GETTERS_RETURN_REFERENCE(SpawnDataGenerators, TArray<FMassSpawnDataGenerator>, &SpawnDataGenerators)
+	REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(SpawnDataGenerators)
 
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ActorTags, FGameplayTagContainer, &ActorTags)
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ActorTags)
 
 	template<typename T>
 	requires std::is_base_of_v<UMassEntitySpawnDataGeneratorBase, T>

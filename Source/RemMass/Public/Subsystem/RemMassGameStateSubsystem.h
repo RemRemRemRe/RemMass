@@ -35,13 +35,8 @@ struct FRemMassNearbyMonsterDataContainer
 	GENERATED_BODY()
 
 	TArray<FRemMassNearbyMonsterEntityData> NearbyMonsterEntityData;
-
-	REM_DEFINE_GETTERS_RETURN_REFERENCE(, TArray<FRemMassNearbyMonsterEntityData>, &NearbyMonsterEntityData)
 };
 
-/**
- * 
- */
 UCLASS()
 class REMMASS_API URemMassGameStateSubsystem : public UWorldSubsystem
 {
@@ -94,7 +89,7 @@ public:
 	virtual auto Initialize(FSubsystemCollectionBase& Collection) -> void override;
 	virtual auto ShouldCreateSubsystem(UObject* Outer) const -> bool override;
 
-	REM_DEFINE_GETTERS_RETURN_REFERENCE(PlayerEntityDataContainer, FRemMassNearbyMonsterDataContainer, &NearbyMonsterEntityDataContainer)
+	REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(NearbyMonsterEntityDataContainer)
 };
 
 template<>

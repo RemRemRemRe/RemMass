@@ -2,14 +2,11 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassProjectileBoosterTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassProjectileBoosterTrait : public URemMassEntityTraitBase
 {

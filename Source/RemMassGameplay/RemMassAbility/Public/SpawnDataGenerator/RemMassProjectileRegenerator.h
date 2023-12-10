@@ -6,9 +6,6 @@
 #include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
 #include "RemMassProjectileRegenerator.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASSABILITY_API URemMassProjectileRegenerator : public URemMassEntitySpawnDataRegenerator
 {

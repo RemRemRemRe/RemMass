@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "RemMassEntityTraitBase.h"
 #include "RemMassPlayerRegisterTrait.generated.h"
 

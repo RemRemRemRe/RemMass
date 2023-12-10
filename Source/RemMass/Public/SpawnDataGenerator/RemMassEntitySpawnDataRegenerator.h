@@ -12,9 +12,6 @@ namespace Rem::Mass
 	struct FScopedEntitySpawnDataRegeneration;
 }
 
-/**
- * 
- */
 UCLASS(Abstract)
 class REMMASS_API URemMassEntitySpawnDataRegenerator : public URemMassEntitySpawnDataGeneratorBase
 {

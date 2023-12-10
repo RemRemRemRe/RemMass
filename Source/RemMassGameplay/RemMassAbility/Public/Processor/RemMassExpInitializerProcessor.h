@@ -2,13 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Processor/RemMassProcessor.h"
 #include "RemMassExpInitializerProcessor.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASSABILITY_API URemMassExpInitializerProcessor : public URemMassProcessor
 {

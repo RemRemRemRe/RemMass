@@ -8,9 +8,6 @@
 
 #include "RemMassAbilityTags.generated.h"
 
-/**
- * 
- */
 UCLASS(config = RemMassAbilityTags)
 class REMMASSABILITY_API URemMassAbilityTags : public URemMetaTags
 {
@@ -29,8 +26,8 @@ class REMMASSABILITY_API URemMassAbilityTags : public URemMetaTags
 	FGameplayTag ProjectileMassSpawnerTag;
 
 public:
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(RequiredExpToLevelUpTag, FGameplayTag, &RequiredExpToLevelUpTag);
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ExpGainPerLevelTag, FGameplayTag, &ExpGainPerLevelTag);
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ExpMassSpawnerTag, FGameplayTag, &ExpMassSpawnerTag);
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE(ProjectileMassSpawnerTag, FGameplayTag, &ProjectileMassSpawnerTag);
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(RequiredExpToLevelUpTag);
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ExpGainPerLevelTag);
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ExpMassSpawnerTag);
+	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ProjectileMassSpawnerTag);
 };

@@ -6,9 +6,7 @@
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassInitialInventoryItemTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSINVENTORY_API URemMassInitialInventoryItemTrait : public URemMassEntityTraitBase
 {

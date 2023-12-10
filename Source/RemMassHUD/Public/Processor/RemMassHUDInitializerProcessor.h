@@ -5,9 +5,7 @@
 #include "Processor/RemMassProcessor.h"
 #include "RemMassHUDInitializerProcessor.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSHUD_API URemMassHUDInitializerProcessor : public URemMassProcessor
 {

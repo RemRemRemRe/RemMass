@@ -8,6 +8,7 @@
 #include "RemMassStatics.inl"
 #include "Components/Widget.h"
 #include "Macro/RemAssertionMacros.h"
+#include "Object/RemObjectStatics.h"
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
 
 auto FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment
@@ -48,13 +49,16 @@ void URemMassHUDBinder::BeginPlay()
 	HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
 }
 
+#if WITH_EDITOR
+
 void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
 
 	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_BUT_ENSURE);
 	
-	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments))
+	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments)
+		&& Rem::Common::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
 	{
 		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_CHECKED(ThisClass, Bindings));
 
@@ -63,10 +67,10 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 		auto& Binding = Bindings[Index];
 			
 		TArray<TObjectPtr<const UScriptStruct>> FragmentTypes{};
-		const TConstArrayView<FInstancedStruct> InstancedStructs = Binding.SelectedFragments;
+		const auto& InstancedStructs = Binding.SelectedFragments;
 		FragmentTypes.Reserve(InstancedStructs.Num());
 
-		Algo::Transform(InstancedStructs, FragmentTypes, [](const FInstancedStruct& Struct)
+		Algo::Transform(InstancedStructs, FragmentTypes, [](const TInstancedStruct<FMassFragment>& Struct)
 		{
 			return Struct.GetScriptStruct();
 		});
@@ -74,3 +78,5 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 		Binding.FragmentTypes = std::move(FragmentTypes);
 	}
 }
+
+#endif

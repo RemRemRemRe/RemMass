@@ -6,9 +6,6 @@
 
 #include "RemMassEntityTraitBase.generated.h"
 
-/**
- * 
- */
 UCLASS(Abstract)
 class REMMASS_API URemMassEntityTraitBase : public UMassEntityTraitBase
 {

@@ -5,9 +5,6 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "RemMassAbilityStatics.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASSABILITY_API URemMassAbilityStatics : public UBlueprintFunctionLibrary
 {

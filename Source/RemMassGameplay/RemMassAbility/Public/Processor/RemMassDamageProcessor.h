@@ -5,9 +5,6 @@
 #include "Processor/RemMassProcessor.h"
 #include "RemMassDamageProcessor.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASSABILITY_API URemMassDamageProcessor : public URemMassProcessor
 {

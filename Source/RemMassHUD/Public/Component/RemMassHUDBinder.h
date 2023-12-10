@@ -7,6 +7,8 @@
 #include "Fragment/RemMassHUDFragments.h"
 #include "RemMassHUDBinder.generated.h"
 
+struct FRemMassHUDTask;
+
 USTRUCT()
 struct FRemMassHUDBinding
 {
@@ -18,14 +20,14 @@ struct FRemMassHUDBinding
 	UPROPERTY(VisibleAnywhere)
 	TArray<TObjectPtr<const UScriptStruct>> FragmentTypes;
 
-	UPROPERTY(EditAnywhere, meta = (BaseStruct = "/Script/RemMassHUD.RemMassHUDTask", ExcludeBaseStruct))
-	FInstancedStruct Task;
+	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
+	TInstancedStruct<FRemMassHUDTask> Task;
 
 #if WITH_EDITORONLY_DATA
 
 private:
-	UPROPERTY(EditAnywhere, meta = (BaseStruct = "/Script/MassEntity.MassFragment", ExcludeBaseStruct))
-	TArray<FInstancedStruct> SelectedFragments;
+	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
+	TArray<TInstancedStruct<FMassFragment>> SelectedFragments;
 
 	friend class URemMassHUDBinder;
 	
@@ -36,9 +38,7 @@ public:
 	static auto TransformBindings(TConstArrayView<FRemMassHUDBinding> Bindings) -> TArray<FRemMassHUDBindingFragment>;
 };
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSHUD_API URemMassHUDBinder : public URemWidgetComponentBase
 {

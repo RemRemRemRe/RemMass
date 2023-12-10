@@ -2,13 +2,10 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassExperienceItemTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassExperienceItemTrait : public URemMassEntityTraitBase
 {

@@ -5,9 +5,7 @@
 #include "Processor/RemMassProcessor.h"
 #include "RemMassMovementProcessor.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSMOVEMENT_API URemMassMovementProcessor : public URemMassProcessor
 {

@@ -5,6 +5,7 @@
 #include "Fragment/RemMassGameFrameworkFragment.h"
 #include "RemMassHUDFragments.generated.h"
 
+struct FRemMassHUDTask;
 class UWidget;
 
 USTRUCT()
@@ -19,7 +20,7 @@ struct FRemMassHUDBindingFragment : public FRemMassFragment
 	FFragmentArrayType FragmentTypes;
 	
 	UPROPERTY()
-	FInstancedStruct Task;
+	TInstancedStruct<FRemMassHUDTask> Task;
 
 	void UpdateWidget(TConstArrayView<FConstStructView> StructViews) const;
 

@@ -6,9 +6,7 @@
 #include "Fragment/RemMassAbilityFragments.h"
 #include "RemMassHealthTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassHealthTrait : public URemMassEntityTraitBase
 {

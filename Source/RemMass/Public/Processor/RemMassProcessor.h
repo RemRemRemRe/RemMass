@@ -2,13 +2,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "MassProcessor.h"
 #include "RemMassProcessor.generated.h"
 
-/**
- * 
- */
 UCLASS(Abstract)
 class REMMASS_API URemMassProcessor : public UMassProcessor
 {

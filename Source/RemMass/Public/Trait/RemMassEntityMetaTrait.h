@@ -6,9 +6,6 @@
 #include "GameplayTagContainer.h"
 #include "RemMassEntityMetaTrait.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASS_API URemMassEntityMetaTrait : public URemMassEntityTraitBase
 {

@@ -5,9 +5,6 @@
 #include "Processor/RemMassProcessor.h"
 #include "RemMassExperienceCollectorProcessor.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class REMMASSABILITY_API URemMassExperienceCollectorProcessor : public URemMassProcessor
 {

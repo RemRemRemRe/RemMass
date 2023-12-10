@@ -6,9 +6,7 @@
 #include "Trait/RemMassEntityTraitBase.h"
 #include "RemMassExperienceTrait.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class REMMASSABILITY_API URemMassExperienceTrait : public URemMassEntityTraitBase
 {
