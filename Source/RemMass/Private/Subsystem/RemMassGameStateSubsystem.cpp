@@ -198,7 +198,7 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	RemCheckVariable(EntitySubsystem, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
 	
 	auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
-	RemCheckVariable(Pawn, return;, REM_NO_LOG_AND_ASSERTION);
+	RemCheckVariable(Pawn, return;, REM_NO_LOG_OR_ASSERTION);
 	
 	const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();
 	RemCheckVariable(Agent, return;);

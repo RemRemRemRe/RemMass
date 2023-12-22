@@ -59,12 +59,12 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 					View.GetFragmentData<FRemMassInventoryItemCountFragment>().Value = Pair.Count;
 				}
 
-				EventScheduler->SendEvent(&Object, FInstancedStruct::Make<FRemMassInventoryItemsInitialized>(&Manager, OwnerHandle, &InitialItemEntitiesPair));
+				// EventScheduler->SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryItemsInitialized>(&Manager, OwnerHandle, &InitialItemEntitiesPair));
 				
 				InitialItemEntities.FindOrAdd(InitialItemEntitiesPair.Key, std::move(InitialItemEntitiesPair.Value));
 			}
 
-			EventScheduler->SendEvent(&Object, FInstancedStruct::Make<FRemMassInventoryInitialized>(&Manager, OwnerHandle, &InitialItemEntities));
+			// EventScheduler->SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryInitialized>(&Manager, OwnerHandle, &InitialItemEntities));
 		});
 	});
 }

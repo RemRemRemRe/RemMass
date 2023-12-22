@@ -11,7 +11,7 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassStatics)
 
-FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle, const FInstancedStruct& Struct)
+FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle, const UScriptStruct* Struct)
 {
 	RemCheckVariable(WorldContextObject, return {});
 	RemCheckVariable(EntityHandle, return {});
@@ -21,14 +21,14 @@ FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* World
 	const UMassEntitySubsystem* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(WorldContextObject->GetWorld());
 	RemCheckVariable(EntitySubsystem, return {});
 
-	const auto StructView = EntitySubsystem->GetEntityManager().GetFragmentDataStruct(EntityHandle, Struct.GetScriptStruct());
+	const auto StructView = EntitySubsystem->GetEntityManager().GetFragmentDataStruct(EntityHandle, Struct);
 	RemCheckVariable(StructView, return {});
 	
 	return FInstancedStruct{StructView};	
 }
 
 FInstancedStruct URemMassStatics::GetMassFragmentFromAgent(const UObject* WorldContextObject,
-	const UMassAgentComponent* Agent, const FInstancedStruct& Struct)
+	const UMassAgentComponent* Agent, const UScriptStruct* Struct)
 {
 	RemCheckVariable(Agent, return {});
 	return GetMassFragmentFromHandle(WorldContextObject, Agent->GetEntityHandle(), Struct);

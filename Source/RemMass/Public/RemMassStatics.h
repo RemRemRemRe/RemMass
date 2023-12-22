@@ -20,12 +20,12 @@ public:
 	// UFUNCTION(BlueprintCallable, Category = "Rem|Mass|Fragment", meta = (WorldContext = WorldContextObject))
 	static FInstancedStruct GetMassFragmentFromHandle(const UObject* WorldContextObject,
 		const FMassEntityHandle EntityHandle,
-		const FInstancedStruct& Struct);
+		const UScriptStruct* Struct);
 
 	UFUNCTION(BlueprintCallable, Category = "Rem|Mass|Fragment", meta = (WorldContext = WorldContextObject))
 	static FInstancedStruct GetMassFragmentFromAgent(const UObject* WorldContextObject,
 		const UMassAgentComponent* Agent,
-		const FInstancedStruct& Struct);
+		const UScriptStruct* Struct);
 
 	UFUNCTION(BlueprintCallable, Category = "Rem|Mass|Spawner", meta = (WorldContext = WorldContextObject))
 	static ARemMassSpawner* GetMassSpawner(const UObject* WorldContextObject, const FGameplayTagQuery& Query);
