@@ -28,8 +28,8 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 			
 			TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntities;
 
-			const auto EventScheduler = URemEventSchedulerStatics::GetEventScheduler(&Object);
-            RemCheckVariable(EventScheduler.GetObject(), return);
+			const auto EventScheduler = Rem::EventScheduler::GetEventScheduler(Object);
+            RemCheckVariable(EventScheduler, return);
             			
 			for (const auto& [ConfigAsset, Pairs] : This->InitialItems)
 			{
