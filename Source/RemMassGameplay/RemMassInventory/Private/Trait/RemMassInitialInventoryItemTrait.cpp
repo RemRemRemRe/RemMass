@@ -18,11 +18,11 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 	const UWorld& World) const
 {
 	BuildContext.AddTag<FRemMassInventoryTag>();
-	BuildContext.GetMutableObjectFragmentInitializers().Add([&World, This(this)](UObject& Object, FMassEntityView& EntityView, const EMassTranslationDirection)
+	BuildContext.GetMutableObjectFragmentInitializers().Add([&World, this](UObject& Object, const FMassEntityView& EntityView, const EMassTranslationDirection)
 	{
 		const auto& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(World);
-		EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>([This, &World, &Object, OwnerHandle = EntityView.GetEntity()]
-			(FMassEntityManager& Manager)
+		EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>([this, &World, &Object, OwnerHandle = EntityView.GetEntity()]
+			(const FMassEntityManager& Manager)
 		{
 			auto& SpawnerSystem = *World.GetSubsystem<UMassSpawnerSubsystem>();
 			
@@ -31,7 +31,7 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 			const auto EventScheduler = Rem::EventScheduler::GetEventScheduler(Object);
             RemCheckVariable(EventScheduler, return);
             			
-			for (const auto& [ConfigAsset, Pairs] : This->InitialItems)
+			for (const auto& [ConfigAsset, Pairs] : InitialItems)
 			{
 				RemCheckCondition(ConfigAsset, continue;, REM_NO_LOG_BUT_ENSURE);
 				

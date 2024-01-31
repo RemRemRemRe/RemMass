@@ -218,10 +218,10 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 
 bool URemMassGameStateSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
-	if (!Super::ShouldCreateSubsystem(Outer))
-	{
-		return false;
-	}
-
-	return CastChecked<UWorld>(Outer)->IsGameWorld();
+	RemCheckVariable(Outer, return false);
+	
+	const auto* World = Outer->GetWorld();
+	RemCheckVariable(World, return false);
+	
+	return World->IsGameWorld() && Super::ShouldCreateSubsystem(Outer);
 }

@@ -13,15 +13,8 @@
 void URemMassOwnedProjectileSpawnersTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
 {
-	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> WeakProjectileSpawnerConfigs{};
-
-	Algo::Transform(ProjectileSpawnerConfigs, WeakProjectileSpawnerConfigs,
-		[](const TObjectPtr<UMassEntityConfigAsset>& ConfigAsset)
-	{
-		return TWeakObjectPtr<UMassEntityConfigAsset>{ConfigAsset};
-	});
-
-	BuildContext.AddFragment_GetRef<FRemMassOwnedProjectileSpawnersFragment>().ProjectileSpawnerConfigs = std::move(WeakProjectileSpawnerConfigs);
+	BuildContext.AddFragment_GetRef<FRemMassOwnedProjectileSpawnersFragment>().ProjectileSpawnerConfigs =
+		TArray<TWeakObjectPtr<UMassEntityConfigAsset>>{ProjectileSpawnerConfigs};
 
 	BuildContext.GetMutableObjectFragmentInitializers().Add([&World, This{this}](UObject&, const FMassEntityView& EntityView,
 		const EMassTranslationDirection)

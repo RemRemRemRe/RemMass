@@ -109,7 +109,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 			auto* EntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassExperienceRegenerator>(
 				Manager.GetWorld(),
 				FGameplayTagQuery::MakeQuery_MatchTag(
-					Rem::Common::GetDefaultRef<URemMassAbilityTags>().GetExpMassSpawnerTag()));
+					Rem::GetDefaultRef<URemMassAbilityTags>().GetExpMassSpawnerTag()));
 			RemCheckVariable(EntityGenerator, return;);
 
 			Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedEntityRegeneration{*EntityGenerator};

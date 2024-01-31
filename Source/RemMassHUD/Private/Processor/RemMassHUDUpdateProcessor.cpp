@@ -58,23 +58,26 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
 			TArray<FConstStructView> Views{};
 			Views.Reserve(Binding.FragmentTypes.Num());
 
-			Algo::Transform(Binding.FragmentTypes, Views, [&](const TWeakObjectPtr<const UScriptStruct> ScriptStruct)
+			// populate fragment views
+			for (auto& FragmentType : Binding.FragmentTypes)
 			{
-				auto* Key = ScriptStruct.Get();
+				auto* Key = FragmentType.Get();
+
 				if (const auto* View = StructViewCache.Find(Key))
 				{
-					return *View;
+					// already found
+					Views.Add(*View);
+					continue;
 				}
-				
-				const auto StructView = LocalPlayerEntityView.GetFragmentDataStruct(Key);
 
-				RemCheckVariable(StructView, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
+				// new finding
+				const auto StructView = LocalPlayerEntityView.GetFragmentDataStruct(Key);
+				RemCheckVariable(StructView, continue;, REM_NO_LOG_BUT_ENSURE);
 
 				StructViewCache.Add(Key, StructView);
-				
-				return FConstStructView{StructView};
-			});
-			
+				Views.Add(StructView);
+			}
+
 			Binding.UpdateWidget(Views);
 		}
 	});

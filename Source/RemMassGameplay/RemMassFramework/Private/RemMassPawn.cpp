@@ -14,7 +14,7 @@ ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 	PrimaryActorTick.bCanEverTick = false;
 	PrimaryActorTick.bStartWithTickEnabled = false;
 	
-	const auto& GameFrameworkSettings = Rem::Common::GetDefaultRef<URemMassFrameworkSettings>();
+	const auto& GameFrameworkSettings = Rem::GetDefaultRef<URemMassFrameworkSettings>();
 	
 	MassAgent = ObjectInitializer.CreateDefaultSubobject<UMassAgentComponent>(this, FName{TEXTVIEW("MassAgent")});
 

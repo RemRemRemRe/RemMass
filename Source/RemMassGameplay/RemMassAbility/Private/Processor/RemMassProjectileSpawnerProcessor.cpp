@@ -55,7 +55,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 		const auto OwnerView = Context.GetFragmentView<FRemMassOwnerFragment>();
 
 		auto* ProjectileSpawner = GameStateSubsystem.GetMassSpawner(FGameplayTagQuery::MakeQuery_MatchAnyTags(
-				Rem::Common::GetDefaultRef<URemMassAbilityTags>().GetProjectileMassSpawnerTag().GetSingleTagContainer()));
+				Rem::GetDefaultRef<URemMassAbilityTags>().GetProjectileMassSpawnerTag().GetSingleTagContainer()));
 
 		RemCheckVariable(ProjectileSpawner, return;, REM_NO_LOG_BUT_ENSURE);
 

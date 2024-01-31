@@ -27,13 +27,15 @@ auto FRemMassHUDBinding::TransformBindings(const TConstArrayView<FRemMassHUDBind
 	TArray<FRemMassHUDBindingFragment> TransformedBindings;
 	TransformedBindings.Reserve(Bindings.Num());
 
-	Algo::Transform(Bindings, TransformedBindings, [](const FRemMassHUDBinding& Binding)
+	for (auto& Binding : Bindings)
 	{
-		return FRemMassHUDBindingFragment{
+		FRemMassHUDBindingFragment BindingFragment{
 			.Widget = Binding.Widget.Get(),
 			.FragmentTypes = FRemMassHUDBindingFragment::FFragmentArrayType{Binding.FragmentTypes},
 			.Task = Binding.Task};
-	});
+
+		TransformedBindings.Add(BindingFragment);
+	}
 
 	return TransformedBindings;
 }
@@ -43,7 +45,7 @@ void URemMassHUDBinder::BeginPlay()
 	Super::BeginPlay();
 
 	auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(this,
-		FGameplayTagQuery::MakeQuery_MatchTag(Rem::Common::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
+		FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
 	RemCheckVariable(HUDEntityGenerator, return;);
 
 	HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
@@ -58,7 +60,7 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_BUT_ENSURE);
 	
 	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments)
-		&& Rem::Common::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
+		&& Rem::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
 	{
 		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_CHECKED(ThisClass, Bindings));
 
@@ -70,10 +72,10 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 		const auto& InstancedStructs = Binding.SelectedFragments;
 		FragmentTypes.Reserve(InstancedStructs.Num());
 
-		Algo::Transform(InstancedStructs, FragmentTypes, [](const TInstancedStruct<FMassFragment>& Struct)
+		for (auto& Struct : InstancedStructs)
 		{
-			return Struct.GetScriptStruct();
-		});
+			FragmentTypes.Add(Struct.GetScriptStruct());
+		}
 		
 		Binding.FragmentTypes = std::move(FragmentTypes);
 	}

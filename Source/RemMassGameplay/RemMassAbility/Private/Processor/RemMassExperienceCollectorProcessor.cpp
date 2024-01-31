@@ -47,7 +47,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 		const auto TransformView = Context.GetFragmentView<FTransformFragment>();
 		const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
-		const auto& RemMassAbilityTags = Rem::Common::GetDefaultRef<URemMassAbilityTags>();
+		const auto& RemMassAbilityTags = Rem::GetDefaultRef<URemMassAbilityTags>();
 
 		TArray<FMassEntityHandle> CollectedExpEntities;
 		bool bCheckIfCollected = false;
