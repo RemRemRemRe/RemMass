@@ -36,7 +36,6 @@ namespace UnrealBuildTool.Rules
 					"RemMassAbility",
 					"RemMassMovement",
 					"RemWidgetComponent",
-					"RemUniversalData",
 				}
 			);
 		}

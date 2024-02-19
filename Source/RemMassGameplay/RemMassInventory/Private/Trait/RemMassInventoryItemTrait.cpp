@@ -6,6 +6,7 @@
 #include "MassEntityTemplateRegistry.h"
 #include "RemMassInventoryLog.h"
 #include "Fragment/RemMassInventoryFragments.h"
+#include "Macro/RemLogMacros.h"
 
 void URemMassInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
 {
@@ -22,6 +23,6 @@ void URemMassInventoryItemTrait::ValidateTemplate(FMassEntityTemplateBuildContex
 
 	if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
 	{
-		UE_LOG(LogRemMassInventory, Error, TEXT("FRemMassOwnerFragment is missing"));
+		REM_LOG_FUNCTION(LogRemMassInventory, Error, TEXT("FRemMassOwnerFragment is missing"));
 	}
 }

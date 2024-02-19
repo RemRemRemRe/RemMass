@@ -5,6 +5,7 @@
 
 #include "MassEntityTemplateRegistry.h"
 #include "RemMassAbilityLog.h"
+#include "Macro/RemLogMacros.h"
 
 void URemMassProjectileBoosterTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
@@ -20,6 +21,6 @@ void URemMassProjectileBoosterTrait::ValidateTemplate(FMassEntityTemplateBuildCo
 
 	if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
 	{
-		UE_LOG(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
+		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
 	}
 }

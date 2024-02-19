@@ -16,15 +16,15 @@ void URemMassOwnedProjectileSpawnersTrait::BuildTemplate(FMassEntityTemplateBuil
 	BuildContext.AddFragment_GetRef<FRemMassOwnedProjectileSpawnersFragment>().ProjectileSpawnerConfigs =
 		TArray<TWeakObjectPtr<UMassEntityConfigAsset>>{ProjectileSpawnerConfigs};
 
-	BuildContext.GetMutableObjectFragmentInitializers().Add([&World, This{this}](UObject&, const FMassEntityView& EntityView,
+	BuildContext.GetMutableObjectFragmentInitializers().Add([&World, this](UObject&, const FMassEntityView& EntityView,
 		const EMassTranslationDirection)
 	{
 		const auto& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(World);
-		EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>([This, &World, OwnerHandle = EntityView.GetEntity()]
+		EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>([&World, OwnerHandle = EntityView.GetEntity(), this]
 			(const FMassEntityManager& System)
 		{
 			auto& SpawnerSystem = *World.GetSubsystem<UMassSpawnerSubsystem>();
-			for (auto& Config : This->ProjectileSpawnerConfigs)
+			for (const auto& Config : ProjectileSpawnerConfigs)
 			{
 				auto& Template = Config->GetOrCreateEntityTemplate(World);
 				TArray<FMassEntityHandle> Handles;
