@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "SpawnDataGenerator/RemMassExperienceRegenerator.h"
@@ -8,6 +8,8 @@
 #include "Processor/RemMassExpInitializerProcessor.h"
 #include "ExperienceSpawnData.h"
 #include "Fragment/RemMassAbilityFragments.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExperienceRegenerator)
 
 bool URemMassExperienceRegenerator::CanGenerate() const
 {

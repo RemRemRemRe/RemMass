@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Task/RemMassAbilityInitializeTreeLeafsTask.h"
@@ -9,6 +9,8 @@
 #include "Event/RemMassInventoryInitialized.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassAbilityInitializeTreeLeafsTask)
 
 FRemMassAbilityInitializeTreeLeafsTask::FRemMassAbilityInitializeTreeLeafsTask()
 {

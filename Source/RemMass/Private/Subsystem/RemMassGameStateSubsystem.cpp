@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Subsystem/RemMassGameStateSubsystem.h"
@@ -9,6 +9,8 @@
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
 #include "Object/RemObjectStatics.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassGameStateSubsystem)
 
 DEFINE_LOG_CATEGORY(LogRemMassGameState)
 

@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "SpawnDataGenerator/RemMassProjectileRegenerator.h"
@@ -6,6 +6,8 @@
 #include "MassEntityConfigAsset.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Processor/RemMassProjectileInitializerProcessor.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileRegenerator)
 
 void URemMassProjectileRegenerator::GenerateInternal() const
 {

@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Trait/RemMassProjectileBoosterTrait.h"
@@ -6,6 +6,8 @@
 #include "MassEntityTemplateRegistry.h"
 #include "RemMassAbilityLog.h"
 #include "Macro/RemLogMacros.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileBoosterTrait)
 
 void URemMassProjectileBoosterTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const

@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassInventoryItemProcessor.h"
@@ -7,6 +7,8 @@
 #include "RemMassInventoryLog.h"
 #include "Fragment/RemMassInventoryFragments.h"
 #include "Macro/RemLogMacros.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassInventoryItemProcessor)
 
 namespace Rem::Mass::Inventory
 {

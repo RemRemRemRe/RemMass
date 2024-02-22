@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Task/RemMassHUDWidgetTask.h"
@@ -7,6 +7,8 @@
 #include "Components/Widget.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDWidgetTask)
 
 void FRemMassHUDWidgetTask::DoWork(UWidget& OwningWidget, const TConstArrayView<FConstStructView> DataBindings) const
 {

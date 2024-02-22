@@ -1,10 +1,12 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Trait/RemMassProjectileSpawnerTrait.h"
 
 #include "MassEntityTemplateRegistry.h"
 #include "MassEntityConfigAsset.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileSpawnerTrait)
 
 void URemMassProjectileSpawnerTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const

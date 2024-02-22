@@ -14,6 +14,8 @@
 #include "SpawnDataGenerator/RemMassExperienceRegenerator.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnProcessor)
+
 namespace
 {
 

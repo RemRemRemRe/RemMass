@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassNearbyMonsterDataProcessor.h"
@@ -9,6 +9,8 @@
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassNearbyMonsterDataProcessor)
 
 URemMassNearbyMonsterDataProcessor::URemMassNearbyMonsterDataProcessor()
 {

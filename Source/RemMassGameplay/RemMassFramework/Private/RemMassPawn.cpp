@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "RemMassPawn.h"
@@ -8,6 +8,8 @@
 #include "Macro/RemAssertionMacros.h"
 #include "RemInputHandlingComponent.h"
 #include "AbilitySystemComponent.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPawn)
 
 ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 {

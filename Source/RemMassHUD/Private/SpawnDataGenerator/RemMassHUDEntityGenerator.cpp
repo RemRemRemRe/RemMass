@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
@@ -6,6 +6,8 @@
 #include "MassEntityConfigAsset.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Processor/RemMassHUDInitializerProcessor.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDEntityGenerator)
 
 bool URemMassHUDEntityGenerator::CanGenerate() const
 {

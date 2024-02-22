@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Fragment/RemMassHUDFragments.h"
@@ -6,6 +6,8 @@
 #include "Macro/RemAssertionMacros.h"
 #include "Task/RemMassHUDTask.h"
 #include "Components/Widget.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDFragments)
 
 void FRemMassHUDBindingFragment::UpdateWidget(const TConstArrayView<FConstStructView> StructViews) const
 {

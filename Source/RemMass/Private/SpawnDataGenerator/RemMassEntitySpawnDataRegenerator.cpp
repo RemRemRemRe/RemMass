@@ -1,7 +1,9 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassEntitySpawnDataRegenerator)
 
 void URemMassEntitySpawnDataRegenerator::Generate(UObject& QueryOwner,
 	const TConstArrayView<FMassSpawnedEntityType> EntityTypes, const int32 Count,

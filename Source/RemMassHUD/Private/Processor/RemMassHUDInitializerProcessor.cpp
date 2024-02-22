@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassHUDInitializerProcessor.h"
@@ -7,6 +7,8 @@
 #include "RemMassHUDEntitySpawnData.h"
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassHUDFragments.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDInitializerProcessor)
 
 URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 {

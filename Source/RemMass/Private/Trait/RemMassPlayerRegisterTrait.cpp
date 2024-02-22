@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Trait/RemMassPlayerRegisterTrait.h"
@@ -10,6 +10,8 @@
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPlayerRegisterTrait)
 
 void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const

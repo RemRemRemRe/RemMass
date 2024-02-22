@@ -10,6 +10,8 @@
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassAbilityFragments.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileInitializerProcessor)
+
 URemMassProjectileInitializerProcessor::URemMassProjectileInitializerProcessor()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);

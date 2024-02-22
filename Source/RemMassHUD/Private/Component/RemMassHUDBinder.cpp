@@ -11,6 +11,8 @@
 #include "Object/RemObjectStatics.h"
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
 
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDBinder)
+
 auto FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment
 {
 	if (auto TransformedBinding = TransformBindings({Binding});

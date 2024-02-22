@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassExperienceCollectorProcessor.h"
@@ -12,6 +12,8 @@
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExperienceCollectorProcessor)
 
 URemMassExperienceCollectorProcessor::URemMassExperienceCollectorProcessor()
 {

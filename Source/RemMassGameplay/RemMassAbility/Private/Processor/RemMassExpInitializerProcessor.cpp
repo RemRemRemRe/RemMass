@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassExpInitializerProcessor.h"
@@ -8,6 +8,8 @@
 #include "MassCommonFragments.h"
 #include "RemMassProcessorGroupNames.h"
 #include "Fragment/RemMassAbilityFragments.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExpInitializerProcessor)
 
 URemMassExpInitializerProcessor::URemMassExpInitializerProcessor()
 {

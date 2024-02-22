@@ -1,4 +1,4 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 
 #include "Processor/RemMassProjectileSpawnerProcessor.h"
@@ -14,6 +14,8 @@
 #include "Macro/RemAssertionMacros.h"
 #include "SpawnDataGenerator/RemMassProjectileRegenerator.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileSpawnerProcessor)
 
 URemMassProjectileSpawnerProcessor::URemMassProjectileSpawnerProcessor()
 {
