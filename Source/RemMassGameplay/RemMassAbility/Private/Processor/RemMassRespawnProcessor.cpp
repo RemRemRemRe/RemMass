@@ -93,7 +93,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 			const auto RespawnLocation = PlayerLocation +
 				(CVarDisableRespawnRandomYawOffset->GetBool() ? ForwardDirection : RotatedForward) * RespawnRadiusView[EntityIndex].Value;
 			
-#elif
+#else
 
 			const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
 			
