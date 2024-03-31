@@ -21,7 +21,7 @@ struct FRemMassNearbyMonsterEntityData
 	TArray<FMassEntityHandle> NearbyMonsterHandles;
 	
 	UPROPERTY(EditAnywhere)
-	TArray<float> NearbyMonsterDistancesSquared;
+	TArray<double> NearbyMonsterDistancesSquared;
 
 	UPROPERTY(EditAnywhere)
 	TArray<FVector> NearbyMonsterDirections;
@@ -78,7 +78,7 @@ public:
 
 	auto GetNearbyMonsterEntityData(FMassEntityHandle PlayerEntityHandle) const -> FRemMassNearbyMonsterEntityData;
 	auto GetNearestMonsterDirection(FMassEntityHandle PlayerEntityHandle) const -> FVector;
-	auto GetNearestMonsterDistanceSquared(FMassEntityHandle PlayerEntityHandle) const -> float;
+	auto GetNearestMonsterDistanceSquared(FMassEntityHandle PlayerEntityHandle) const -> double;
 
 	auto GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const -> ARemMassSpawner*;
 	auto RegisterMassSpawner(ARemMassSpawner& MassSpawner) -> void;

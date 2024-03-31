@@ -27,8 +27,8 @@ void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bu
 
 	RemCheckVariable(RealCurve, return;);
 	
-	BuildContext.AddFragment_GetRef<FRemMassLevelUpExperienceFragment>().Value = RealCurve->Eval(
-		BuildContext.AddFragment_GetRef<FRemMassLevelFragment>().Value, std::numeric_limits<float>::max());
+	BuildContext.AddFragment_GetRef<FRemMassLevelUpExperienceFragment>().Value = static_cast<int32>(RealCurve->Eval(
+		BuildContext.AddFragment_GetRef<FRemMassLevelFragment>().Value, std::numeric_limits<float>::max()));
 }
 
 void URemMassPlayerStatsTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,

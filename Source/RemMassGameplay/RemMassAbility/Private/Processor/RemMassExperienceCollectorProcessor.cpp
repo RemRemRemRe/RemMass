@@ -115,7 +115,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 					PlayerExperience.Value = {};
 					PlayerLevel.Value++;
 
-					LevelUpExperience.Value = Curve->Eval(PlayerLevel.Value, std::numeric_limits<int32>::max());
+					LevelUpExperience.Value = static_cast<int32>(Curve->Eval(PlayerLevel.Value, std::numeric_limits<int32>::max()));
 				}
 				
 				CollectedExpEntities.Add(Entity);

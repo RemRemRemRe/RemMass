@@ -115,7 +115,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntityHan
 	return {};
 }
 
-auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEntityHandle PlayerEntityHandle) const -> float
+auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEntityHandle PlayerEntityHandle) const -> double
 {
 	int32 Index;
 

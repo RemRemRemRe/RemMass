@@ -76,7 +76,8 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 	TriggerInfoFragment.ShotsPerRound = 0;
 	TriggerInfoFragment.ShotsInterval = 0.0f;
 	// traverse tree leaf to generate projectile spawner
-	DeepFirstSearch(*Manager, TreeRootsFragment.Values, TreeRootsFragment.Values.Num(), TriggerInfoFragment, ProjectileInfoFragment);
+	DeepFirstSearch(*Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
+		TriggerInfoFragment, ProjectileInfoFragment);
 	
 	return EStateTreeRunStatus::Succeeded;
 }

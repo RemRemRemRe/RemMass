@@ -241,13 +241,13 @@ struct FRemMassProjectileTriggerStateFragment : public FRemMassFragment
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere)
-	float NextTriggeringTime{0.0f};
+	double NextTriggeringTime{0.0f};
 	
 	UPROPERTY(EditAnywhere)
 	uint8 CurrentRounds{0};
 	
 	UPROPERTY(EditAnywhere)
-	float NextShotTime{0.0f};
+	double NextShotTime{0.0f};
 	
 	UPROPERTY(EditAnywhere)
 	uint8 CurrentShots{0};
