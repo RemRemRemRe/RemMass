@@ -6,6 +6,7 @@
 #include "MassAgentComponent.h"
 #include "MassEntitySubsystem.h"
 #include "RemMassSpawner.h"
+#include "GameFramework/Pawn.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
 #include "Object/RemObjectStatics.h"
@@ -191,6 +192,8 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 
 auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection) -> void
 {
+	Collection.InitializeDependency<UMassEntitySubsystem>();
+	
 	Super::Initialize(Collection);
 
 	const auto* World = GetWorld();
@@ -225,5 +228,5 @@ bool URemMassGameStateSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 	const auto* World = Outer->GetWorld();
 	RemCheckVariable(World, return false);
 	
-	return World->IsGameWorld() && Super::ShouldCreateSubsystem(Outer);
+	return World->IsGameWorld() && World->GetSubsystem<UMassEntitySubsystem>() && Super::ShouldCreateSubsystem(Outer);
 }
