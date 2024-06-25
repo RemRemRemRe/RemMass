@@ -79,7 +79,7 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 	DeepFirstSearch(*Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
 		TriggerInfoFragment, ProjectileInfoFragment);
 	
-	return EStateTreeRunStatus::Succeeded;
+	return Super::EnterState(Context, Transition);
 }
 
 void FRemMassAbilityInitializeTreeLeafsTask::DeepFirstSearch(const FMassEntityManager& Manager,
