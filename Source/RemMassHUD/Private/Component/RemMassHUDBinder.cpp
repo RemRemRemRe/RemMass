@@ -20,7 +20,7 @@ auto FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding) -> 
 	{
 		return TransformedBinding.Top();
 	}
-	
+
 	return {};
 }
 
@@ -60,16 +60,16 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
 
 	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_BUT_ENSURE);
-	
+
 	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments)
 		&& Rem::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
 	{
 		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_CHECKED(ThisClass, Bindings));
 
 		RemCheckCondition(Bindings.IsValidIndex(Index), return;, REM_NO_LOG_BUT_ENSURE);
-		
+
 		auto& Binding = Bindings[Index];
-			
+
 		TArray<TObjectPtr<const UScriptStruct>> FragmentTypes{};
 		const auto& InstancedStructs = Binding.SelectedFragments;
 		FragmentTypes.Reserve(InstancedStructs.Num());
@@ -78,7 +78,7 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 		{
 			FragmentTypes.Add(Struct.GetScriptStruct());
 		}
-		
+
 		Binding.FragmentTypes = std::move(FragmentTypes);
 	}
 }

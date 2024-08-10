@@ -4,7 +4,6 @@
 #include "Task/RemMassHUDWidgetTask.h"
 
 #include "Components/TextBlock.h"
-#include "Components/Widget.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
 
@@ -17,7 +16,7 @@ void FRemMassHUDWidgetTask::DoWork(UWidget& OwningWidget, const TConstArrayView<
 	auto& Text = static_cast<UTextBlock&>(OwningWidget);
 
 	RemCheckCondition(DataBindings.Num() > 0, return;, REM_NO_LOG_BUT_ENSURE);
-	
+
 	if (auto* Level = DataBindings[0].GetPtr<const FRemMassLevelFragment>())
 	{
 		Text.SetText(FText::AsNumber(Level->Value));

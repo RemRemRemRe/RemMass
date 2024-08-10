@@ -7,7 +7,6 @@ namespace UnrealBuildTool.Rules
 	{
 		public RemMassAbility(ReadOnlyTargetRules target) : base(target)
 		{
-			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 			ShadowVariableWarningLevel = WarningLevel.Error;
 			IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 			DefaultBuildSettings = BuildSettingsVersion.Latest;
@@ -29,7 +28,6 @@ namespace UnrealBuildTool.Rules
 					"MassMovement",
 					"MassSpawner",
 					"MassActors",
-					"StructUtils",
 					"DeveloperSettings",
 					"GameplayTags",
 					"MassAIBehavior",

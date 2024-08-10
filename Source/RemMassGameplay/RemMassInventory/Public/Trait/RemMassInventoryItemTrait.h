@@ -12,5 +12,5 @@ class REMMASSINVENTORY_API URemMassInventoryItemTrait : public URemMassEntityTra
 
 protected:
 	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
-	virtual void ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+	virtual bool ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
 };

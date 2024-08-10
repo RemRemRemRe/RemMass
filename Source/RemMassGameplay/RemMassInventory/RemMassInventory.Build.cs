@@ -7,7 +7,6 @@ namespace UnrealBuildTool.Rules
 	{
 		public RemMassInventory(ReadOnlyTargetRules target) : base(target)
 		{
-			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 			ShadowVariableWarningLevel = WarningLevel.Error;
 			IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 			DefaultBuildSettings = BuildSettingsVersion.Latest;
@@ -27,7 +26,6 @@ namespace UnrealBuildTool.Rules
 					"MassEntity",
 					"MassSpawner",
 					"GameplayTags",
-					"StructUtils",
 					
 					"RemMass",
 					"RemCommon",

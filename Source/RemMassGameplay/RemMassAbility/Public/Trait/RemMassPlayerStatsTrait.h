@@ -6,6 +6,8 @@
 #include "RemMassPlayerStatsTrait.generated.h"
 
 
+class UCurveTable;
+
 UCLASS()
 class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBase
 {
@@ -16,5 +18,5 @@ class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBa
 
 protected:
 	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
-	virtual void ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+	virtual bool ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
 };

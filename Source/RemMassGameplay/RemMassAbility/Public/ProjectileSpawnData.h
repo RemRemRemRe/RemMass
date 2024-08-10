@@ -10,7 +10,7 @@ USTRUCT()
 struct FRemProjectileSpawnData
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(EditAnywhere)
 	TArray<FVector> Locations;
 
@@ -47,11 +47,11 @@ inline void FRemProjectileSpawnDataContainer::Reserve(const uint32 Num)
 inline int32 FRemProjectileSpawnDataContainer::FindOrAdd(const TWeakObjectPtr<UMassEntityConfigAsset> Asset)
 {
 	if (const int32 Index = ConfigAssets.Find(Asset);
-		Index != -1)
+		Index != INDEX_NONE)
 	{
 		return Index;
 	}
-	
+
 	SpawnData.AddDefaulted();
 	return  ConfigAssets.Add(Asset);
 }

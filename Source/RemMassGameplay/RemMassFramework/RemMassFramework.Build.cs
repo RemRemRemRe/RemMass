@@ -7,7 +7,6 @@ namespace UnrealBuildTool.Rules
 	{
 		public RemMassFramework(ReadOnlyTargetRules target) : base(target)
 		{
-			PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 			ShadowVariableWarningLevel = WarningLevel.Error;
 			IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 			DefaultBuildSettings = BuildSettingsVersion.Latest;
@@ -23,13 +22,14 @@ namespace UnrealBuildTool.Rules
 					"Core",
 					"CoreUObject",
 					"Engine",
-					
+
 					"DeveloperSettings",
 					"MassActors",
 					"GameplayAbilities",
 
 					"RemCommon",
 					"RemInputHandling",
+					"RemUniversalData",
 				}
 			);
 		}

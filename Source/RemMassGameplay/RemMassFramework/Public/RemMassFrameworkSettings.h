@@ -4,6 +4,7 @@
 
 #include "Engine/DeveloperSettings.h"
 #include "Macro/RemGenerateMembersMacro.h"
+#include "Templates/SubclassOf.h"
 #include "RemMassFrameworkSettings.generated.h"
 
 class UAbilitySystemComponent;
@@ -16,13 +17,13 @@ class REMMASSFRAMEWORK_API URemMassFrameworkSettings : public UDeveloperSettings
 
 	UPROPERTY(Config, EditAnywhere, Category = "Character|Component")
 	TSubclassOf<UAbilitySystemComponent> AbilitySystemClass;
-	
+
 	UPROPERTY(Config, EditAnywhere, Category = "Character|Component")
 	TSubclassOf<URemInputHandlingComponent> InputHandlingClass;
-	
+
 public:
 	URemMassFrameworkSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
-	
+
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(AbilitySystemClass)
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(InputHandlingClass)
 };

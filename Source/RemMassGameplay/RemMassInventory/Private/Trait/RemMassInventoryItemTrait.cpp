@@ -18,13 +18,13 @@ void URemMassInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildContext& 
 	BuildContext.AddFragment<FRemMassInventoryItemStateFragment>();
 }
 
-void URemMassInventoryItemTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
+bool URemMassInventoryItemTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
 {
-	Super::ValidateTemplate(BuildContext, World);
-
 	if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
 	{
 		REM_LOG_FUNCTION(LogRemMassInventory, Error, TEXT("FRemMassOwnerFragment is missing"));
+		return false;
 	}
+	return Super::ValidateTemplate(BuildContext, World);
 }

@@ -6,9 +6,12 @@
 #include "MassEntityTemplateRegistry.h"
 #include "MassEntityView.h"
 #include "RemMassLog.h"
+#include "TimerManager.h"
 #include "Fragment/RemMassGameFrameworkFragment.h"
+#include "GameFramework/Pawn.h"
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
+#include "Object/RemObjectStatics.h"
 #include "Subsystem/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPlayerRegisterTrait)
@@ -21,7 +24,7 @@ void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	BuildContext.GetMutableObjectFragmentInitializers().Add([&World](UObject& Owner, const FMassEntityView& EntityView,
 		const EMassTranslationDirection)
 	{
-		World.GetTimerManager().SetTimerForNextTick(FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
+		Rem::Object:: SetTimerForThisTick(World, FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
 		{
 			auto& GameStateSubsystem = *World.GetSubsystem<URemMassGameStateSubsystem>();
 			GameStateSubsystem.AddPlayerEntity(Cast<APawn>(&Owner));
@@ -32,13 +35,14 @@ void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	});
 }
 
-void URemMassPlayerRegisterTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
+bool URemMassPlayerRegisterTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
 {
-	Super::ValidateTemplate(BuildContext, World);
-	
 	if (!BuildContext.HasTag<FRemMassPlayerTag>())
 	{
 		REM_LOG_FUNCTION(LogRemMass, Error, TEXT("{0} is required for a player entity"), FRemMassPlayerTag::StaticStruct()->GetName());
+		return false;
 	}
+
+	return Super::ValidateTemplate(BuildContext, World);
 }

@@ -8,7 +8,6 @@
 #include "MassEntityView.h"
 #include "MassEntityTemplate.h"
 #include "MassSpawnerSubsystem.h"
-#include "RemEventSchedulerInterface.h"
 #include "RemEventSchedulerStatics.h"
 #include "Event/RemMassInventoryInitialized.h"
 #include "Fragment/RemMassInventoryFragments.h"
@@ -27,23 +26,20 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 			(const FMassEntityManager& Manager)
 		{
 			auto& SpawnerSystem = *World.GetSubsystem<UMassSpawnerSubsystem>();
-			
+
 			TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntities;
 
-			const auto EventScheduler = Rem::EventScheduler::GetEventScheduler(Object);
-            RemCheckVariable(EventScheduler, return);
-            			
 			for (const auto& [ConfigAsset, Pairs] : InitialItems)
 			{
 				RemCheckCondition(ConfigAsset, continue;, REM_NO_LOG_BUT_ENSURE);
-				
+
 				auto& Template = ConfigAsset->GetOrCreateEntityTemplate(World);
 				RemCheckCondition(Template.GetTemplateData().HasFragment<FRemMassOwnerFragment>(), continue;, REM_NO_LOG_BUT_ENSURE);
 
 				TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntitiesPair{ConfigAsset, TArray<FMassEntityHandle>{}};
-				
+
 				RemCheckCondition(Pairs.Num() > 0, continue;, REM_NO_LOG_BUT_ENSURE);
-				
+
 				auto& Handles = InitialItemEntitiesPair.Value;
 				Handles.Reserve(Pairs.Num());
 
@@ -61,12 +57,12 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 					View.GetFragmentData<FRemMassInventoryItemCountFragment>().Value = Pair.Count;
 				}
 
-				// EventScheduler->SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryItemsInitialized>(&Manager, OwnerHandle, &InitialItemEntitiesPair));
-				
+				// Rem::EventScheduler::SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryItemsInitialized>(&Manager, OwnerHandle, &InitialItemEntitiesPair));
+
 				InitialItemEntities.FindOrAdd(InitialItemEntitiesPair.Key, std::move(InitialItemEntitiesPair.Value));
 			}
 
-			// EventScheduler->SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryInitialized>(&Manager, OwnerHandle, &InitialItemEntities));
+			// Rem::EventScheduler::SendEvent(&Object, TODO, FInstancedStruct::Make<FRemMassInventoryInitialized>(&Manager, OwnerHandle, &InitialItemEntities));
 		});
 	});
 }

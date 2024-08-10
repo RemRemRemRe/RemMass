@@ -16,13 +16,13 @@ void URemMassProjectileBoosterTrait::BuildTemplate(FMassEntityTemplateBuildConte
 	BuildContext.AddFragment(FConstStructView::Make(ProjectileInfo));
 }
 
-void URemMassProjectileBoosterTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
+bool URemMassProjectileBoosterTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
 	const UWorld& World) const
 {
-	Super::ValidateTemplate(BuildContext, World);
-
 	if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
 	{
 		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
+		return false;
 	}
+	return Super::ValidateTemplate(BuildContext, World);
 }
