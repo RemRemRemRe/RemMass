@@ -35,8 +35,8 @@ void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	});
 }
 
-bool URemMassPlayerRegisterTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+bool URemMassPlayerRegisterTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext,
+	const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const
 {
 	if (!BuildContext.HasTag<FRemMassPlayerTag>())
 	{
@@ -44,5 +44,5 @@ bool URemMassPlayerRegisterTrait::ValidateTemplate(FMassEntityTemplateBuildConte
 		return false;
 	}
 
-	return Super::ValidateTemplate(BuildContext, World);
+	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }

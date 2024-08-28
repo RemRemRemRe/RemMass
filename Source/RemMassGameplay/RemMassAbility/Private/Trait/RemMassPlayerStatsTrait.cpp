@@ -31,13 +31,14 @@ void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bu
 		BuildContext.AddFragment_GetRef<FRemMassLevelFragment>().Value, std::numeric_limits<float>::max()));
 }
 
-bool URemMassPlayerStatsTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+bool URemMassPlayerStatsTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
+	FAdditionalTraitRequirements& OutTraitRequirements) const
 {
 	if (!BuildContext.HasTag<FRemMassPlayerTag>())
 	{
 		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for a player entity"), FRemMassPlayerTag::StaticStruct()->GetName());
 		return false;
 	}
-	return Super::ValidateTemplate(BuildContext, World);
+	
+	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }

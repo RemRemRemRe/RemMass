@@ -15,13 +15,12 @@ namespace Rem::Mass
 {
 	template <typename FragmentType>
 	requires std::is_base_of_v<FMassFragment, FragmentType>
-	auto GetFragmentDataPtr(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle) -> decltype(auto)
+	auto GetFragmentDataPtr(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle) -> FragmentType*
 	{
 		RemCheckVariable(WorldContextObject, return {});
 		RemCheckVariable(EntityHandle, return {});
-	
-		// Fetch NetID if it exist
-		const UMassEntitySubsystem* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(WorldContextObject->GetWorld());
+
+		const auto* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(WorldContextObject->GetWorld());
 		RemCheckVariable(EntitySubsystem, return {});
 
 		return EntitySubsystem->GetEntityManager().GetFragmentDataPtr<FragmentType>(EntityHandle);

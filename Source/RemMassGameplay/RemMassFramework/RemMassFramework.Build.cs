@@ -26,6 +26,7 @@ namespace UnrealBuildTool.Rules
 					"DeveloperSettings",
 					"MassActors",
 					"GameplayAbilities",
+					"MassEntity",
 
 					"RemCommon",
 					"RemInputHandling",

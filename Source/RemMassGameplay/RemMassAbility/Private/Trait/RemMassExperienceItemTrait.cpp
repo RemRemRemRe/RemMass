@@ -17,13 +17,14 @@ void URemMassExperienceItemTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	BuildContext.AddTag<FRemMassExpItemTag>();
 }
 
-bool URemMassExperienceItemTrait::ValidateTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+bool URemMassExperienceItemTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
+	FAdditionalTraitRequirements& OutTraitRequirements) const
 {
 	if (!BuildContext.HasFragment<FRemMassExperienceTypeFragment>())
 	{
 		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for experience item"), FRemMassExperienceTypeFragment::StaticStruct()->GetName());
 		return false;
 	}
-	return Super::ValidateTemplate(BuildContext, World);
+	
+	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }
