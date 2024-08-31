@@ -61,10 +61,10 @@ void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& 
 
 	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_BUT_ENSURE);
 
-	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FRemMassHUDBinding, SelectedFragments)
+	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_STRING_VIEW_CHECKED(FRemMassHUDBinding, SelectedFragments)
 		&& Rem::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
 	{
-		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_CHECKED(ThisClass, Bindings));
+		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_VIEW_CHECKED(ThisClass, Bindings).GetData());
 
 		RemCheckCondition(Bindings.IsValidIndex(Index), return;, REM_NO_LOG_BUT_ENSURE);
 
