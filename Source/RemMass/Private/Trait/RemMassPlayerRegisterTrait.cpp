@@ -3,7 +3,10 @@
 
 #include "Trait/RemMassPlayerRegisterTrait.h"
 
+#include "MassCommandBuffer.h"
+#include "MassEntityManager.h"
 #include "MassEntityTemplateRegistry.h"
+#include "MassEntityUtils.h"
 #include "MassEntityView.h"
 #include "RemMassLog.h"
 #include "TimerManager.h"
@@ -24,7 +27,7 @@ void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	BuildContext.GetMutableObjectFragmentInitializers().Add([&World](UObject& Owner, const FMassEntityView& EntityView,
 		const EMassTranslationDirection)
 	{
-		Rem::Object:: SetTimerForThisTick(World, FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
+		Rem::Object::SetTimerForThisTick(World, FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
 		{
 			auto& GameStateSubsystem = *World.GetSubsystem<URemMassGameStateSubsystem>();
 			GameStateSubsystem.AddPlayerEntity(Cast<APawn>(&Owner));
