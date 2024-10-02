@@ -34,19 +34,19 @@ void URemMassProjectileSpawnerProcessor::ConfigureQueries()
 		.AddRequirement<FRemMassOwnerFragment>(EMassFragmentAccess::ReadOnly);
 
 	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
-	
+
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassProjectileSpawnerProcessor);
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
-		
+
 		const auto NumEntities = Context.GetNumEntities();
 		const auto TimeSeconds = GameStateSubsystem.GetWorld()->GetTimeSeconds();
 
@@ -63,7 +63,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 
 		auto* EntityRegenerator = ProjectileSpawner->GetSpawnDataGenerator<URemMassProjectileRegenerator>();
 		RemCheckVariable(EntityRegenerator, return;, REM_NO_LOG_BUT_ENSURE);
-		
+
 		FRemProjectileSpawnDataContainer SpawnDataContainer;
 		SpawnDataContainer.Reserve(NumEntities);
 
@@ -103,12 +103,12 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 					NewShotCount == Info.ShotsPerRound)
 				{
 					State.CurrentShots = 0;
-					
+
 					++State.CurrentRounds;
 					if (State.CurrentRounds == Info.RoundsPerInterval)
 					{
 						// clear state
-						State.NextShotTime = 0.0f;	
+						State.NextShotTime = 0.0f;
 					}
 					else
 					{
@@ -121,13 +121,13 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 					State.NextShotTime = Time + Info.ShotsInterval;
 				}
 			};
-			
+
 			if (TimeSeconds > TriggerState.NextTriggeringTime)
 			{
 				TriggerState = {};
 				TriggerState.NextTriggeringTime = TimeSeconds + TriggerInfo.TriggerInterval;
 			}
-			
+
 			if (!CanTrigger(TriggerInfo, TriggerState, TimeSeconds))
 			{
 				continue;
@@ -135,16 +135,15 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 
 			const auto ConfigAsset = ConfigAssetView[Index].ProjectileConfigAsset;
 			RemCheckVariable(ConfigAsset, return;, REM_NO_LOG_BUT_ENSURE);
-			
+
 			const auto Owner = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
 			const auto& OwnerTransform = Owner.GetFragmentData<FTransformFragment>().GetTransform();
 
 			const int32 ContainerIndex = SpawnDataContainer.FindOrAdd(ConfigAsset);
-			auto& [Locations, Rotations, InitialVelocities]
-				= SpawnDataContainer.SpawnData[ContainerIndex];
+			auto& Value = SpawnDataContainer.SpawnData[ContainerIndex];
 
 			const uint8 LoopCount = TriggerInfo.ShotsInterval > 0 ? 1: TriggerInfo.ShotsPerRound;
-			
+
 			constexpr float Degree = 180.0f;
 			const float AverageDegree = Degree / (TriggerInfo.ShotsPerRound + 1);
 
@@ -156,18 +155,18 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 			for (uint8 Counter = 0; Counter < LoopCount; ++Counter)
 			{
 				IncrementShotCount(TriggerInfo, TriggerState, TimeSeconds);
-				
-				Locations.Add(OwnerLocation);
+
+				Value.Locations.Add(OwnerLocation);
 				{
 					const float AngleToRotate = TriggerState.CurrentShots * AverageDegree;
 
 					const FQuat AngleToRotateQuat{ProjectileDirection.GetUpVector(), AngleToRotate};
 
 					auto FinalQuat = AngleToRotateQuat * ProjectileDirection;
-					Rotations.Add(FinalQuat);
-					
+					Value.Rotations.Add(FinalQuat);
+
 					const auto Velocity = ProjectileInfoView[Index].InitialSpeed * FinalQuat.GetForwardVector();
-					InitialVelocities.Add(Velocity);
+					Value.InitialVelocities.Add(Velocity);
 				}
 			}
 		}

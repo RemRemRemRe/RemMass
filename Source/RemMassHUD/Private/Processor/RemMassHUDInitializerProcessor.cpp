@@ -21,18 +21,18 @@ URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 void URemMassHUDInitializerProcessor::ConfigureQueries()
 {
 	EntityQuery.AddRequirement<FRemMassHUDBindingFragment>(EMassFragmentAccess::ReadWrite);
-		
+
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassHUDInitializerProcessor);
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
-		const auto& [SpawnData] = Context.GetAuxData().Get<FRemMassHUDEntitySpawnDataContainer>();
+		const auto& Data = Context.GetAuxData().Get<FRemMassHUDEntitySpawnDataContainer>();
 		const auto NumEntities = Context.GetNumEntities();
 
 		const auto HUDBindingView = Context.GetMutableFragmentView<FRemMassHUDBindingFragment>();
@@ -40,7 +40,7 @@ void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{
 			auto& Binding = HUDBindingView[EntityIndex];
-			Binding = SpawnData[EntityIndex];
+			Binding = Data.SpawnData[EntityIndex];
 		}
 	});
 }

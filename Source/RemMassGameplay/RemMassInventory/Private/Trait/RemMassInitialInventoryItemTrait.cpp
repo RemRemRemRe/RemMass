@@ -29,21 +29,21 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 
 			TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntities;
 
-			for (const auto& [ConfigAsset, Pairs] : InitialItems)
+			for (const auto& Value : InitialItems)
 			{
-				RemCheckCondition(ConfigAsset, continue;, REM_NO_LOG_BUT_ENSURE);
+				RemCheckCondition(Value.ConfigAsset, continue;, REM_NO_LOG_BUT_ENSURE);
 
-				auto& Template = ConfigAsset->GetOrCreateEntityTemplate(World);
+				auto& Template = Value.ConfigAsset->GetOrCreateEntityTemplate(World);
 				RemCheckCondition(Template.GetTemplateData().HasFragment<FRemMassOwnerFragment>(), continue;, REM_NO_LOG_BUT_ENSURE);
 
-				TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntitiesPair{ConfigAsset, TArray<FMassEntityHandle>{}};
+				TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntitiesPair{Value.ConfigAsset, TArray<FMassEntityHandle>{}};
 
-				RemCheckCondition(Pairs.Num() > 0, continue;, REM_NO_LOG_BUT_ENSURE);
+				RemCheckCondition(Value.Pairs.Num() > 0, continue;, REM_NO_LOG_BUT_ENSURE);
 
 				auto& Handles = InitialItemEntitiesPair.Value;
-				Handles.Reserve(Pairs.Num());
+				Handles.Reserve(Value.Pairs.Num());
 
-				SpawnerSystem.SpawnEntities(Template, Pairs.Num(), Handles);
+				SpawnerSystem.SpawnEntities(Template, Value.Pairs.Num(), Handles);
 
 				// initialize item data
 				for (int32 Index = 0; Index < Handles.Num(); ++Index)
@@ -51,7 +51,7 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 					const auto& Handle = Handles[Index];
 					FMassEntityView View{Manager, Handle};
 
-					const auto& Pair = Pairs[Index];
+					const auto& Pair = Value.Pairs[Index];
 					View.GetFragmentData<FRemMassOwnerFragment>().Value = OwnerHandle;
 					View.GetFragmentData<FRemMassInventoryItemTagFragment>().Value = Pair.Tag;
 					View.GetFragmentData<FRemMassInventoryItemCountFragment>().Value = Pair.Count;

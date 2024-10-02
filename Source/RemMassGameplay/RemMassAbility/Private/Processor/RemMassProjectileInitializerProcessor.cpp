@@ -36,8 +36,7 @@ void URemMassProjectileInitializerProcessor::Execute(FMassEntityManager& EntityM
 	// ReSharper disable once CppDeclarationHidesLocal
 	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
 	{
-		const auto& [Locations, Rotations, InitialVelocities]
-			= Context.GetAuxData().Get<FRemProjectileSpawnData>();
+		const auto& Value = Context.GetAuxData().Get<FRemProjectileSpawnData>();
 
 		const auto NumEntities = Context.GetNumEntities();
 
@@ -46,8 +45,8 @@ void URemMassProjectileInitializerProcessor::Execute(FMassEntityManager& EntityM
 
 		for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 		{
-			TransformView[EntityIndex].SetTransform({Rotations[EntityIndex], Locations[EntityIndex]});
-			VelocityView[EntityIndex].Value = InitialVelocities[EntityIndex];
+			TransformView[EntityIndex].SetTransform({Value.Rotations[EntityIndex], Value.Locations[EntityIndex]});
+			VelocityView[EntityIndex].Value = Value.InitialVelocities[EntityIndex];
 		}
 	});
 }
