@@ -21,7 +21,7 @@ namespace
 
 #if REM_WITH_DEVELOPMENT_ONLY_CODE
 
-	FAutoConsoleVariable CVarDisableRespawnRandomYawOffset{TEXT("Rem.Mass.Respawn.DisableRandomYawOffset"), false, TEXT(""), ECVF_Cheat};
+	FAutoConsoleVariable CVarDisableRespawnRandomYawOffset{TEXT("Rem.Mass.Respawn.DisableRandomYawOffset"), false, TEXT("")};
 
 #endif
 

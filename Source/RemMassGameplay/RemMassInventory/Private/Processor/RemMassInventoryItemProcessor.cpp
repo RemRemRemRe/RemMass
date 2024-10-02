@@ -12,8 +12,14 @@
 
 namespace Rem::Mass::Inventory
 {
+
+#if REM_WITH_DEVELOPMENT_ONLY_CODE
+
 	static FAutoConsoleVariable CVarPrintInventoryItemData(TEXT("Rem.Mass.Inventory.PrintInventoryItemData"),
-		false, TEXT("whether to print inventory item data"), ECVF_Cheat);
+		false, TEXT("whether to print inventory item data"));
+
+#endif
+
 }
 
 URemMassInventoryItemProcessor::URemMassInventoryItemProcessor()
@@ -37,11 +43,15 @@ void URemMassInventoryItemProcessor::ConfigureQueries()
 void URemMassInventoryItemProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassExperienceCollectorProcessor);
-	
+
+#if REM_WITH_DEVELOPMENT_ONLY_CODE
+
 	if (!Rem::Mass::Inventory::CVarPrintInventoryItemData->GetBool())
 	{
 		return;
 	}
+
+#endif
 	
 	static int32 FrameInterval = 120;
 	static int32 Counter = 0;
