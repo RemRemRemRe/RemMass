@@ -1,7 +1,7 @@
 // Copyright RemRemRemRe, All Rights Reserved.
 
 
-#include "Component/RemMassHUDBinder.h"
+#include "Components/RemMassHUDBinder.h"
 
 #include "GameplayTagContainer.h"
 #include "RemMassHUDTags.h"
