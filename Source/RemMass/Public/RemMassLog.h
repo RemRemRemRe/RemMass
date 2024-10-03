@@ -2,4 +2,6 @@
 
 #pragma once
 
+#include "Logging/LogMacros.h"
+
 REMMASS_API DECLARE_LOG_CATEGORY_EXTERN(LogRemMass, Log, All)

@@ -2,8 +2,14 @@
 
 
 #include "Fragment/RemMassAbilityFragments.h"
+#include "Animation/AnimTypes.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassAbilityFragments)
+
+bool FRemMassHealthFragment::IsDead() const
+{
+	return !FAnimWeight::IsRelevant(Value);
+}
 
 void FRemMassProjectileTriggerInfoFragment::Combine(const FRemMassProjectileTriggerInfoFragment& Other)
 {

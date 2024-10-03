@@ -3,5 +3,4 @@
 
 #include "RemMassLog.h"
 
-
 DEFINE_LOG_CATEGORY(LogRemMass)

@@ -143,11 +143,6 @@ struct FRemMassProjectileConfigAssetFragment : public FRemMassFragment
 	TWeakObjectPtr<UMassEntityConfigAsset> ProjectileConfigAsset;
 };
 
-inline bool FRemMassHealthFragment::IsDead() const
-{
-	return !FAnimWeight::IsRelevant(Value);
-}
-
 USTRUCT()
 struct FRemMassMonsterTag : public FRemMassTag
 {

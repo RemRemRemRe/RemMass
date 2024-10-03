@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Containers/StringView.h"
+#include "UObject/NameTypes.h"
 
 namespace Rem::Mass::ProcessorGroup::Name
 {
