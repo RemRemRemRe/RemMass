@@ -9,7 +9,7 @@ struct FRemMassHUDTask;
 class UWidget;
 
 USTRUCT()
-struct FRemMassHUDBindingFragment : public FRemMassFragment
+struct REMMASSHUD_API FRemMassHUDBindingFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	

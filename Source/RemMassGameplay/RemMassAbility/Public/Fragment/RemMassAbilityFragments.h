@@ -19,7 +19,7 @@ namespace Rem::Mass::Ability
 }
 
 USTRUCT()
-struct FRemMassHealthFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassHealthFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -30,19 +30,19 @@ struct FRemMassHealthFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassDamageSourceTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassDamageSourceTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassDamageTargetTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassDamageTargetTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassDamageRadiusFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassDamageRadiusFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -51,7 +51,7 @@ struct FRemMassDamageRadiusFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassDamageFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassDamageFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -60,13 +60,13 @@ struct FRemMassDamageFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassDeadTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassDeadTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassRespawnRadiusFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassRespawnRadiusFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -75,7 +75,7 @@ struct FRemMassRespawnRadiusFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassExperienceTypeFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassExperienceTypeFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -84,7 +84,7 @@ struct FRemMassExperienceTypeFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassExperienceFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassExperienceFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -93,7 +93,7 @@ struct FRemMassExperienceFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassLevelUpExperienceFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassLevelUpExperienceFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -102,7 +102,7 @@ struct FRemMassLevelUpExperienceFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassLevelCurveTableFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassLevelCurveTableFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -111,7 +111,7 @@ struct FRemMassLevelCurveTableFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassLevelFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassLevelFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -120,13 +120,13 @@ struct FRemMassLevelFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassExpItemTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassExpItemTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassExpCollectRadiusFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassExpCollectRadiusFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -135,7 +135,7 @@ struct FRemMassExpCollectRadiusFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassProjectileConfigAssetFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassProjectileConfigAssetFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	
@@ -144,19 +144,19 @@ struct FRemMassProjectileConfigAssetFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassMonsterTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassMonsterTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassProjectileTag : public FRemMassTag
+struct REMMASSABILITY_API FRemMassProjectileTag : public FRemMassTag
 {
 	GENERATED_BODY()
 };
 
 USTRUCT()
-struct FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	
@@ -165,7 +165,7 @@ struct FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassAbilityTreeRootsFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassAbilityTreeRootsFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	
@@ -176,7 +176,7 @@ struct FRemMassAbilityTreeRootsFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassAbilityTreeChildrenNodesFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassAbilityTreeChildrenNodesFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -205,7 +205,7 @@ enum class ERemMassProjectileEmissionStyle : uint8
 };
 
 USTRUCT()
-struct FRemMassProjectileTriggerInfoFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassProjectileTriggerInfoFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -231,7 +231,7 @@ struct FRemMassProjectileTriggerInfoFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassProjectileTriggerStateFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassProjectileTriggerStateFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 
@@ -249,7 +249,7 @@ struct FRemMassProjectileTriggerStateFragment : public FRemMassFragment
 };
 
 USTRUCT()
-struct FRemMassProjectileInfoFragment : public FRemMassFragment
+struct REMMASSABILITY_API FRemMassProjectileInfoFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
 	

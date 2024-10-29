@@ -7,7 +7,7 @@
 #include "RemMassHUDEntitySpawnData.generated.h"
 
 USTRUCT(BlueprintType)
-struct FRemMassHUDEntitySpawnDataContainer
+struct REMMASSHUD_API FRemMassHUDEntitySpawnDataContainer
 {
 	GENERATED_BODY()
 
