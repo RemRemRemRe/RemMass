@@ -13,7 +13,7 @@
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
 #include "SpawnDataGenerator/RemMassProjectileRegenerator.h"
-#include "Subsystem/RemMassGameStateSubsystem.h"
+#include "Subsystems/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileSpawnerProcessor)
 

@@ -12,7 +12,7 @@
 #include "RemMassStatics.inl"
 #include "Macro/RemAssertionMacros.h"
 #include "SpawnDataGenerator/RemMassExperienceRegenerator.h"
-#include "Subsystem/RemMassGameStateSubsystem.h"
+#include "Subsystems/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnProcessor)
 

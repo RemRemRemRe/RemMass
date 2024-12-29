@@ -4,7 +4,7 @@
 #include "RemMassSpawner.h"
 
 #include "Macro/RemAssertionMacros.h"
-#include "Subsystem/RemMassGameStateSubsystem.h"
+#include "Subsystems/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassSpawner)
 
