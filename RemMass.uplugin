@@ -76,6 +76,10 @@
 		{
 			"Name": "RemInputHandling",
 			"Enabled": true
+		},
+		{
+			"Name": "RemStateTree",
+			"Enabled": true
 		}
 	]
 }
