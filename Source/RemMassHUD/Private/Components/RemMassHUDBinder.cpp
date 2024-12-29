@@ -8,7 +8,6 @@
 #include "RemMassStatics.inl"
 #include "Components/Widget.h"
 #include "Macro/RemAssertionMacros.h"
-#include "Object/RemObjectStatics.h"
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDBinder)
@@ -58,29 +57,6 @@ void URemMassHUDBinder::BeginPlay()
 void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
 	Super::PostEditChangeChainProperty(PropertyChangedEvent);
-
-	RemCheckVariable(PropertyChangedEvent.Property, return;, REM_NO_LOG_BUT_ENSURE);
-
-	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_STRING_VIEW_CHECKED(FRemMassHUDBinding, SelectedFragments)
-		&& Rem::Object::IsOnlyArrayElementChanged(PropertyChangedEvent.ChangeType))
-	{
-		const auto Index = PropertyChangedEvent.GetArrayIndex(GET_MEMBER_NAME_STRING_VIEW_CHECKED(ThisClass, Bindings).GetData());
-
-		RemCheckCondition(Bindings.IsValidIndex(Index), return;, REM_NO_LOG_BUT_ENSURE);
-
-		auto& Binding = Bindings[Index];
-
-		TArray<TObjectPtr<const UScriptStruct>> FragmentTypes{};
-		const auto& InstancedStructs = Binding.SelectedFragments;
-		FragmentTypes.Reserve(InstancedStructs.Num());
-
-		for (auto& Struct : InstancedStructs)
-		{
-			FragmentTypes.Add(Struct.GetScriptStruct());
-		}
-
-		Binding.FragmentTypes = std::move(FragmentTypes);
-	}
 }
 
 #endif

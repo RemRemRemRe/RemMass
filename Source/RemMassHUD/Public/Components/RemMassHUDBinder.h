@@ -14,26 +14,15 @@ struct FRemMassHUDBinding
 {
 	GENERATED_BODY()
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Rem")
 	TSoftObjectPtr<UWidget> Widget;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Rem", meta = (MetaStruct = "/Script/MassEntity.MassFragment"))
 	TArray<TObjectPtr<const UScriptStruct>> FragmentTypes;
 
-	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
+	UPROPERTY(EditAnywhere, Category = "Rem", meta = (ExcludeBaseStruct))
 	TInstancedStruct<FRemMassHUDTask> Task;
 
-#if WITH_EDITORONLY_DATA
-
-private:
-	UPROPERTY(EditAnywhere, meta = (ExcludeBaseStruct))
-	TArray<TInstancedStruct<FMassFragment>> SelectedFragments;
-
-	friend class URemMassHUDBinder;
-	
-#endif
-
-public:
 	static auto TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment;
 	static auto TransformBindings(TConstArrayView<FRemMassHUDBinding> Bindings) -> TArray<FRemMassHUDBindingFragment>;
 };
