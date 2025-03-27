@@ -16,8 +16,7 @@ public class RemMassFramework : ModuleRules
 		bUseUnity = false;
 		
 		PrivateDependencyModuleNames.AddRange(
-			new[]
-			{
+			[
 				"Core",
 				"CoreUObject",
 				"Engine",
@@ -30,7 +29,7 @@ public class RemMassFramework : ModuleRules
 				"RemCommon",
 				"RemInputHandling",
 				"RemUniversalData",
-			}
+			]
 		);
 	}
 }

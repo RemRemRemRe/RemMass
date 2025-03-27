@@ -16,8 +16,7 @@ public class RemMass : ModuleRules
 		bUseUnity = false;
 		
 		PrivateDependencyModuleNames.AddRange(
-			new[]
-			{
+			[
 				"Core",
 				
 				"CoreUObject",
@@ -29,7 +28,7 @@ public class RemMass : ModuleRules
 				"GameplayTags",
 				
 				"RemCommon",
-			}
+			]
 		);
 	}
 }

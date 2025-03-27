@@ -16,8 +16,7 @@ public class RemMassInventory : ModuleRules
 		bUseUnity = false;
 		
 		PrivateDependencyModuleNames.AddRange(
-			new[]
-			{
+			[
 				"Core",
 				"CoreUObject",
 				"Engine",
@@ -29,7 +28,7 @@ public class RemMassInventory : ModuleRules
 				"RemMass",
 				"RemCommon",
 				"RemEventScheduler",
-			}
+			]
 		);
 	}
 }

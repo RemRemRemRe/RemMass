@@ -16,8 +16,7 @@ public class RemMassHUD : ModuleRules
 		bUseUnity = false;
 		
 		PrivateDependencyModuleNames.AddRange(
-			new[]
-			{
+			[
 				"Core",
 				"CoreUObject",
 				"Engine",
@@ -34,7 +33,7 @@ public class RemMassHUD : ModuleRules
 				"RemMassAbility",
 				"RemMassMovement",
 				"RemWidgetComponent",
-			}
+			]
 		);
 	}
 }
