@@ -19,7 +19,7 @@ DEFINE_LOG_CATEGORY(LogRemMassGameState)
 auto URemMassGameStateSubsystem::IsLocalPlayerPawnValid() const -> bool
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	if (!PlayerPawns.IsEmpty())
 	{
 		if (PlayerPawns[0] && PlayerPawns[0]->IsLocallyControlled())
@@ -33,7 +33,7 @@ auto URemMassGameStateSubsystem::IsLocalPlayerPawnValid() const -> bool
 auto URemMassGameStateSubsystem::IsLocalPlayerEntityValid() const -> bool
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	if (IsValid(EntitySubsystem) && !PlayerEntityHandles.IsEmpty() && PlayerEntityHandles[0].IsValid())
 	{
 		return EntitySubsystem->GetEntityManager().IsEntityValid(PlayerEntityHandles[0]);
@@ -44,7 +44,7 @@ auto URemMassGameStateSubsystem::IsLocalPlayerEntityValid() const -> bool
 auto URemMassGameStateSubsystem::GetLocalPlayerEntity() const -> FMassEntityHandle
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	if (IsLocalPlayerEntityValid())
 	{
 		return PlayerEntityHandles[0];
@@ -55,7 +55,7 @@ auto URemMassGameStateSubsystem::GetLocalPlayerEntity() const -> FMassEntityHand
 auto URemMassGameStateSubsystem::GetLocalPlayerPawn() const -> const APawn*
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	if (IsLocalPlayerPawnValid())
 	{
 		return PlayerPawns[0];
@@ -66,14 +66,14 @@ auto URemMassGameStateSubsystem::GetLocalPlayerPawn() const -> const APawn*
 auto URemMassGameStateSubsystem::GetPlayerEntityView() const -> TConstArrayView<FMassEntityHandle>
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	return {PlayerEntityHandles};
 }
 
 auto URemMassGameStateSubsystem::GetPlayerActorView() const -> TConstArrayView<APawn*>
 {
 	FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	return {PlayerPawns};
 }
 
@@ -86,13 +86,13 @@ auto URemMassGameStateSubsystem::GetNearbyMonsterEntityData(
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
 	}
-	
+
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	if (NearbyMonsterEntityDataContainer.NearbyMonsterEntityData.IsValidIndex(Index))
 	{
 		return NearbyMonsterEntityDataContainer.NearbyMonsterEntityData[Index];
 	}
-	
+
 	return {};
 }
 
@@ -104,7 +104,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntityHan
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
 	}
-	
+
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	if (auto& MassNearbyMonsterEntityData = NearbyMonsterEntityDataContainer.NearbyMonsterEntityData;
 		MassNearbyMonsterEntityData.IsValidIndex(Index) && !MassNearbyMonsterEntityData[Index].NearbyMonsterDirections.IsEmpty())
@@ -124,7 +124,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEnt
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_ReadOnly};
 		Index = PlayerEntityHandles.Find(PlayerEntityHandle);
 	}
-	
+
 	FRWScopeLock ScopeLock{NearbyMonsterEntityLock, FRWScopeLockType::SLT_ReadOnly};
 	if (auto& MassNearbyMonsterEntityData = NearbyMonsterEntityDataContainer.NearbyMonsterEntityData;
 	 MassNearbyMonsterEntityData.IsValidIndex(Index) && !MassNearbyMonsterEntityData[Index].NearbyMonsterDirections.IsEmpty())
@@ -139,7 +139,7 @@ auto URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(const FMassEnt
 auto URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const -> ARemMassSpawner*
 {
 	FRWScopeLock ScopeLock{MassSpawnerLock, FRWScopeLockType::SLT_ReadOnly};
-	
+
 	for (auto* Spawner : MassSpawners)
 	{
 		RemCheckVariable(Spawner, continue;);
@@ -149,7 +149,7 @@ auto URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQuery& Spawner
 			return Spawner;
 		}
 	}
-	
+
 	return {};
 }
 
@@ -162,21 +162,21 @@ auto URemMassGameStateSubsystem::RegisterMassSpawner(ARemMassSpawner& MassSpawne
 void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 {
 	RemCheckVariable(PlayerPawn, return;);
-	
+
 	const auto* Agent = PlayerPawn->FindComponentByClass<UMassAgentComponent>();
 	RemCheckVariable(Agent, return;);
-	
+
 	RemCheckCondition(!Agent->IsEntityPendingCreation(), return;);
-	
+
 	{
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
-		
+
 		if (PlayerPawns.Contains(PlayerPawn))
 		{
 			REM_LOG_FUNCTION(LogRemMassGameState, Log, TEXT("Pawn{0} already exist"), PlayerPawn);
 			return;
 		}
-		
+
 		if (PlayerPawn->IsLocallyControlled())
 		{
 			PlayerPawns.Insert(PlayerPawn, 0);
@@ -193,25 +193,25 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection) -> void
 {
 	Collection.InitializeDependency<UMassEntitySubsystem>();
-	
+
 	Super::Initialize(Collection);
 
 	const auto* World = GetWorld();
 	RemCheckVariable(World, return;, REM_NO_LOG_BUT_ENSURE);
-	
+
 	EntitySubsystem = World->GetSubsystem<UMassEntitySubsystem>();
 	RemCheckVariable(EntitySubsystem, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
-	
+
 	auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
-	RemCheckVariable(Pawn, return;, REM_NO_LOG_OR_ASSERTION);
-	
+	RemCheckVariable(Pawn, return;, REM_NO_LOG_BUT_ENSURE);
+
 	const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();
 	RemCheckVariable(Agent, return;);
 
 	if (!Agent->IsEntityPendingCreation())
 	{
 		FRWScopeLock ScopeLock{PlayerEntityLock, FRWScopeLockType::SLT_Write};
-		
+
 		PlayerPawns.Insert(Pawn, 0);
 		PlayerEntityHandles.Insert(Agent->GetEntityHandle(), 0);
 	}
@@ -224,9 +224,9 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 bool URemMassGameStateSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	RemCheckVariable(Outer, return false);
-	
+
 	const auto* World = Outer->GetWorld();
 	RemCheckVariable(World, return false);
-	
+
 	return World->IsGameWorld() && World->GetSubsystem<UMassEntitySubsystem>() && Super::ShouldCreateSubsystem(Outer);
 }
