@@ -13,8 +13,7 @@ class ARemMassSpawner;
 
 namespace Rem::Mass
 {
-	template <typename FragmentType>
-	requires std::is_base_of_v<FMassFragment, FragmentType>
+	template <std::derived_from<FMassFragment> FragmentType>
 	auto GetFragmentDataPtr(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle) -> FragmentType*
 	{
 		RemCheckVariable(WorldContextObject, return {});
@@ -26,20 +25,19 @@ namespace Rem::Mass
 		return EntitySubsystem->GetEntityManager().GetFragmentDataPtr<FragmentType>(EntityHandle);
 	}
 
-	template <typename FragmentType>
+	template <std::derived_from<FMassFragment> FragmentType>
 	auto GetFragmentData(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle) -> decltype(auto)
 	{
 		return *GetFragmentDataPtr<FragmentType>(WorldContextObject, EntityHandle);
 	}
 
-	template<typename GeneratorType>
-	requires std::is_base_of_v<UMassEntitySpawnDataGeneratorBase, GeneratorType>
-	auto GetSpawnDataGenerator(const UObject* WorldContextObject, const FGameplayTagQuery& SpawnerQuery) -> GeneratorType*
+	template<std::derived_from<UMassEntitySpawnDataGeneratorBase> TGeneratorType>
+	auto GetSpawnDataGenerator(const UObject* WorldContextObject, const FGameplayTagQuery& SpawnerQuery) -> TGeneratorType*
 	{
 		auto* HUDSpawner = URemMassStatics::GetMassSpawner(WorldContextObject, SpawnerQuery);
 		RemCheckVariable(HUDSpawner, return {};);
 
-		return HUDSpawner->GetSpawnDataGenerator<GeneratorType>();
+		return HUDSpawner->GetSpawnDataGenerator<TGeneratorType>();
 	}
 
 }

@@ -25,8 +25,7 @@ public:
 
 	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ActorTags)
 
-	template<typename T>
-	requires std::is_base_of_v<UMassEntitySpawnDataGeneratorBase, T>
+	template<std::derived_from<UMassEntitySpawnDataGeneratorBase> T>
 	auto GetSpawnDataGenerator() -> T*
 	{
 		if (auto* Generator = SpawnDataGenerators.FindByPredicate([](const FMassSpawnDataGenerator& Element)
