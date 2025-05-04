@@ -27,7 +27,7 @@ void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext&
 	BuildContext.GetMutableObjectFragmentInitializers().Add([&World](UObject& Owner, const FMassEntityView& EntityView,
 		const EMassTranslationDirection)
 	{
-		Rem::Object::SetTimerForThisTick(World, FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
+		Rem::Object::SetTimerForThisTick(World, Rem::FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
 		{
 			auto& GameStateSubsystem = *World.GetSubsystem<URemMassGameStateSubsystem>();
 			GameStateSubsystem.AddPlayerEntity(Cast<APawn>(&Owner));
