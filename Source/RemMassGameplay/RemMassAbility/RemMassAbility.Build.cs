@@ -6,21 +6,21 @@ public class RemMassAbility : ModuleRules
 {
 	public RemMassAbility(ReadOnlyTargetRules target) : base(target)
 	{
-		ShadowVariableWarningLevel = WarningLevel.Error;
+		CppCompileWarningSettings.ShadowVariableWarningLevel = WarningLevel.Error;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		DefaultBuildSettings = BuildSettingsVersion.Latest;
 		CppStandard = CppStandardVersion.EngineDefault;
-		UnsafeTypeCastWarningLevel = WarningLevel.Warning;
-		
-		bEnableNonInlinedGenCppWarnings = true;
+		CppCompileWarningSettings.UnsafeTypeCastWarningLevel = WarningLevel.Warning;
+
+		CppCompileWarningSettings.NonInlinedGenCppWarningLevel = WarningLevel.Warning;
 		bUseUnity = false;
-		
+
 		PrivateDependencyModuleNames.AddRange(
 			[
 				"Core",
 				"CoreUObject",
 				"Engine",
-				
+
 				"MassEntity",
 				"MassCommon",
 				"MassMovement",
@@ -30,7 +30,7 @@ public class RemMassAbility : ModuleRules
 				"GameplayTags",
 				"MassAIBehavior",
 				"StateTreeModule",
-				
+
 				"RemCommon",
 				"RemMass",
 				"RemUniversalData",
