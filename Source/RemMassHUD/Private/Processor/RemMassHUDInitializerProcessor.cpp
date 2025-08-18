@@ -11,6 +11,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDInitializerProcessor)
 
 URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Client);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
@@ -18,7 +19,7 @@ URemMassHUDInitializerProcessor::URemMassHUDInitializerProcessor()
 	bAutoRegisterWithProcessingPhases = false;
 }
 
-void URemMassHUDInitializerProcessor::ConfigureQueries()
+void URemMassHUDInitializerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FRemMassHUDBindingFragment>(EMassFragmentAccess::ReadWrite);
 
@@ -30,7 +31,7 @@ void URemMassHUDInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassHUDInitializerProcessor);
 
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& Data = Context.GetAuxData().Get<FRemMassHUDEntitySpawnDataContainer>();
 		const auto NumEntities = Context.GetNumEntities();

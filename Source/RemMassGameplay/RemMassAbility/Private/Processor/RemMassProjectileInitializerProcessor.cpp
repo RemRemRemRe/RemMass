@@ -13,6 +13,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileInitializerProcessor)
 
 URemMassProjectileInitializerProcessor::URemMassProjectileInitializerProcessor()
+	: EntityQuery()
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
@@ -20,7 +21,7 @@ URemMassProjectileInitializerProcessor::URemMassProjectileInitializerProcessor()
 	bAutoRegisterWithProcessingPhases = false;
 }
 
-void URemMassProjectileInitializerProcessor::ConfigureQueries()
+void URemMassProjectileInitializerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite)
 		.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite)
@@ -34,7 +35,7 @@ void URemMassProjectileInitializerProcessor::Execute(FMassEntityManager& EntityM
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassProjectileInitializerProcessor);
 
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& Value = Context.GetAuxData().Get<FRemProjectileSpawnData>();
 

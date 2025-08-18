@@ -10,6 +10,7 @@
 #include "Macro/RemAssertionMacros.h"
 #include "Macro/RemLogMacros.h"
 #include "Object/RemObjectStatics.h"
+#include "MassEntityHandle.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassGameStateSubsystem)
 

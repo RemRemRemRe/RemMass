@@ -28,6 +28,7 @@ namespace
 }
 
 URemMassRespawnProcessor::URemMassRespawnProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
@@ -35,7 +36,7 @@ URemMassRespawnProcessor::URemMassRespawnProcessor()
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Damage);
 }
 
-void URemMassRespawnProcessor::ConfigureQueries()
+void URemMassRespawnProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite)
 		.AddRequirement<FRemMassHealthFragment>(EMassFragmentAccess::ReadWrite)
@@ -45,19 +46,19 @@ void URemMassRespawnProcessor::ConfigureQueries()
 		.AddTagRequirement<FRemMassDeadTag>(EMassFragmentPresence::All);
 
 	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
-	
+
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassRespawnProcessor);
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
-		
+
 		const auto NumEntities = Context.GetNumEntities();
 
 		// respawn
@@ -89,16 +90,16 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 			const auto RotatedForward = YawOffset.RotateVector(ForwardDirection);
 
 #if REM_WITH_DEVELOPMENT_ONLY_CODE
-			
+
 			const auto RespawnLocation = PlayerLocation +
 				(CVarDisableRespawnRandomYawOffset->GetBool() ? ForwardDirection : RotatedForward) * RespawnRadiusView[EntityIndex].Value;
-			
+
 #else
 
 			const auto RespawnLocation = PlayerLocation + RotatedForward * RespawnRadiusView[EntityIndex].Value;
-			
+
 #endif
-			
+
 			EntityTransform.SetLocation(RespawnLocation);
 			HealthView[EntityIndex] = {};
 
@@ -115,7 +116,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
 			RemCheckVariable(EntityGenerator, return;);
 
 			Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedEntityRegeneration{*EntityGenerator};
-			
+
 			EntityGenerator->AddSpawnData({ExperienceTypeView,  std::move(MovedTransformArray)});
 		});
 	});

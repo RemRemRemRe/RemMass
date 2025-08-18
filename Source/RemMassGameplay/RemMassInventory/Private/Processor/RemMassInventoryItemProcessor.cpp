@@ -23,18 +23,19 @@ namespace Rem::Mass::Inventory
 }
 
 URemMassInventoryItemProcessor::URemMassInventoryItemProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::FrameEnd;
 }
 
-void URemMassInventoryItemProcessor::ConfigureQueries()
+void URemMassInventoryItemProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FRemMassOwnerFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassInventoryItemTagFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassInventoryItemCountFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassInventoryItemStateFragment>(EMassFragmentAccess::ReadOnly)
-	
+
 		.AddTagRequirement<FRemMassInventoryItemTag>(EMassFragmentPresence::All);
 
 	EntityQuery.RegisterWithProcessor(*this);
@@ -52,18 +53,18 @@ void URemMassInventoryItemProcessor::Execute(FMassEntityManager& EntityManager, 
 	}
 
 #endif
-	
+
 	static int32 FrameInterval = 120;
 	static int32 Counter = 0;
 
 	if (++Counter;
 		Counter < FrameInterval)
 	{
-		return;	
+		return;
 	}
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](const FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](const FMassExecutionContext& Context)
 	{
 		const auto NumEntities = Context.GetNumEntities();
 
@@ -77,6 +78,6 @@ void URemMassInventoryItemProcessor::Execute(FMassEntityManager& EntityManager, 
 			REM_LOG_FUNCTION(LogRemMassInventory, Log, TEXT("Owner: {0}, Tag: {1}, Count: {2}, State: {3}"),
 				ItemOwnerView[Index].Value.DebugGetDescription(), ItemTagView[Index], ItemCountView[Index], ItemStateView[Index]);
 		}
-		
+
 	});
 }

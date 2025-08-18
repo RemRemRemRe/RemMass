@@ -3,6 +3,7 @@
 #pragma once
 
 #include "MassEntityTypes.h"
+#include "MassEntityHandle.h"
 
 #include "RemMassGameFrameworkFragment.generated.h"
 

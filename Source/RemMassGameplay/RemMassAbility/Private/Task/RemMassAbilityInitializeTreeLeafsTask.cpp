@@ -23,13 +23,14 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 	const auto& EventContext = static_cast<FRemStateTreeExecutionContext_EventScheduler&>(Context);
 	const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>();
 
-	RemCheckCondition(Value.Manager && Value.InitialItemEntities, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
+	RemCheckCondition(Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
 
 	FMassEntityHandle RootNode{};
 	FMassEntityHandle LastNode{};
 
 	RemCheckCondition(Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
 
+	const auto& Manager = *Value.Manager.Pin();
 	// make ability link list
 	for (auto& InitialItemPair : *Value.InitialItemEntities)
 	{
@@ -47,7 +48,7 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 			if (bValidRoot)
 			{
 				const auto& MassEntityHandle = Items[Index];
-				const FMassEntityView EntityView{*Value.Manager, LastNode};
+				const FMassEntityView EntityView{Manager, LastNode};
 				auto& ChildrenNodes = EntityView.GetFragmentData<FRemMassAbilityTreeChildrenNodesFragment>();
 				ChildrenNodes.Add(MassEntityHandle);
 				LastNode = MassEntityHandle;
@@ -59,7 +60,7 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 		}
 	}
 
-	const FMassEntityView OwnerView{*Value.Manager, Value.OwnerEntity};
+	const FMassEntityView OwnerView{Manager, Value.OwnerEntity};
 	auto& TreeRootsFragment = OwnerView.GetFragmentData<FRemMassAbilityTreeRootsFragment>();
 
 	// initialize tree leafs
@@ -76,7 +77,7 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
 	TriggerInfoFragment.ShotsPerRound = 0;
 	TriggerInfoFragment.ShotsInterval = 0.0f;
 	// traverse tree leaf to generate projectile spawner
-	DeepFirstSearch(*Value.Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
+	DeepFirstSearch(Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
 		TriggerInfoFragment, ProjectileInfoFragment);
 
 	return Super::EnterState(Context, Transition);

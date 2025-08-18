@@ -12,6 +12,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassMovementProcessor)
 
 URemMassMovementProcessor::URemMassMovementProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::AllNetModes);
 	ProcessingPhase = EMassProcessingPhase::PrePhysics;
@@ -19,13 +20,13 @@ URemMassMovementProcessor::URemMassMovementProcessor()
 	ExecutionOrder.ExecuteBefore.Add(UE::Mass::ProcessorGroupNames::Movement);
 }
 
-void URemMassMovementProcessor::ConfigureQueries()
+void URemMassMovementProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite)
 		.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite)
 		.AddRequirement<FMassForceFragment>(EMassFragmentAccess::ReadOnly)
 		.AddTagRequirement<FMassOffLODTag>(EMassFragmentPresence::None);
-	
+
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
@@ -34,7 +35,7 @@ void URemMassMovementProcessor::Execute(FMassEntityManager& EntityManager, FMass
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassMovementProcessor);
 
 	// ReSharper disable once CppDeclarationHidesUncapturedLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [](FMassExecutionContext& Context)
 	{
 		const auto NumEntities = Context.GetNumEntities();
 

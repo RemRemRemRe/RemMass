@@ -7,6 +7,7 @@
 
 class UMassEntityConfigAsset;
 enum class ERemMassAbilitySizeType : uint8;
+struct FMassEntityHandle;
 
 class UCurveTable;
 
@@ -138,7 +139,7 @@ USTRUCT()
 struct REMMASSABILITY_API FRemMassProjectileConfigAssetFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(EditAnywhere)
 	TWeakObjectPtr<UMassEntityConfigAsset> ProjectileConfigAsset;
 };
@@ -159,7 +160,7 @@ USTRUCT()
 struct REMMASSABILITY_API FRemMassOwnedProjectileSpawnersFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(EditInstanceOnly)
 	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
 };
@@ -168,7 +169,7 @@ USTRUCT()
 struct REMMASSABILITY_API FRemMassAbilityTreeRootsFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
-	
+
 	/**
 	 * root entity handle per tree
 	 */
@@ -182,7 +183,7 @@ struct REMMASSABILITY_API FRemMassAbilityTreeChildrenNodesFragment : public FRem
 
 private:
 	Rem::Mass::Ability::FTreeNodeNumType Num{0};
-	
+
 	/**
 	 * children entities per tree node
 	 */
@@ -211,19 +212,19 @@ struct REMMASSABILITY_API FRemMassProjectileTriggerInfoFragment : public FRemMas
 
 	UPROPERTY(EditAnywhere)
 	float TriggerInterval{1.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	uint8 RoundsPerInterval{1};
 
 	UPROPERTY(EditAnywhere)
 	float RoundsInterval{1.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	uint8 ShotsPerRound{1};
-	
+
 	UPROPERTY(EditAnywhere)
 	float ShotsInterval{1.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	ERemMassProjectileEmissionStyle EmissionStyle{};
 
@@ -237,13 +238,13 @@ struct REMMASSABILITY_API FRemMassProjectileTriggerStateFragment : public FRemMa
 
 	UPROPERTY(EditAnywhere)
 	double NextTriggeringTime{0.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	uint8 CurrentRounds{0};
-	
+
 	UPROPERTY(EditAnywhere)
 	double NextShotTime{0.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	uint8 CurrentShots{0};
 };
@@ -252,13 +253,13 @@ USTRUCT()
 struct REMMASSABILITY_API FRemMassProjectileInfoFragment : public FRemMassFragment
 {
 	GENERATED_BODY()
-	
+
 	UPROPERTY(EditAnywhere)
 	bool bCanExplode{false};
-	
+
 	UPROPERTY(EditAnywhere)
 	float Efficient{1.0f};
-	
+
 	UPROPERTY(EditAnywhere)
 	float InitialSpeed{500.0f};
 

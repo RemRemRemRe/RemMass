@@ -12,6 +12,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExpInitializerProcessor)
 
 URemMassExpInitializerProcessor::URemMassExpInitializerProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
@@ -19,7 +20,7 @@ URemMassExpInitializerProcessor::URemMassExpInitializerProcessor()
 	bAutoRegisterWithProcessingPhases = false;
 }
 
-void URemMassExpInitializerProcessor::ConfigureQueries()
+void URemMassExpInitializerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FRemMassExperienceTypeFragment>(EMassFragmentAccess::ReadWrite);
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
@@ -32,7 +33,7 @@ void URemMassExpInitializerProcessor::Execute(FMassEntityManager& EntityManager,
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassExpInitializerProcessor);
 
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& Value = Context.GetAuxData().Get<FRemExperienceSpawnDataContainer>();
 		const auto NumEntities = Context.GetNumEntities();

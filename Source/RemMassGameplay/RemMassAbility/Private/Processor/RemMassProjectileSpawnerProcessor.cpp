@@ -18,6 +18,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileSpawnerProcessor)
 
 URemMassProjectileSpawnerProcessor::URemMassProjectileSpawnerProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
@@ -25,7 +26,7 @@ URemMassProjectileSpawnerProcessor::URemMassProjectileSpawnerProcessor()
 	ExecutionOrder.ExecuteBefore.Add(Rem::Mass::ProcessorGroup::Name::Movement);
 }
 
-void URemMassProjectileSpawnerProcessor::ConfigureQueries()
+void URemMassProjectileSpawnerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FRemMassProjectileConfigAssetFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassProjectileInfoFragment>(EMassFragmentAccess::ReadOnly)
@@ -43,7 +44,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassProjectileSpawnerProcessor);
 
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 

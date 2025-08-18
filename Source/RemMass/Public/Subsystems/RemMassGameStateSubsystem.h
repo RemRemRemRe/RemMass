@@ -7,6 +7,7 @@
 #include "Macro/RemGenerateMembersMacro.h"
 #include "RemMassGameStateSubsystem.generated.h"
 
+struct FMassEntityHandle;
 class UMassEntitySubsystem;
 struct FGameplayTagQuery;
 class ARemMassSpawner;
@@ -17,9 +18,9 @@ USTRUCT()
 struct FRemMassNearbyMonsterEntityData
 {
 	GENERATED_BODY()
-	
+
 	TArray<FMassEntityHandle> NearbyMonsterHandles;
-	
+
 	UPROPERTY(EditAnywhere)
 	TArray<double> NearbyMonsterDistancesSquared;
 
@@ -66,7 +67,7 @@ public:
 	mutable FRWLock PlayerEntityLock;
 	mutable FRWLock NearbyMonsterEntityLock;
 	mutable FRWLock MassSpawnerLock;
-	
+
 public:
 	auto IsLocalPlayerPawnValid() const -> bool;
 	auto IsLocalPlayerEntityValid() const -> bool;
@@ -85,12 +86,15 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Rem|Mass|GameState")
 	void AddPlayerEntity(APawn* PlayerPawn);
-	
+
 	virtual auto Initialize(FSubsystemCollectionBase& Collection) -> void override;
 	virtual auto ShouldCreateSubsystem(UObject* Outer) const -> bool override;
 
 	REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(NearbyMonsterEntityDataContainer)
 };
+
+template <typename T>
+struct TMassExternalSubsystemTraits;
 
 template<>
 struct TMassExternalSubsystemTraits<URemMassGameStateSubsystem> final
@@ -104,6 +108,6 @@ struct TMassExternalSubsystemTraits<URemMassGameStateSubsystem> final
 inline void FRemMassNearbyMonsterEntityData::RemoveAt(const int32 Index)
 {
 	NearbyMonsterHandles.RemoveAt(Index);
-	NearbyMonsterDistancesSquared.RemoveAt(Index);	
+	NearbyMonsterDistancesSquared.RemoveAt(Index);
 	NearbyMonsterDirections.RemoveAt(Index);
 }

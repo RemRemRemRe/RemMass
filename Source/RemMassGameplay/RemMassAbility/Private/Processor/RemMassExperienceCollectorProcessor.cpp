@@ -16,6 +16,7 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExperienceCollectorProcessor)
 
 URemMassExperienceCollectorProcessor::URemMassExperienceCollectorProcessor()
+	: EntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::PostPhysics;
@@ -23,7 +24,7 @@ URemMassExperienceCollectorProcessor::URemMassExperienceCollectorProcessor()
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Respawn);
 }
 
-void URemMassExperienceCollectorProcessor::ConfigureQueries()
+void URemMassExperienceCollectorProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
 		// TODO make this shared fragment in 5.3
@@ -31,16 +32,16 @@ void URemMassExperienceCollectorProcessor::ConfigureQueries()
 		.AddTagRequirement<FRemMassExpItemTag>(EMassFragmentPresence::All);
 
 	EntityQuery.AddSubsystemRequirement<URemMassGameStateSubsystem>(EMassFragmentAccess::ReadOnly);
-	
+
 	EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
 	QUICK_SCOPE_CYCLE_COUNTER(URemMassExperienceCollectorProcessor);
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
 
@@ -68,7 +69,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 			for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
 			{
 				const FMassEntityHandle Entity = Context.GetEntity(EntityIndex);
-				
+
 				if (bCheckIfCollected && CollectedExpEntities.Contains(Entity))
 				{
 					continue;
@@ -80,7 +81,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 				{
 					continue;
 				}
-				
+
 				auto& PlayerExperience = PlayerEntityView.GetFragmentData<FRemMassExperienceFragment>();
 
 				const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
@@ -117,7 +118,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 
 					LevelUpExperience.Value = static_cast<int32>(Curve->Eval(PlayerLevel.Value, std::numeric_limits<float>::max()));
 				}
-				
+
 				CollectedExpEntities.Add(Entity);
 
 				// early out if all exp get collected

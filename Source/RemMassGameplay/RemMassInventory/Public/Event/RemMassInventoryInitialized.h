@@ -1,22 +1,24 @@
 ﻿// Copyright RemRemRemRe, All Rights Reserved.
 
 #pragma once
-#include "MassEntityTypes.h"
+
+#include "MassEntityHandle.h"
 
 #include "RemMassInventoryInitialized.generated.h"
 
 class UMassEntityConfigAsset;
+struct FMassEntityManager;
 
 USTRUCT()
 struct REMMASSINVENTORY_API FRemMassInventoryInitialized
 {
 	GENERATED_BODY()
 
-	FMassEntityManager* Manager;
-	
+	TWeakPtr<FMassEntityManager> Manager;
+
 	UPROPERTY(EditAnywhere)
 	FMassEntityHandle OwnerEntity;
-	
+
 	TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* InitialItemEntities;
 };
 
@@ -25,10 +27,10 @@ struct REMMASSINVENTORY_API FRemMassInventoryItemsInitialized
 {
 	GENERATED_BODY()
 
-	FMassEntityManager* Manager;
-	
+	TWeakPtr<FMassEntityManager> Manager;
+
 	UPROPERTY(EditAnywhere)
 	FMassEntityHandle OwnerEntity;
-	
+
 	TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* Entities;
 };

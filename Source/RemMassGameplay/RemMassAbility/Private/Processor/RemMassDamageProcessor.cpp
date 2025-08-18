@@ -15,6 +15,8 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassDamageProcessor)
 
 URemMassDamageProcessor::URemMassDamageProcessor()
+	: DamageSourceEntityQuery(*this)
+	, DamageTargetEntityQuery(*this)
 {
 	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
 	ProcessingPhase = EMassProcessingPhase::PostPhysics;
@@ -22,7 +24,7 @@ URemMassDamageProcessor::URemMassDamageProcessor()
 	ExecutionOrder.ExecuteAfter.Add(Rem::Mass::ProcessorGroup::Name::Movement);
 }
 
-void URemMassDamageProcessor::ConfigureQueries()
+void URemMassDamageProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	DamageSourceEntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassDamageRadiusFragment>(EMassFragmentAccess::ReadOnly)
@@ -32,7 +34,7 @@ void URemMassDamageProcessor::ConfigureQueries()
 		.AddTagRequirement<FRemMassDeadTag>(EMassFragmentPresence::None);
 
 	DamageSourceEntityQuery.RegisterWithProcessor(*this);
-	
+
 	DamageTargetEntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly)
 		.AddRequirement<FRemMassHealthFragment>(EMassFragmentAccess::ReadWrite)
 		.AddTagRequirement<FRemMassDamageTargetTag>(EMassFragmentPresence::All)
@@ -51,9 +53,9 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 	TConstArrayView<FRemMassDamageRadiusFragment> DamageSourceRadiusView;
 	TConstArrayView<FRemMassDamageFragment> DamageSourceDamageView;
 	TArrayView<FRemMassHealthFragment> DamageSourceHealthView;
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
-	DamageSourceEntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	DamageSourceEntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		DamageSourceNum = Context.GetNumEntities();
 		DamageSourceEntityView = Context.GetEntities();
@@ -62,9 +64,9 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 		DamageSourceDamageView = Context.GetFragmentView<FRemMassDamageFragment>();
 		DamageSourceHealthView = Context.GetMutableFragmentView<FRemMassHealthFragment>();
 	});
-	
+
 	// ReSharper disable once CppDeclarationHidesLocal
-	DamageTargetEntityQuery.ForEachEntityChunk(EntityManager, Context, [&](FMassExecutionContext& Context)
+	DamageTargetEntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
 	{
 		const auto NumEntities = Context.GetNumEntities();
 
@@ -91,7 +93,7 @@ void URemMassDamageProcessor::Execute(FMassEntityManager& EntityManager, FMassEx
 					{
 						Context.Defer().DestroyEntity(DamageSourceEntityView[DamageSourceIndex]);
 					}
-					
+
 					if (HealthView[EntityIndex].IsDead())
 					{
 						Context.Defer().AddTag<FRemMassDeadTag>(Context.GetEntity(EntityIndex));
