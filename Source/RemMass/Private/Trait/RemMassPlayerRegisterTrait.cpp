@@ -10,6 +10,7 @@
 #include "MassEntityView.h"
 #include "RemMassLog.h"
 #include "TimerManager.h"
+#include "Engine/World.h"
 #include "Fragment/RemMassGameFrameworkFragment.h"
 #include "GameFramework/Pawn.h"
 #include "Macro/RemAssertionMacros.h"

@@ -7,6 +7,7 @@
 #include "MassEntitySubsystem.h"
 #include "Macro/RemAssertionMacros.h"
 #include "MassAgentComponent.h"
+#include "Engine/World.h"
 #include "Subsystems/RemMassGameStateSubsystem.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassStatics)
@@ -17,7 +18,7 @@ FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* World
 	RemCheckVariable(EntityHandle, return {});
 	RemCheckVariable(Struct, return {});
 	
-	// Fetch NetID if it exist
+	// Fetch NetID if it exists
 	const UMassEntitySubsystem* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(WorldContextObject->GetWorld());
 	RemCheckVariable(EntitySubsystem, return {});
 

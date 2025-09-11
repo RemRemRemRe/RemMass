@@ -9,7 +9,7 @@
 #include "MassEntityTemplate.h"
 #include "MassSpawnerSubsystem.h"
 #include "RemEventSchedulerStatics.h"
-#include "Event/RemMassInventoryInitialized.h"
+#include "Engine/World.h"
 #include "Fragment/RemMassInventoryFragments.h"
 #include "Macro/RemAssertionMacros.h"
 
