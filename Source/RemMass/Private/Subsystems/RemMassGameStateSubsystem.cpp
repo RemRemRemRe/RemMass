@@ -16,6 +16,10 @@
 
 DEFINE_LOG_CATEGORY(LogRemMassGameState)
 
+namespace 
+{
+    TAutoConsoleVariable CVarEnableRemMassSubsystem(TEXT("Rem.Mass.Subsystem.Enable"), false, TEXT(""));
+}
 
 auto URemMassGameStateSubsystem::IsLocalPlayerPawnValid() const -> bool
 {
@@ -224,6 +228,11 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 
 bool URemMassGameStateSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
+    if (!CVarEnableRemMassSubsystem.GetValueOnAnyThread())
+    {
+        return false;
+    }
+    
 	RemCheckVariable(Outer, return false);
 
 	const auto* World = Outer->GetWorld();
