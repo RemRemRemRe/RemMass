@@ -26,3 +26,12 @@ struct REMMASSHUD_API FRemMassHUDBindingFragment : public FRemMassFragment
 
 	bool IsValid() const;
 };
+
+template<>
+struct TMassFragmentTraits<FRemMassHUDBindingFragment> final
+{
+    enum
+    {
+        AuthorAcceptsItsNotTriviallyCopyable = true
+    };
+};

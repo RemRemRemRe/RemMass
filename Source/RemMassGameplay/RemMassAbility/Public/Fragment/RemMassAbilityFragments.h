@@ -165,6 +165,15 @@ struct REMMASSABILITY_API FRemMassOwnedProjectileSpawnersFragment : public FRemM
 	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
 };
 
+template<>
+struct TMassFragmentTraits<FRemMassOwnedProjectileSpawnersFragment> final
+{
+    enum
+    {
+        AuthorAcceptsItsNotTriviallyCopyable = true
+    };
+};
+
 USTRUCT()
 struct REMMASSABILITY_API FRemMassAbilityTreeRootsFragment : public FRemMassFragment
 {
