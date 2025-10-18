@@ -33,7 +33,7 @@ class REMMASSHUD_API URemMassHUDBinder : public URemWidgetComponentBase
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Binding", meta = (Categories = "HUD"))
+	UPROPERTY(EditAnywhere, Category = "Binding", meta = (GameplayTagFilter = "HUD"))
 	FGameplayTag WidgetTag;
 	
 	UPROPERTY(EditAnywhere, Category = "Binding", meta = (TitleProperty = Widget, ShowOnlyInnerProperties))

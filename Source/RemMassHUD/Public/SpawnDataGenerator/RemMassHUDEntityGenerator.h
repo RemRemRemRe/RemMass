@@ -13,7 +13,7 @@ class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnData
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Tags", meta = (Categories = "HUD"))
+	UPROPERTY(EditAnywhere, Category = "Tags", meta = (GameplayTagFilter = "HUD"))
 	FGameplayTagContainer HUDTags;
 
 	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")

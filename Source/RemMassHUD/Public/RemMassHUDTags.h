@@ -14,7 +14,7 @@ class REMMASSHUD_API URemMassHUDTags : public URemMetaTags
 {
 	GENERATED_BODY()
 
-	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (Categories = "MassSpawner"))
+	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (GameplayTagFilter = "MassSpawner"))
 	FGameplayTag HUDMassSpawnerTag;
 
 public:

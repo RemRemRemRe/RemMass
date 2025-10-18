@@ -12,7 +12,7 @@ class REMMASSINVENTORY_API URemMassInitialInventoryItemTrait : public URemMassEn
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Item", meta = (TitleProperty = "Tag", Categories = "InventoryItem"))
+	UPROPERTY(EditAnywhere, Category = "Item", meta = (TitleProperty = "Tag", GameplayTagFilter = "InventoryItem"))
 	TArray<FRemMassInventoryTagCountPairContainer> InitialItems;
 	
 protected:

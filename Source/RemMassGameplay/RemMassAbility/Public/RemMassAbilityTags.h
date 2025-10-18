@@ -13,16 +13,16 @@ class REMMASSABILITY_API URemMassAbilityTags : public URemMetaTags
 {
 	GENERATED_BODY()
 
-	UPROPERTY(Config, EditAnywhere, Category = "Attribute", meta = (Categories = "Exp"))
+	UPROPERTY(Config, EditAnywhere, Category = "Attribute", meta = (GameplayTagFilter = "Exp"))
 	FGameplayTag RequiredExpToLevelUpTag;
 
-	UPROPERTY(Config, EditAnywhere, Category = "Attribute", meta = (Categories = "Exp"))
+	UPROPERTY(Config, EditAnywhere, Category = "Attribute", meta = (GameplayTagFilter = "Exp"))
 	FGameplayTag ExpGainPerLevelTag;
 
-	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (Categories = "MassSpawner"))
+	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (GameplayTagFilter = "MassSpawner"))
 	FGameplayTag ExpMassSpawnerTag;
 
-	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (Categories = "MassSpawner"))
+	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (GameplayTagFilter = "MassSpawner"))
 	FGameplayTag ProjectileMassSpawnerTag;
 
 public:
