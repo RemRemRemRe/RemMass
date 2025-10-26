@@ -228,7 +228,7 @@ auto URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
 
 bool URemMassGameStateSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
-    if (!CVarEnableRemMassSubsystem.GetValueOnAnyThread())
+    if (!CVarEnableRemMassSubsystem.GetValueOnGameThread())
     {
         return false;
     }
