@@ -27,8 +27,6 @@ public class RemMassFramework : ModuleRules
 				"MassEntity",
 				
 				"RemCommon",
-				"RemInputHandling",
-				"RemUniversalData",
 			]
 		);
 	}

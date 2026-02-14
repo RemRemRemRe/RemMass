@@ -5,7 +5,6 @@
 
 #include "MassEntityManager.h"
 #include "MassEntityView.h"
-#include "RemStateTreeExecutionContext_EventScheduler.h"
 #include "Event/RemMassInventoryInitialized.h"
 #include "Fragment/RemMassAbilityFragments.h"
 #include "Macro/RemAssertionMacros.h"
@@ -20,8 +19,8 @@ FRemMassAbilityInitializeTreeLeafsTask::FRemMassAbilityInitializeTreeLeafsTask()
 EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTreeExecutionContext& Context,
 	const FStateTreeTransitionResult& Transition) const
 {
-	const auto& EventContext = static_cast<FRemStateTreeExecutionContext_EventScheduler&>(Context);
-	const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>();
+	// const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>(); // TODO
+	const auto& Value = *MakeShared<FRemMassInventoryInitialized>();
 
 	RemCheckCondition(Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
 

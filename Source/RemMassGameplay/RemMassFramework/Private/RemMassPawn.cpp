@@ -5,7 +5,6 @@
 #include "MassAgentComponent.h"
 #include "RemMassFrameworkSettings.h"
 #include "Macro/RemAssertionMacros.h"
-#include "RemInputHandlingComponent.h"
 #include "AbilitySystemComponent.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPawn)
@@ -28,15 +27,6 @@ ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 				AbilitySystemClass, AbilitySystemClass, true, false));
 
 		RemCheckVariable(AbilitySystem, return);
-	}
-
-	// construct InputHandling
-	{
-		const auto& InputHandlingClass = GameFrameworkSettings.GetInputHandlingClass();
-		InputHandling = Cast<URemInputHandlingComponent>(ObjectInitializer.CreateDefaultSubobject(this, FName{TEXTVIEW("InputHandling")},
-			InputHandlingClass, InputHandlingClass, true, false));
-
-		RemCheckVariable(InputHandling);
 	}
 }
 

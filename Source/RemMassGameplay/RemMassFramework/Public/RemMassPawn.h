@@ -6,7 +6,6 @@
 #include "RemMassPawn.generated.h"
 
 class UAbilitySystemComponent;
-class URemInputHandlingComponent;
 class UMassAgentComponent;
 
 UCLASS()
@@ -20,9 +19,6 @@ class REMMASSFRAMEWORK_API ARemMassPawn : public APawn
 	UPROPERTY(EditAnywhere, Category = Ability, BlueprintGetter = "GetAbilitySystem")
 	UAbilitySystemComponent* AbilitySystem;
 	
-	UPROPERTY(EditAnywhere, Category = Input, BlueprintGetter = "GetInputHandling")
-	URemInputHandlingComponent* InputHandling;
-	
 public:
 	ARemMassPawn(const FObjectInitializer& ObjectInitializer);
 
@@ -31,9 +27,6 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Rem|Ability")
 	UAbilitySystemComponent* GetAbilitySystem() const;
-	
-	UFUNCTION(BlueprintCallable, Category = "Rem|Input")
-	URemInputHandlingComponent* GetInputHandling() const;
 	
 protected:
 	virtual UPawnMovementComponent* GetMovementComponent() const override;
@@ -48,9 +41,4 @@ inline UMassAgentComponent* ARemMassPawn::GetMassAgent() const
 inline UAbilitySystemComponent* ARemMassPawn::GetAbilitySystem() const
 {
 	return AbilitySystem;
-}
-
-inline URemInputHandlingComponent* ARemMassPawn::GetInputHandling() const
-{
-	return InputHandling;
 }

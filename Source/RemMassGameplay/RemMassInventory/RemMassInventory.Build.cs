@@ -27,7 +27,6 @@ public class RemMassInventory : ModuleRules
 				
 				"RemMass",
 				"RemCommon",
-				"RemEventScheduler",
 			]
 		);
 	}

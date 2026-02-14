@@ -33,10 +33,7 @@ public class RemMassAbility : ModuleRules
 
 				"RemCommon",
 				"RemMass",
-				"RemUniversalData",
 				"RemMassInventory",
-				"RemEventScheduler",
-				"RemStateTree",
 			]
 		);
 	}
