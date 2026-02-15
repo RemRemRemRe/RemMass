@@ -62,23 +62,7 @@
 			"Enabled": true
 		},
 		{
-			"Name": "RemUniversalData",
-			"Enabled": true
-		},
-		{
 			"Name": "RemWidgetComponent",
-			"Enabled": true
-		},
-		{
-			"Name": "RemEventScheduler",
-			"Enabled": true
-		},
-		{
-			"Name": "RemInputHandling",
-			"Enabled": true
-		},
-		{
-			"Name": "RemStateTree",
 			"Enabled": true
 		}
 	]
