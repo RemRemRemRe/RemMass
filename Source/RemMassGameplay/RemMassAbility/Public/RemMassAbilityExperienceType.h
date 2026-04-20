@@ -7,7 +7,7 @@
 UENUM(BlueprintType)
 enum class ERemMassAbilitySizeType : uint8
 {
-	Small,
-	Medium,
-	Big,
+    Small,
+    Medium,
+    Big,
 };

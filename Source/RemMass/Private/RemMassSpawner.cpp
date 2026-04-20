@@ -14,10 +14,10 @@ ARemMassSpawner::ARemMassSpawner() = default;
 
 void ARemMassSpawner::PreInitializeComponents()
 {
-	Super::PreInitializeComponents();
+    Super::PreInitializeComponents();
 
-	auto* GameStateSubsystem = GetWorld()->GetSubsystem<URemMassGameStateSubsystem>();
-	RemCheckVariable(GameStateSubsystem, return;);
+    auto* GameStateSubsystem = GetWorld()->GetSubsystem<URemMassGameStateSubsystem>();
+    RemCheckVariable(GameStateSubsystem, return;);
 
-	GameStateSubsystem->RegisterMassSpawner(*this);
+    GameStateSubsystem->RegisterMassSpawner(*this);
 }

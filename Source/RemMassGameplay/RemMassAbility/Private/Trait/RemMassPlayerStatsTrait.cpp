@@ -13,32 +13,35 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPlayerStatsTrait)
 
-void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+    const UWorld& World) const
 {
-	RemCheckVariable(CurveTable, return);
+    RemCheckVariable(CurveTable, return);
 
-	BuildContext.AddFragment_GetRef<FRemMassLevelCurveTableFragment>().Value = CurveTable;
-	BuildContext.AddFragment<FRemMassExperienceFragment>();
+    BuildContext.AddFragment_GetRef<FRemMassLevelCurveTableFragment>().Value = CurveTable;
+    BuildContext.AddFragment<FRemMassExperienceFragment>();
 
-	static const auto ContextString = FString{TEXTVIEW("URemMassPlayerStatsTrait::BuildTemplate")};
+    static const auto ContextString = FString{TEXTVIEW("URemMassPlayerStatsTrait::BuildTemplate")};
 
-	const auto* RealCurve = CurveTable->FindCurve(
-		Rem::GetDefaultRef<URemMassAbilityTags>().GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
+    const auto* RealCurve = CurveTable->FindCurve(
+        Rem::GetDefaultRef<URemMassAbilityTags>().GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
 
-	RemCheckVariable(RealCurve, return;);
+    RemCheckVariable(RealCurve, return;);
 
-	BuildContext.AddFragment_GetRef<FRemMassLevelUpExperienceFragment>().Value = static_cast<int32>(RealCurve->Eval(
-		BuildContext.AddFragment_GetRef<FRemMassLevelFragment>().Value, std::numeric_limits<float>::max()));
+    BuildContext.AddFragment_GetRef<FRemMassLevelUpExperienceFragment>().Value = static_cast<int32>(RealCurve->Eval(
+        BuildContext.AddFragment_GetRef<FRemMassLevelFragment>().Value, std::numeric_limits<float>::max()));
 }
 
-bool URemMassPlayerStatsTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
-	FAdditionalTraitRequirements& OutTraitRequirements) const
+bool URemMassPlayerStatsTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext,
+    const UWorld& World,
+    FAdditionalTraitRequirements& OutTraitRequirements) const
 {
-	if (!BuildContext.HasTag<FRemMassPlayerTag>())
-	{
-		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for a player entity"), FRemMassPlayerTag::StaticStruct()->GetName());
-		return false;
-	}
-	
-	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
+    if (!BuildContext.HasTag<FRemMassPlayerTag>())
+    {
+        REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for a player entity"),
+            FRemMassPlayerTag::StaticStruct()->GetName());
+        return false;
+    }
+
+    return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }

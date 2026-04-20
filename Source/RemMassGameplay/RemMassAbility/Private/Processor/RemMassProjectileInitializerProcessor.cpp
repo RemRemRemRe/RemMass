@@ -13,41 +13,43 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileInitializerProcessor)
 
 URemMassProjectileInitializerProcessor::URemMassProjectileInitializerProcessor()
-	: EntityQuery()
+    : EntityQuery()
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
-	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
-	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
-	bAutoRegisterWithProcessingPhases = false;
+    ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
+    ProcessingPhase = EMassProcessingPhase::DuringPhysics;
+    ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
+    bAutoRegisterWithProcessingPhases = false;
 }
 
-void URemMassProjectileInitializerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
+void URemMassProjectileInitializerProcessor::ConfigureQueries(
+    const TSharedRef<FMassEntityManager>& EntityManager)
 {
-	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite)
-		.AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite)
-		.AddTagRequirement<FRemMassProjectileTag>(EMassFragmentPresence::All);
+    EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite)
+               .AddRequirement<FMassVelocityFragment>(EMassFragmentAccess::ReadWrite)
+               .AddTagRequirement<FRemMassProjectileTag>(EMassFragmentPresence::All);
 
-	EntityQuery.RegisterWithProcessor(*this);
+    EntityQuery.RegisterWithProcessor(*this);
 }
 
-void URemMassProjectileInitializerProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
+void URemMassProjectileInitializerProcessor::Execute(FMassEntityManager& EntityManager,
+    FMassExecutionContext& Context)
 {
-	QUICK_SCOPE_CYCLE_COUNTER(URemMassProjectileInitializerProcessor);
+    QUICK_SCOPE_CYCLE_COUNTER(URemMassProjectileInitializerProcessor);
 
-	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
-	{
-		const auto& Value = Context.GetAuxData().Get<FRemProjectileSpawnData>();
+    // ReSharper disable once CppDeclarationHidesLocal
+    EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
+    {
+        const auto& Value = Context.GetAuxData().Get<FRemProjectileSpawnData>();
 
-		const auto NumEntities = Context.GetNumEntities();
+        const auto NumEntities = Context.GetNumEntities();
 
-		const auto TransformView = Context.GetMutableFragmentView<FTransformFragment>();
-		const auto VelocityView = Context.GetMutableFragmentView<FMassVelocityFragment>();
+        const auto TransformView = Context.GetMutableFragmentView<FTransformFragment>();
+        const auto VelocityView  = Context.GetMutableFragmentView<FMassVelocityFragment>();
 
-		for (int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
-		{
-			TransformView[EntityIndex].SetTransform({Value.Rotations[EntityIndex], Value.Locations[EntityIndex]});
-			VelocityView[EntityIndex].Value = Value.InitialVelocities[EntityIndex];
-		}
-	});
+        for (auto EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
+        {
+            TransformView[EntityIndex].SetTransform({Value.Rotations[EntityIndex], Value.Locations[EntityIndex]});
+            VelocityView[EntityIndex].Value = Value.InitialVelocities[EntityIndex];
+        }
+    });
 }

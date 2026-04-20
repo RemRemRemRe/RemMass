@@ -9,5 +9,5 @@
 UCLASS(Abstract)
 class REMMASS_API URemMassEntityTraitBase : public UMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };

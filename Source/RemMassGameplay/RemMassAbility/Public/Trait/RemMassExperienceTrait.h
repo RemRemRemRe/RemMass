@@ -10,11 +10,12 @@
 UCLASS()
 class REMMASSABILITY_API URemMassExperienceTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Experience", meta = (ShowOnlyInnerProperties))
-	FRemMassExperienceTypeFragment ExperienceType;
+    UPROPERTY(EditAnywhere, Category = "Experience", meta = (ShowOnlyInnerProperties))
+    FRemMassExperienceTypeFragment ExperienceType;
 
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
 };

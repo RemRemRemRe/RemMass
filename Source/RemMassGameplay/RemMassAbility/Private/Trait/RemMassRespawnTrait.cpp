@@ -7,7 +7,8 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassRespawnTrait)
 
-void URemMassRespawnTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+void URemMassRespawnTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+    const UWorld& World) const
 {
-	BuildContext.AddFragment(FConstStructView::Make(RespawnRadius));
+    BuildContext.AddFragment(FConstStructView::Make(RespawnRadius));
 }

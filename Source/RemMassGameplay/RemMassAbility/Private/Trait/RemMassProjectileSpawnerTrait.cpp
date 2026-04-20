@@ -9,12 +9,12 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileSpawnerTrait)
 
 void URemMassProjectileSpawnerTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+    const UWorld& World) const
 {
-	Super::BuildTemplate(BuildContext, World);
-	
-	auto& ProjectileConfigAssetFragment = BuildContext.AddFragment_GetRef<FRemMassProjectileConfigAssetFragment>();
-	ProjectileConfigAssetFragment.ProjectileConfigAsset = ProjectileConfigAsset;
+    Super::BuildTemplate(BuildContext, World);
 
-	BuildContext.AddFragment<FRemMassProjectileTriggerStateFragment>();
+    auto& ProjectileConfigAssetFragment = BuildContext.AddFragment_GetRef<FRemMassProjectileConfigAssetFragment>();
+    ProjectileConfigAssetFragment.ProjectileConfigAsset = ProjectileConfigAsset;
+
+    BuildContext.AddFragment<FRemMassProjectileTriggerStateFragment>();
 }

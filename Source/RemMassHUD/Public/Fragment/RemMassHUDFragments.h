@@ -11,23 +11,23 @@ class UWidget;
 USTRUCT()
 struct REMMASSHUD_API FRemMassHUDBindingFragment : public FRemMassFragment
 {
-	GENERATED_BODY()
-	
-	UPROPERTY()
-	TWeakObjectPtr<UWidget> Widget;
+    GENERATED_BODY()
 
-	using FFragmentArrayType = TArray<TWeakObjectPtr<const UScriptStruct>, TInlineAllocator<4>>;
-	FFragmentArrayType FragmentTypes;
-	
-	UPROPERTY()
-	TInstancedStruct<FRemMassHUDTask> Task;
+    UPROPERTY()
+    TWeakObjectPtr<UWidget> Widget;
 
-	void UpdateWidget(TConstArrayView<FConstStructView> StructViews) const;
+    using FFragmentArrayType = TArray<TWeakObjectPtr<const UScriptStruct>, TInlineAllocator<4>>;
+    FFragmentArrayType FragmentTypes;
 
-	bool IsValid() const;
+    UPROPERTY()
+    TInstancedStruct<FRemMassHUDTask> Task;
+
+    void UpdateWidget(TConstArrayView<FConstStructView> StructViews) const;
+
+    bool IsValid() const;
 };
 
-template<>
+template <>
 struct TMassFragmentTraits<FRemMassHUDBindingFragment> final
 {
     enum

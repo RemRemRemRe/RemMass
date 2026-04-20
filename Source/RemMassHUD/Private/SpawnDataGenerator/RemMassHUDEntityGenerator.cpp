@@ -11,57 +11,58 @@
 
 bool URemMassHUDEntityGenerator::CanGenerate() const
 {
-	return bHUDTagsAllReceived && Super::CanGenerate();
+    return bHUDTagsAllReceived && Super::CanGenerate();
 }
 
 void URemMassHUDEntityGenerator::GenerateInternal() const
 {
-	RemCheckVariable(SavedQueryOwner, return;);
+    RemCheckVariable(SavedQueryOwner, return;);
 
-	for (int32 Index = 0; Index < SavedEntityTypes.Num(); ++Index)
-	{
-		const auto& SavedEntityType = SavedEntityTypes[Index];
-		const auto* EntityConfig = SavedEntityType.EntityConfig.Get();
-		RemCheckCondition(EntityConfig, continue;);
+    for (auto Index = 0; Index < SavedEntityTypes.Num(); ++Index)
+    {
+        const auto& SavedEntityType = SavedEntityTypes[Index];
+        const auto* EntityConfig    = SavedEntityType.EntityConfig.Get();
+        RemCheckCondition(EntityConfig, continue;);
 
-		if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
-			!Template.GetTemplateData().HasFragment<FRemMassHUDBindingFragment>())
-		{
-			continue;
-		}
+        if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
+            !Template.GetTemplateData().HasFragment<FRemMassHUDBindingFragment>())
+        {
+            continue;
+        }
 
-		FMassEntitySpawnDataGeneratorResult Result
-		{
-			.SpawnData = {FInstancedStruct::Make(SpawnDataContainer)},
-			.SpawnDataProcessor = URemMassHUDInitializerProcessor::StaticClass(),
-			.EntityConfigIndex = Index,
-			.NumEntities = SpawnDataContainer.SpawnData.Num(),
-		};
-		
-		SavedFinishedGeneratingSpawnPointsDelegate.Execute({Result});
-		return;
-	}
+        FMassEntitySpawnDataGeneratorResult Result
+        {
+            .SpawnData          = {FInstancedStruct::Make(SpawnDataContainer)},
+            .SpawnDataProcessor = URemMassHUDInitializerProcessor::StaticClass(),
+            .EntityConfigIndex  = Index,
+            .NumEntities        = SpawnDataContainer.SpawnData.Num(),
+        };
+
+        SavedFinishedGeneratingSpawnPointsDelegate.Execute({Result});
+        return;
+    }
 }
 
 void URemMassHUDEntityGenerator::CleanUp()
 {
-	ReceivedHUDTags = {};
-	SpawnDataContainer = {};
-	bHUDTagsAllReceived = {};
+    ReceivedHUDTags     = {};
+    SpawnDataContainer  = {};
+    bHUDTagsAllReceived = {};
 }
 
-void URemMassHUDEntityGenerator::AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData)
+void URemMassHUDEntityGenerator::AddSpawnData(const FGameplayTag& WidgetTag,
+    TConstArrayView<FRemMassHUDBindingFragment> SpawnData)
 {
-	ReceivedHUDTags.AddTag(WidgetTag);
-	SpawnDataContainer.SpawnData.Append(SpawnData);
+    ReceivedHUDTags.AddTag(WidgetTag);
+    SpawnDataContainer.SpawnData.Append(SpawnData);
 
-	if (ReceivedHUDTags == HUDTags)
-	{
-		bHUDTagsAllReceived = true;
-		
-		if (CanGenerate())
-		{
-			GenerateInternal();
-		}
-	}
+    if (ReceivedHUDTags == HUDTags)
+    {
+        bHUDTagsAllReceived = true;
+
+        if (CanGenerate())
+        {
+            GenerateInternal();
+        }
+    }
 }

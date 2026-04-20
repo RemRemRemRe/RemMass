@@ -11,10 +11,10 @@ struct FRemMassExperienceTypeFragment;
 USTRUCT()
 struct REMMASSABILITY_API FRemExperienceSpawnDataContainer
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	TConstArrayView<FRemMassExperienceTypeFragment> ExpTypeData;
+    TConstArrayView<FRemMassExperienceTypeFragment> ExpTypeData;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FTransformFragment> TransformData;
+    UPROPERTY(EditAnywhere)
+    TArray<FTransformFragment> TransformData;
 };

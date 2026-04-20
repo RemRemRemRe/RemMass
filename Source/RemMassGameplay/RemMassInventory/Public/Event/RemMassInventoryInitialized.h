@@ -12,25 +12,25 @@ struct FMassEntityManager;
 USTRUCT()
 struct REMMASSINVENTORY_API FRemMassInventoryInitialized
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	TWeakPtr<FMassEntityManager> Manager;
+    TWeakPtr<FMassEntityManager> Manager;
 
-	UPROPERTY(EditAnywhere)
-	FMassEntityHandle OwnerEntity;
+    UPROPERTY(EditAnywhere)
+    FMassEntityHandle OwnerEntity;
 
-	TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* InitialItemEntities;
+    TMap<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* InitialItemEntities;
 };
 
 USTRUCT()
 struct REMMASSINVENTORY_API FRemMassInventoryItemsInitialized
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	TWeakPtr<FMassEntityManager> Manager;
+    TWeakPtr<FMassEntityManager> Manager;
 
-	UPROPERTY(EditAnywhere)
-	FMassEntityHandle OwnerEntity;
+    UPROPERTY(EditAnywhere)
+    FMassEntityHandle OwnerEntity;
 
-	TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* Entities;
+    TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>>* Entities;
 };

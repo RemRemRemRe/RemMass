@@ -9,49 +9,49 @@ class UMassEntityConfigAsset;
 USTRUCT()
 struct FRemProjectileSpawnData
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	TArray<FVector> Locations;
+    UPROPERTY(EditAnywhere)
+    TArray<FVector> Locations;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FQuat> Rotations;
+    UPROPERTY(EditAnywhere)
+    TArray<FQuat> Rotations;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FVector> InitialVelocities;
+    UPROPERTY(EditAnywhere)
+    TArray<FVector> InitialVelocities;
 };
 
 USTRUCT()
 struct FRemProjectileSpawnDataContainer
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	TArray<FRemProjectileSpawnData> SpawnData;
+    UPROPERTY(EditAnywhere)
+    TArray<FRemProjectileSpawnData> SpawnData;
 
-	UPROPERTY(EditAnywhere)
-	TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ConfigAssets;
+    UPROPERTY(EditAnywhere)
+    TArray<TWeakObjectPtr<UMassEntityConfigAsset>> ConfigAssets;
 
-	void Reserve(uint32 Num);
+    void Reserve(uint32 Num);
 
-	int32 FindOrAdd(TWeakObjectPtr<UMassEntityConfigAsset> Asset);
+    int32 FindOrAdd(TWeakObjectPtr<UMassEntityConfigAsset> Asset);
 
 };
 
 inline void FRemProjectileSpawnDataContainer::Reserve(const uint32 Num)
 {
-	SpawnData.Reserve(Num);
-	ConfigAssets.Reserve(Num);
+    SpawnData.Reserve(Num);
+    ConfigAssets.Reserve(Num);
 }
 
 inline int32 FRemProjectileSpawnDataContainer::FindOrAdd(const TWeakObjectPtr<UMassEntityConfigAsset> Asset)
 {
-	if (const int32 Index = ConfigAssets.Find(Asset);
-		Index != INDEX_NONE)
-	{
-		return Index;
-	}
+    if (const int32 Index = ConfigAssets.Find(Asset);
+        Index != INDEX_NONE)
+    {
+        return Index;
+    }
 
-	SpawnData.AddDefaulted();
-	return  ConfigAssets.Add(Asset);
+    SpawnData.AddDefaulted();
+    return ConfigAssets.Add(Asset);
 }

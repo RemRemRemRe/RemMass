@@ -12,9 +12,10 @@ class UWidget;
 USTRUCT()
 struct FRemMassHUDTask
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	virtual ~FRemMassHUDTask() = default;
+    virtual ~FRemMassHUDTask() = default;
 
-	virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const REM_VIRTUAL_WARN(LogRemMassHUD);
+    virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const
+    REM_VIRTUAL_WARN(LogRemMassHUD);
 };

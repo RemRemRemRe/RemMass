@@ -11,32 +11,33 @@
 
 ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 {
-	PrimaryActorTick.bCanEverTick = false;
-	PrimaryActorTick.bStartWithTickEnabled = false;
+    PrimaryActorTick.bCanEverTick          = false;
+    PrimaryActorTick.bStartWithTickEnabled = false;
 
-	const auto& GameFrameworkSettings = Rem::GetDefaultRef<URemMassFrameworkSettings>();
+    const auto& GameFrameworkSettings = Rem::GetDefaultRef<URemMassFrameworkSettings>();
 
-	MassAgent = ObjectInitializer.CreateDefaultSubobject<UMassAgentComponent>(this, FName{TEXTVIEW("MassAgent")});
+    MassAgent = ObjectInitializer.CreateDefaultSubobject<UMassAgentComponent>(this, FName{TEXTVIEW("MassAgent")});
 
-	// construct AbilitySystem
-	{
-		const auto& AbilitySystemClass = GameFrameworkSettings.GetAbilitySystemClass();
+    // construct AbilitySystem
+    {
+        const auto& AbilitySystemClass = GameFrameworkSettings.GetAbilitySystemClass();
 
-		// Create ability system component, and set it to be explicitly replicated
-		AbilitySystem = Cast<UAbilitySystemComponent>(ObjectInitializer.CreateDefaultSubobject(this, FName{TEXTVIEW("AbilitySystem")},
-				AbilitySystemClass, AbilitySystemClass, true, false));
+        // Create ability system component, and set it to be explicitly replicated
+        AbilitySystem = Cast<UAbilitySystemComponent>(ObjectInitializer.CreateDefaultSubobject(this,
+            FName{TEXTVIEW("AbilitySystem")},
+            AbilitySystemClass, AbilitySystemClass, true, false));
 
-		RemCheckVariable(AbilitySystem, return);
-	}
-}
-
-void ARemMassPawn::PawnClientRestart()
-{
-	Restart();
+        RemCheckVariable(AbilitySystem, return);
+    }
 }
 
 UPawnMovementComponent* ARemMassPawn::GetMovementComponent() const
 {
-	// return Super::GetMovementComponent();
-	return nullptr;
+    // return Super::GetMovementComponent();
+    return nullptr;
+}
+
+void ARemMassPawn::PawnClientRestart()
+{
+    Restart();
 }

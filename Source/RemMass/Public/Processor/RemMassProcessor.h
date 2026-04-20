@@ -8,6 +8,6 @@
 UCLASS(Abstract)
 class REMMASS_API URemMassProcessor : public UMassProcessor
 {
-	GENERATED_BODY()
-	
+    GENERATED_BODY()
+
 };

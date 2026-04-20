@@ -10,11 +10,12 @@
 UCLASS()
 class REMMASSINVENTORY_API URemMassInitialInventoryItemTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Item", meta = (TitleProperty = "Tag", GameplayTagFilter = "InventoryItem"))
-	TArray<FRemMassInventoryTagCountPairContainer> InitialItems;
-	
+    UPROPERTY(EditAnywhere, Category = "Item", meta = (TitleProperty = "Tag", GameplayTagFilter = "InventoryItem"))
+    TArray<FRemMassInventoryTagCountPairContainer> InitialItems;
+
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
 };

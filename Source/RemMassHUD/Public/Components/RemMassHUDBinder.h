@@ -12,40 +12,40 @@ struct FRemMassHUDTask;
 USTRUCT()
 struct FRemMassHUDBinding
 {
-	GENERATED_BODY()
-	
-	UPROPERTY(EditAnywhere, Category = "Rem")
-	TSoftObjectPtr<UWidget> Widget;
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Rem", meta = (MetaStruct = "/Script/MassEntity.MassFragment"))
-	TArray<TObjectPtr<const UScriptStruct>> FragmentTypes;
+    UPROPERTY(EditAnywhere, Category = "Rem")
+    TSoftObjectPtr<UWidget> Widget;
 
-	UPROPERTY(EditAnywhere, Category = "Rem", meta = (ExcludeBaseStruct))
-	TInstancedStruct<FRemMassHUDTask> Task;
+    UPROPERTY(EditAnywhere, Category = "Rem", meta = (MetaStruct = "/Script/MassEntity.MassFragment"))
+    TArray<TObjectPtr<const UScriptStruct>> FragmentTypes;
 
-	static auto TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment;
-	static auto TransformBindings(TConstArrayView<FRemMassHUDBinding> Bindings) -> TArray<FRemMassHUDBindingFragment>;
+    UPROPERTY(EditAnywhere, Category = "Rem", meta = (ExcludeBaseStruct))
+    TInstancedStruct<FRemMassHUDTask> Task;
+
+    static FRemMassHUDBindingFragment TransformBinding(const FRemMassHUDBinding& Binding);
+    static TArray<FRemMassHUDBindingFragment> TransformBindings(TConstArrayView<FRemMassHUDBinding> Bindings);
 };
 
 
 UCLASS()
 class REMMASSHUD_API URemMassHUDBinder : public URemWidgetComponentBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Binding", meta = (GameplayTagFilter = "HUD"))
-	FGameplayTag WidgetTag;
-	
-	UPROPERTY(EditAnywhere, Category = "Binding", meta = (TitleProperty = Widget, ShowOnlyInnerProperties))
-	TArray<FRemMassHUDBinding> Bindings;
+    UPROPERTY(EditAnywhere, Category = "Binding", meta = (GameplayTagFilter = "HUD"))
+    FGameplayTag WidgetTag;
+
+    UPROPERTY(EditAnywhere, Category = "Binding", meta = (TitleProperty = Widget, ShowOnlyInnerProperties))
+    TArray<FRemMassHUDBinding> Bindings;
 
 protected:
-	virtual void BeginPlay() override;
+    virtual void BeginPlay() override;
 
 #if WITH_EDITOR
 
-	virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
-	
+    virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
+
 #endif
-	
+
 };

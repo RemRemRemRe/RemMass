@@ -1,69 +1,69 @@
 {
-	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.0",
-	"FriendlyName": "RemMass",
-	"Description": "",
-	"Category": "Gameplay",
-	"CreatedBy": "RemRemRemRe",
-	"CreatedByURL": "",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
-	"CanContainContent": true,
-	"IsBetaVersion": false,
-	"IsExperimentalVersion": false,
-	"Installed": false,
-	"EnabledByDefault": false,
-	"BuiltInInitialFeatureState": "Active",
-	"Modules": [
-		{
-			"Name": "RemMass",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "RemMassAbility",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "RemMassFramework",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "RemMassMovement",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "RemMassHUD",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		},
-		{
-			"Name": "RemMassInventory",
-			"Type": "Runtime",
-			"LoadingPhase": "Default"
-		}
-	],
-	"Plugins": [
-		{
-			"Name": "MassGameplay",
-			"Enabled": true
-		},
-		{
-			"Name": "MassAI",
-			"Enabled": true
-		},
-		{
-			"Name": "RemCommon",
-			"Enabled": true
-		},
-		{
-			"Name": "RemWidgetComponent",
-			"Enabled": true
-		}
-	]
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "1.0",
+    "FriendlyName": "RemMass",
+    "Description": "",
+    "Category": "Gameplay",
+    "CreatedBy": "RemRemRemRe",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "MarketplaceURL": "",
+    "SupportURL": "",
+    "CanContainContent": true,
+    "IsBetaVersion": false,
+    "IsExperimentalVersion": false,
+    "Installed": false,
+    "EnabledByDefault": false,
+    "BuiltInInitialFeatureState": "Active",
+    "Modules": [
+        {
+            "Name": "RemMass",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassAbility",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassFramework",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassMovement",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassHUD",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassInventory",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "MassGameplay",
+            "Enabled": true
+        },
+        {
+            "Name": "MassAI",
+            "Enabled": true
+        },
+        {
+            "Name": "RemCommon",
+            "Enabled": true
+        },
+        {
+            "Name": "RemWidgetComponent",
+            "Enabled": true
+        }
+    ]
 }

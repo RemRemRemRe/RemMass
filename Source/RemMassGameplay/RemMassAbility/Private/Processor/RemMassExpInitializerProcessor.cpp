@@ -12,39 +12,39 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExpInitializerProcessor)
 
 URemMassExpInitializerProcessor::URemMassExpInitializerProcessor()
-	: EntityQuery(*this)
+    : EntityQuery(*this)
 {
-	ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
-	ProcessingPhase = EMassProcessingPhase::DuringPhysics;
-	ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
-	bAutoRegisterWithProcessingPhases = false;
+    ExecutionFlags = static_cast<int32>(EProcessorExecutionFlags::Standalone | EProcessorExecutionFlags::Server);
+    ProcessingPhase = EMassProcessingPhase::DuringPhysics;
+    ExecutionOrder.ExecuteInGroup = Rem::Mass::ProcessorGroup::Name::Initializer;
+    bAutoRegisterWithProcessingPhases = false;
 }
 
 void URemMassExpInitializerProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
-	EntityQuery.AddRequirement<FRemMassExperienceTypeFragment>(EMassFragmentAccess::ReadWrite);
-	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
+    EntityQuery.AddRequirement<FRemMassExperienceTypeFragment>(EMassFragmentAccess::ReadWrite);
+    EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
 
-	EntityQuery.RegisterWithProcessor(*this);
+    EntityQuery.RegisterWithProcessor(*this);
 }
 
 void URemMassExpInitializerProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
-	QUICK_SCOPE_CYCLE_COUNTER(URemMassExpInitializerProcessor);
+    QUICK_SCOPE_CYCLE_COUNTER(URemMassExpInitializerProcessor);
 
-	// ReSharper disable once CppDeclarationHidesLocal
-	EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
-	{
-		const auto& Value = Context.GetAuxData().Get<FRemExperienceSpawnDataContainer>();
-		const auto NumEntities = Context.GetNumEntities();
+    // ReSharper disable once CppDeclarationHidesLocal
+    EntityQuery.ForEachEntityChunk(Context, [&](FMassExecutionContext& Context)
+    {
+        const auto& Value      = Context.GetAuxData().Get<FRemExperienceSpawnDataContainer>();
+        const auto NumEntities = Context.GetNumEntities();
 
-		const auto ExperienceTypeView = Context.GetMutableFragmentView<FRemMassExperienceTypeFragment>();
-		const auto TransformView = Context.GetMutableFragmentView<FTransformFragment>();
+        const auto ExperienceTypeView = Context.GetMutableFragmentView<FRemMassExperienceTypeFragment>();
+        const auto TransformView      = Context.GetMutableFragmentView<FTransformFragment>();
 
-		for(int32 EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
-		{
-			ExperienceTypeView[EntityIndex] = Value.ExpTypeData[EntityIndex];
-			TransformView[EntityIndex] = Value.TransformData[EntityIndex];
-		}
-	});
+        for (auto EntityIndex = 0; EntityIndex < NumEntities; ++EntityIndex)
+        {
+            ExperienceTypeView[EntityIndex] = Value.ExpTypeData[EntityIndex];
+            TransformView[EntityIndex]      = Value.TransformData[EntityIndex];
+        }
+    });
 }

@@ -8,5 +8,5 @@
 UCLASS()
 class REMMASSABILITY_API URemMassAbilityStatics : public UBlueprintFunctionLibrary
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };

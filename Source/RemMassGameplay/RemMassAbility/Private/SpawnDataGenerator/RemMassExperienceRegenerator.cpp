@@ -13,44 +13,44 @@
 
 bool URemMassExperienceRegenerator::CanGenerate() const
 {
-	return !SpawnDataContainer.ExpTypeData.IsEmpty() && Super::CanGenerate();
+    return !SpawnDataContainer.ExpTypeData.IsEmpty() && Super::CanGenerate();
 }
 
 void URemMassExperienceRegenerator::GenerateInternal() const
 {
-	RemCheckVariable(SavedQueryOwner, return;);
+    RemCheckVariable(SavedQueryOwner, return;);
 
-	for (int32 Index = 0; Index < SavedEntityTypes.Num(); ++Index)
-	{
-		const auto& SavedEntityType = SavedEntityTypes[Index];
-		const auto* EntityConfig = SavedEntityType.EntityConfig.Get();
-		RemCheckCondition(EntityConfig, continue;);
+    for (auto Index = 0; Index < SavedEntityTypes.Num(); ++Index)
+    {
+        const auto& SavedEntityType = SavedEntityTypes[Index];
+        const auto* EntityConfig    = SavedEntityType.EntityConfig.Get();
+        RemCheckCondition(EntityConfig, continue;);
 
-		if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
-			!Template.GetTemplateData().HasFragment<FRemMassExperienceTypeFragment>())
-		{
-			continue;
-		}
+        if (const auto& Template = EntityConfig->GetOrCreateEntityTemplate(*SavedQueryOwner->GetWorld());
+            !Template.GetTemplateData().HasFragment<FRemMassExperienceTypeFragment>())
+        {
+            continue;
+        }
 
-		FMassEntitySpawnDataGeneratorResult Result
-		{
-			.SpawnData = {FInstancedStruct::Make(SpawnDataContainer)},
-			.SpawnDataProcessor = URemMassExpInitializerProcessor::StaticClass(),
-			.EntityConfigIndex = Index,
-			.NumEntities = SpawnDataContainer.ExpTypeData.Num(),
-		};
-		
-		SavedFinishedGeneratingSpawnPointsDelegate.Execute({Result});
-		return;
-	}
+        FMassEntitySpawnDataGeneratorResult Result
+        {
+            .SpawnData          = {FInstancedStruct::Make(SpawnDataContainer)},
+            .SpawnDataProcessor = URemMassExpInitializerProcessor::StaticClass(),
+            .EntityConfigIndex  = Index,
+            .NumEntities        = SpawnDataContainer.ExpTypeData.Num(),
+        };
+
+        SavedFinishedGeneratingSpawnPointsDelegate.Execute({Result});
+        return;
+    }
 }
 
 void URemMassExperienceRegenerator::CleanUp()
 {
-	SpawnDataContainer = {};
+    SpawnDataContainer = {};
 }
 
 void URemMassExperienceRegenerator::AddSpawnData(const FRemExperienceSpawnDataContainer& SpawnData)
 {
-	SpawnDataContainer = SpawnData;
+    SpawnDataContainer = SpawnData;
 }

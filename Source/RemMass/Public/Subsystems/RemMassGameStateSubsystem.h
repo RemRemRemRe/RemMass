@@ -17,97 +17,96 @@ DECLARE_LOG_CATEGORY_EXTERN(LogRemMassGameState, Log, All)
 USTRUCT()
 struct FRemMassNearbyMonsterEntityData
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	TArray<FMassEntityHandle> NearbyMonsterHandles;
+    TArray<FMassEntityHandle> NearbyMonsterHandles;
 
-	UPROPERTY(EditAnywhere)
-	TArray<double> NearbyMonsterDistancesSquared;
+    UPROPERTY(EditAnywhere)
+    TArray<double> NearbyMonsterDistancesSquared;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FVector> NearbyMonsterDirections;
+    UPROPERTY(EditAnywhere)
+    TArray<FVector> NearbyMonsterDirections;
 
-	void RemoveAt(int32 Index);
+    void RemoveAt(int32 Index);
 };
 
 USTRUCT()
 struct FRemMassNearbyMonsterDataContainer
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	TArray<FRemMassNearbyMonsterEntityData> NearbyMonsterEntityData;
+    TArray<FRemMassNearbyMonsterEntityData> NearbyMonsterEntityData;
 };
 
 UCLASS()
 class REMMASS_API URemMassGameStateSubsystem : public UWorldSubsystem
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	/**
-	 * @brief Local player entity handle will be placed at index 0
-	 */
-	TArray<FMassEntityHandle> PlayerEntityHandles;
+    /**
+     * @brief Local player entity handle will be placed at index 0
+     */
+    TArray<FMassEntityHandle> PlayerEntityHandles;
 
-	/**
-	 * @brief Local player actor will be placed at index 0
-	 */
-	UPROPERTY(VisibleInstanceOnly, Category = "Rem|Mass|GameState")
-	TArray<APawn*> PlayerPawns;
+    /**
+     * @brief Local player actor will be placed at index 0
+     */
+    UPROPERTY(VisibleInstanceOnly, Category = "Rem|Mass|GameState")
+    TArray<APawn*> PlayerPawns;
 
-	UPROPERTY(VisibleInstanceOnly, Category = "Rem|Mass|GameState")
-	FRemMassNearbyMonsterDataContainer NearbyMonsterEntityDataContainer;
+    UPROPERTY(VisibleInstanceOnly, Category = "Rem|Mass|GameState")
+    FRemMassNearbyMonsterDataContainer NearbyMonsterEntityDataContainer;
 
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
-	TArray<ARemMassSpawner*> MassSpawners;
+    UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
+    TArray<ARemMassSpawner*> MassSpawners;
 
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
-	UMassEntitySubsystem* EntitySubsystem;
-
-public:
-	mutable FRWLock PlayerEntityLock;
-	mutable FRWLock NearbyMonsterEntityLock;
-	mutable FRWLock MassSpawnerLock;
+    UPROPERTY(VisibleInstanceOnly, Transient, Category = "Rem|Mass|GameState")
+    UMassEntitySubsystem* EntitySubsystem;
 
 public:
-	auto IsLocalPlayerPawnValid() const -> bool;
-	auto IsLocalPlayerEntityValid() const -> bool;
-	auto GetLocalPlayerEntity() const -> FMassEntityHandle;
-	auto GetLocalPlayerPawn() const -> const APawn*;
+    mutable FRWLock PlayerEntityLock;
+    mutable FRWLock NearbyMonsterEntityLock;
+    mutable FRWLock MassSpawnerLock;
 
-	auto GetPlayerEntityView() const -> TConstArrayView<FMassEntityHandle>;
-	auto GetPlayerActorView() const -> TConstArrayView<APawn*>;
+    bool IsLocalPlayerPawnValid() const;
+    bool IsLocalPlayerEntityValid() const;
+    FMassEntityHandle GetLocalPlayerEntity() const;
+    const APawn* GetLocalPlayerPawn() const;
 
-	auto GetNearbyMonsterEntityData(FMassEntityHandle PlayerEntityHandle) const -> FRemMassNearbyMonsterEntityData;
-	auto GetNearestMonsterDirection(FMassEntityHandle PlayerEntityHandle) const -> FVector;
-	auto GetNearestMonsterDistanceSquared(FMassEntityHandle PlayerEntityHandle) const -> double;
+    TConstArrayView<FMassEntityHandle> GetPlayerEntityView() const;
+    TConstArrayView<APawn*> GetPlayerActorView() const;
 
-	auto GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const -> ARemMassSpawner*;
-	auto RegisterMassSpawner(ARemMassSpawner& MassSpawner) -> void;
+    FRemMassNearbyMonsterEntityData GetNearbyMonsterEntityData(FMassEntityHandle PlayerEntityHandle) const;
+    FVector GetNearestMonsterDirection(FMassEntityHandle PlayerEntityHandle) const;
+    double GetNearestMonsterDistanceSquared(FMassEntityHandle PlayerEntityHandle) const;
 
-	UFUNCTION(BlueprintCallable, Category = "Rem|Mass|GameState")
-	void AddPlayerEntity(APawn* PlayerPawn);
+    ARemMassSpawner* GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const;
+    void RegisterMassSpawner(ARemMassSpawner& MassSpawner);
 
-	virtual auto Initialize(FSubsystemCollectionBase& Collection) -> void override;
-	virtual auto ShouldCreateSubsystem(UObject* Outer) const -> bool override;
+    UFUNCTION(BlueprintCallable, Category = "Rem|Mass|GameState")
+    void AddPlayerEntity(APawn* PlayerPawn);
 
-	REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(NearbyMonsterEntityDataContainer)
+    virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+    virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
+
+    REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(NearbyMonsterEntityDataContainer)
 };
 
 template <typename T>
 struct TMassExternalSubsystemTraits;
 
-template<>
+template <>
 struct TMassExternalSubsystemTraits<URemMassGameStateSubsystem> final
 {
-	enum
-	{
-		GameThreadOnly = false
-	};
+    enum
+    {
+        GameThreadOnly = false
+    };
 };
 
 inline void FRemMassNearbyMonsterEntityData::RemoveAt(const int32 Index)
 {
-	NearbyMonsterHandles.RemoveAt(Index);
-	NearbyMonsterDistancesSquared.RemoveAt(Index);
-	NearbyMonsterDirections.RemoveAt(Index);
+    NearbyMonsterHandles.RemoveAt(Index);
+    NearbyMonsterDistancesSquared.RemoveAt(Index);
+    NearbyMonsterDirections.RemoveAt(Index);
 }

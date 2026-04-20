@@ -10,11 +10,12 @@ class UMassEntityConfigAsset;
 UCLASS()
 class REMMASSABILITY_API URemMassOwnedProjectileSpawnersTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Spawner Config")
-	TArray<TObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
-	
+    UPROPERTY(EditAnywhere, Category = "Spawner Config")
+    TArray<TObjectPtr<UMassEntityConfigAsset>> ProjectileSpawnerConfigs;
+
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
 };

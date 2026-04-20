@@ -8,13 +8,14 @@
 UCLASS()
 class REMMASSABILITY_API URemMassExpInitializerProcessor : public URemMassProcessor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
+
 public:
-	URemMassExpInitializerProcessor();
+    URemMassExpInitializerProcessor();
 
 protected:
-	virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
-	virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
+    virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
+    virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
 
-	FMassEntityQuery EntityQuery;
+    FMassEntityQuery EntityQuery;
 };

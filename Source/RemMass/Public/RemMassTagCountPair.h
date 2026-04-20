@@ -8,11 +8,11 @@
 USTRUCT(BlueprintType)
 struct FRemMassTagCountPair
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	FGameplayTag Tag;
-	
-	UPROPERTY(EditAnywhere)
-	int32 Count{};
+    UPROPERTY(EditAnywhere)
+    FGameplayTag Tag;
+
+    UPROPERTY(EditAnywhere)
+    int32 Count{};
 };

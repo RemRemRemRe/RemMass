@@ -11,34 +11,34 @@ class UMassAgentComponent;
 UCLASS()
 class REMMASSFRAMEWORK_API ARemMassPawn : public APawn
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = Mass, BlueprintGetter = "GetMassAgent")
-	UMassAgentComponent* MassAgent;
+    UPROPERTY(EditAnywhere, Category = Mass, BlueprintGetter = "GetMassAgent")
+    UMassAgentComponent* MassAgent;
 
-	UPROPERTY(EditAnywhere, Category = Ability, BlueprintGetter = "GetAbilitySystem")
-	UAbilitySystemComponent* AbilitySystem;
-	
+    UPROPERTY(EditAnywhere, Category = Ability, BlueprintGetter = "GetAbilitySystem")
+    UAbilitySystemComponent* AbilitySystem;
+
 public:
-	ARemMassPawn(const FObjectInitializer& ObjectInitializer);
+    ARemMassPawn(const FObjectInitializer& ObjectInitializer);
 
-	UFUNCTION(BlueprintCallable, Category = "Rem|Mass")
-	UMassAgentComponent* GetMassAgent() const;
+    UFUNCTION(BlueprintCallable, Category = "Rem|Mass")
+    UMassAgentComponent* GetMassAgent() const;
 
-	UFUNCTION(BlueprintCallable, Category = "Rem|Ability")
-	UAbilitySystemComponent* GetAbilitySystem() const;
-	
+    UFUNCTION(BlueprintCallable, Category = "Rem|Ability")
+    UAbilitySystemComponent* GetAbilitySystem() const;
+
 protected:
-	virtual UPawnMovementComponent* GetMovementComponent() const override;
-	virtual void PawnClientRestart() override;
+    virtual UPawnMovementComponent* GetMovementComponent() const override;
+    virtual void PawnClientRestart() override;
 };
 
 inline UMassAgentComponent* ARemMassPawn::GetMassAgent() const
 {
-	return MassAgent;
+    return MassAgent;
 }
 
 inline UAbilitySystemComponent* ARemMassPawn::GetAbilitySystem() const
 {
-	return AbilitySystem;
+    return AbilitySystem;
 }

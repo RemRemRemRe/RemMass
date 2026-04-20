@@ -10,20 +10,21 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassProjectileBoosterTrait)
 
 void URemMassProjectileBoosterTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+    const UWorld& World) const
 {
-	BuildContext.AddFragment(FConstStructView::Make(ProjectileTrigger));
-	BuildContext.AddFragment(FConstStructView::Make(ProjectileInfo));
+    BuildContext.AddFragment(FConstStructView::Make(ProjectileTrigger));
+    BuildContext.AddFragment(FConstStructView::Make(ProjectileInfo));
 }
 
-bool URemMassProjectileBoosterTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
-	FAdditionalTraitRequirements& OutTraitRequirements) const
+bool URemMassProjectileBoosterTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext,
+    const UWorld& World,
+    FAdditionalTraitRequirements& OutTraitRequirements) const
 {
-	if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
-	{
-		REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
-		return false;
-	}
-	
-	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
+    if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
+    {
+        REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
+        return false;
+    }
+
+    return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }

@@ -8,5 +8,5 @@
 UCLASS(Abstract)
 class REMMASS_API URemMassEntitySpawnDataGeneratorBase : public UMassEntitySpawnDataGeneratorBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };

@@ -12,51 +12,53 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDBinder)
 
-auto FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding) -> FRemMassHUDBindingFragment
+FRemMassHUDBindingFragment FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding)
 {
-	if (auto TransformedBinding = TransformBindings({Binding});
-		!TransformedBinding.IsEmpty())
-	{
-		return TransformedBinding.Top();
-	}
+    if (auto TransformedBinding = TransformBindings({Binding});
+        !TransformedBinding.IsEmpty())
+    {
+        return TransformedBinding.Top();
+    }
 
-	return {};
+    return {};
 }
 
-auto FRemMassHUDBinding::TransformBindings(const TConstArrayView<FRemMassHUDBinding> Bindings) -> TArray<FRemMassHUDBindingFragment>
+TArray<FRemMassHUDBindingFragment> FRemMassHUDBinding::TransformBindings(
+    const TConstArrayView<FRemMassHUDBinding> Bindings)
 {
-	TArray<FRemMassHUDBindingFragment> TransformedBindings;
-	TransformedBindings.Reserve(Bindings.Num());
+    TArray<FRemMassHUDBindingFragment> TransformedBindings;
+    TransformedBindings.Reserve(Bindings.Num());
 
-	for (auto& Binding : Bindings)
-	{
-		FRemMassHUDBindingFragment BindingFragment{
-			.Widget = Binding.Widget.Get(),
-			.FragmentTypes = FRemMassHUDBindingFragment::FFragmentArrayType{Binding.FragmentTypes},
-			.Task = Binding.Task};
+    for (auto& Binding : Bindings)
+    {
+        FRemMassHUDBindingFragment BindingFragment{
+            .Widget        = Binding.Widget.Get(),
+            .FragmentTypes = FRemMassHUDBindingFragment::FFragmentArrayType{Binding.FragmentTypes},
+            .Task          = Binding.Task
+        };
 
-		TransformedBindings.Add(BindingFragment);
-	}
+        TransformedBindings.Add(BindingFragment);
+    }
 
-	return TransformedBindings;
+    return TransformedBindings;
 }
 
 void URemMassHUDBinder::BeginPlay()
 {
-	Super::BeginPlay();
+    Super::BeginPlay();
 
-	auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(this,
-		FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
-	RemCheckVariable(HUDEntityGenerator, return;);
+    auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(this,
+        FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
+    RemCheckVariable(HUDEntityGenerator, return;);
 
-	HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
+    HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
 }
 
 #if WITH_EDITOR
 
 void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
 {
-	Super::PostEditChangeChainProperty(PropertyChangedEvent);
+    Super::PostEditChangeChainProperty(PropertyChangedEvent);
 }
 
 #endif

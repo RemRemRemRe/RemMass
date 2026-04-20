@@ -13,13 +13,13 @@ class URemInputHandlingComponent;
 UCLASS(defaultconfig, Config = RemMassFrameworkSettings, Const)
 class REMMASSFRAMEWORK_API URemMassFrameworkSettings : public UDeveloperSettings
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(Config, EditAnywhere, Category = "Character|Component")
-	TSubclassOf<UAbilitySystemComponent> AbilitySystemClass;
+    UPROPERTY(Config, EditAnywhere, Category = "Character|Component")
+    TSubclassOf<UAbilitySystemComponent> AbilitySystemClass;
 
 public:
-	URemMassFrameworkSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+    URemMassFrameworkSettings(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(AbilitySystemClass)
+    REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(AbilitySystemClass)
 };

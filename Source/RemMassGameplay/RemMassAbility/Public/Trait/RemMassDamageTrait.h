@@ -10,20 +10,21 @@
 UCLASS()
 class REMMASSABILITY_API URemMassDamageTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	/**
-	 * @brief DamageSource Or DamageTarget
-	 */
-	UPROPERTY(EditAnywhere, Category = "Damage")
-	bool bDamageSource;
-	
-	UPROPERTY(EditAnywhere, Category = "Damage", meta = (ShowOnlyInnerProperties, EditCondition = "bDamageSource"))
-	FRemMassDamageFragment Damage;
+    /**
+     * @brief DamageSource Or DamageTarget
+     */
+    UPROPERTY(EditAnywhere, Category = "Damage")
+    bool bDamageSource;
 
-	UPROPERTY(EditAnywhere, Category = "Damage", meta = (ShowOnlyInnerProperties, EditCondition = "bDamageSource"))
-	FRemMassDamageRadiusFragment DamageRadius;
+    UPROPERTY(EditAnywhere, Category = "Damage", meta = (ShowOnlyInnerProperties, EditCondition = "bDamageSource"))
+    FRemMassDamageFragment Damage;
+
+    UPROPERTY(EditAnywhere, Category = "Damage", meta = (ShowOnlyInnerProperties, EditCondition = "bDamageSource"))
+    FRemMassDamageRadiusFragment DamageRadius;
 
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
 };

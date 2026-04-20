@@ -12,20 +12,20 @@ class UMassEntityConfigAsset;
 USTRUCT(BlueprintType)
 struct FRemMassInventoryTagCountPair : public FRemMassTagCountPair
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	ERemMassInventoryItemState State{ERemMassInventoryItemState::Picked};
+    UPROPERTY(EditAnywhere)
+    ERemMassInventoryItemState State{ERemMassInventoryItemState::Picked};
 };
 
 USTRUCT()
 struct FRemMassInventoryTagCountPairContainer
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	TObjectPtr<UMassEntityConfigAsset> ConfigAsset;
+    UPROPERTY(EditAnywhere)
+    TObjectPtr<UMassEntityConfigAsset> ConfigAsset;
 
-	UPROPERTY(EditAnywhere)
-	TArray<FRemMassInventoryTagCountPair> Pairs;
+    UPROPERTY(EditAnywhere)
+    TArray<FRemMassInventoryTagCountPair> Pairs;
 };

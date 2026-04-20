@@ -12,11 +12,11 @@
 UCLASS(Config = RemMassHUDTags)
 class REMMASSHUD_API URemMassHUDTags : public URemMetaTags
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (GameplayTagFilter = "MassSpawner"))
-	FGameplayTag HUDMassSpawnerTag;
+    UPROPERTY(Config, EditAnywhere, Category = "Spawner", meta = (GameplayTagFilter = "MassSpawner"))
+    FGameplayTag HUDMassSpawnerTag;
 
 public:
-	REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(HUDMassSpawnerTag)
+    REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(HUDMassSpawnerTag)
 };

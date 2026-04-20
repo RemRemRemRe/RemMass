@@ -9,8 +9,8 @@
 USTRUCT(BlueprintType)
 struct REMMASSHUD_API FRemMassHUDEntitySpawnDataContainer
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	TArray<FRemMassHUDBindingFragment> SpawnData;
+    UPROPERTY(EditAnywhere)
+    TArray<FRemMassHUDBindingFragment> SpawnData;
 };

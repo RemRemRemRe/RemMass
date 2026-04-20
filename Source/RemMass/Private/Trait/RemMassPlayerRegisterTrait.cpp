@@ -21,33 +21,35 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassPlayerRegisterTrait)
 
 void URemMassPlayerRegisterTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World) const
+    const UWorld& World) const
 {
-	RemCheckCondition(BuildContext.HasTag<FRemMassPlayerTag>(), return;);
+    RemCheckCondition(BuildContext.HasTag<FRemMassPlayerTag>(), return;);
 
-	BuildContext.GetMutableObjectFragmentInitializers().Add([&World](UObject& Owner, const FMassEntityView& EntityView,
-		const EMassTranslationDirection)
-	{
-	    // MakeNotNull - ambiguous
-		Rem::Object::SetTimerForThisTick(Rem::MakeNotNull(&World), Rem::FTimerDelegate::CreateWeakLambda(&Owner, [&World, &Owner, EntityView]
-		{
-			auto& GameStateSubsystem = *World.GetSubsystem<URemMassGameStateSubsystem>();
-			GameStateSubsystem.AddPlayerEntity(Cast<APawn>(&Owner));
+    BuildContext.GetMutableObjectFragmentInitializers().Add([&World](UObject& Owner, const FMassEntityView& EntityView,
+        const EMassTranslationDirection)
+        {
+            // MakeNotNull - ambiguous
+            Rem::Object::SetTimerForThisTick(Rem::MakeNotNull(&World), Rem::FTimerDelegate::CreateWeakLambda(&Owner,
+                [&World, &Owner, EntityView]
+                {
+                    auto& GameStateSubsystem = *World.GetSubsystem<URemMassGameStateSubsystem>();
+                    GameStateSubsystem.AddPlayerEntity(Cast<APawn>(&Owner));
 
-			const auto& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(World);
-			EntityManager.Defer().AddTag<FRemMassPlayerRegisteredTag>(EntityView.GetEntity());
-		}));
-	});
+                    const auto& EntityManager = UE::Mass::Utils::GetEntityManagerChecked(World);
+                    EntityManager.Defer().AddTag<FRemMassPlayerRegisteredTag>(EntityView.GetEntity());
+                }));
+        });
 }
 
 bool URemMassPlayerRegisterTrait::ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext,
-	const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const
+    const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const
 {
-	if (!BuildContext.HasTag<FRemMassPlayerTag>())
-	{
-		REM_LOG_FUNCTION(LogRemMass, Error, TEXT("{0} is required for a player entity"), FRemMassPlayerTag::StaticStruct()->GetName());
-		return false;
-	}
+    if (!BuildContext.HasTag<FRemMassPlayerTag>())
+    {
+        REM_LOG_FUNCTION(LogRemMass, Error, TEXT("{0} is required for a player entity"),
+            FRemMassPlayerTag::StaticStruct()->GetName());
+        return false;
+    }
 
-	return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
+    return Super::ValidateTemplate(BuildContext, World, OutTraitRequirements);
 }

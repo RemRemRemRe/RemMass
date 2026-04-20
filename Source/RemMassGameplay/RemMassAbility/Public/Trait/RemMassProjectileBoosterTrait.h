@@ -10,15 +10,17 @@
 UCLASS()
 class REMMASSABILITY_API URemMassProjectileBoosterTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
-	FRemMassProjectileTriggerInfoFragment ProjectileTrigger;
+    UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
+    FRemMassProjectileTriggerInfoFragment ProjectileTrigger;
 
-	UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
-	FRemMassProjectileInfoFragment ProjectileInfo;
+    UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
+    FRemMassProjectileInfoFragment ProjectileInfo;
 
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
-	virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
+    virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
+        FAdditionalTraitRequirements& OutTraitRequirements) const override;
 };

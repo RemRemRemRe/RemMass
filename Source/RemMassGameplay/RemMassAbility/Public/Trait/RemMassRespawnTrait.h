@@ -10,11 +10,12 @@
 UCLASS()
 class REMMASSABILITY_API URemMassRespawnTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Respawn", meta = (ShowOnlyInnerProperties))
-	FRemMassRespawnRadiusFragment RespawnRadius;
+    UPROPERTY(EditAnywhere, Category = "Respawn", meta = (ShowOnlyInnerProperties))
+    FRemMassRespawnRadiusFragment RespawnRadius;
 
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
 };

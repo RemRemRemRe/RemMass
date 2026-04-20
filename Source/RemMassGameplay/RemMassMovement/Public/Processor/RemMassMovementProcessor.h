@@ -9,14 +9,14 @@
 UCLASS()
 class REMMASSMOVEMENT_API URemMassMovementProcessor : public URemMassProcessor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	URemMassMovementProcessor();
+    URemMassMovementProcessor();
 
 protected:
-	virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
-	virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
+    virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
+    virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
 
-	FMassEntityQuery EntityQuery;
+    FMassEntityQuery EntityQuery;
 };

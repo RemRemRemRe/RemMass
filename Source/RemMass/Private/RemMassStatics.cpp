@@ -12,38 +12,42 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassStatics)
 
-FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* WorldContextObject, const FMassEntityHandle EntityHandle, const UScriptStruct* Struct)
+FInstancedStruct URemMassStatics::GetMassFragmentFromHandle(const UObject* WorldContextObject,
+    const FMassEntityHandle EntityHandle,
+    const UScriptStruct* Struct)
 {
-	RemCheckVariable(WorldContextObject, return {});
-	RemCheckVariable(EntityHandle, return {});
-	RemCheckVariable(Struct, return {});
-	
-	// Fetch NetID if it exists
-	const UMassEntitySubsystem* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(WorldContextObject->GetWorld());
-	RemCheckVariable(EntitySubsystem, return {});
+    RemCheckVariable(WorldContextObject, return {});
+    RemCheckVariable(EntityHandle, return {});
+    RemCheckVariable(Struct, return {});
 
-	const auto StructView = EntitySubsystem->GetEntityManager().GetFragmentDataStruct(EntityHandle, Struct);
-	RemCheckVariable(StructView, return {});
-	
-	return FInstancedStruct{StructView};	
+    // Fetch NetID if it exists
+    const UMassEntitySubsystem* EntitySubsystem = UWorld::GetSubsystem<UMassEntitySubsystem>(
+        WorldContextObject->GetWorld());
+    RemCheckVariable(EntitySubsystem, return {});
+
+    const auto StructView = EntitySubsystem->GetEntityManager().GetFragmentDataStruct(EntityHandle, Struct);
+    RemCheckVariable(StructView, return {});
+
+    return FInstancedStruct{StructView};
 }
 
 FInstancedStruct URemMassStatics::GetMassFragmentFromAgent(const UObject* WorldContextObject,
-	const UMassAgentComponent* Agent, const UScriptStruct* Struct)
+    const UMassAgentComponent* Agent, const UScriptStruct* Struct)
 {
-	RemCheckVariable(Agent, return {});
-	return GetMassFragmentFromHandle(WorldContextObject, Agent->GetEntityHandle(), Struct);
+    RemCheckVariable(Agent, return {});
+    return GetMassFragmentFromHandle(WorldContextObject, Agent->GetEntityHandle(), Struct);
 }
 
-ARemMassSpawner* URemMassStatics::GetMassSpawner(const UObject* WorldContextObject, const FGameplayTagQuery& Query)
+ARemMassSpawner* URemMassStatics::GetMassSpawner(const UObject* WorldContextObject,
+    const FGameplayTagQuery& Query)
 {
-	RemCheckVariable(WorldContextObject, return {};);
-	
-	const auto* World = WorldContextObject->GetWorld();
-	RemCheckVariable(World, return {};);
+    RemCheckVariable(WorldContextObject, return {};);
 
-	auto* GameStateSubsystem = World->GetSubsystem<URemMassGameStateSubsystem>();
-	RemCheckVariable(GameStateSubsystem, return {};);
+    const auto* World = WorldContextObject->GetWorld();
+    RemCheckVariable(World, return {};);
 
-	return GameStateSubsystem->GetMassSpawner(Query);
+    auto* GameStateSubsystem = World->GetSubsystem<URemMassGameStateSubsystem>();
+    RemCheckVariable(GameStateSubsystem, return {};);
+
+    return GameStateSubsystem->GetMassSpawner(Query);
 }

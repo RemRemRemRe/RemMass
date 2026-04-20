@@ -11,25 +11,25 @@
 UCLASS(BlueprintType)
 class REMMASSHUD_API URemMassHUDEntityGenerator : public URemMassEntitySpawnDataRegenerator
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Tags", meta = (GameplayTagFilter = "HUD"))
-	FGameplayTagContainer HUDTags;
+    UPROPERTY(EditAnywhere, Category = "Tags", meta = (GameplayTagFilter = "HUD"))
+    FGameplayTagContainer HUDTags;
 
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	FGameplayTagContainer ReceivedHUDTags;
-	
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	FRemMassHUDEntitySpawnDataContainer SpawnDataContainer;
+    UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
+    FGameplayTagContainer ReceivedHUDTags;
 
-	UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
-	bool bHUDTagsAllReceived;
-	
+    UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
+    FRemMassHUDEntitySpawnDataContainer SpawnDataContainer;
+
+    UPROPERTY(VisibleInstanceOnly, Transient, Category = "State")
+    bool bHUDTagsAllReceived;
+
 protected:
-	virtual bool CanGenerate() const override;
-	virtual void GenerateInternal() const override;
-	virtual void CleanUp() override;
-	
+    virtual bool CanGenerate() const override;
+    virtual void GenerateInternal() const override;
+    virtual void CleanUp() override;
+
 public:
-	void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);
+    void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);
 };

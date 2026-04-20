@@ -8,10 +8,10 @@
 USTRUCT(BlueprintType)
 struct REMMASSHUD_API FRemMassHUDWidgetTask : public FRemMassHUDTask
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	virtual ~FRemMassHUDWidgetTask() override = default;
+    virtual ~FRemMassHUDWidgetTask() override = default;
 
 protected:
-	virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const override;
+    virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const override;
 };

@@ -7,8 +7,9 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassFrameworkSettings)
 
-URemMassFrameworkSettings::URemMassFrameworkSettings(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
+URemMassFrameworkSettings::URemMassFrameworkSettings(
+    const FObjectInitializer& ObjectInitializer)
+    : Super(ObjectInitializer)
 {
-	AbilitySystemClass = UAbilitySystemComponent::StaticClass();
+    AbilitySystemClass = UAbilitySystemComponent::StaticClass();
 }

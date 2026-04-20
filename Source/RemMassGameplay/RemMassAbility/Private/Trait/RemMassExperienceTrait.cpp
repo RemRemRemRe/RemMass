@@ -7,7 +7,8 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassExperienceTrait)
 
-void URemMassExperienceTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
+void URemMassExperienceTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+    const UWorld& World) const
 {
-	BuildContext.AddFragment(FConstStructView::Make(ExperienceType));
+    BuildContext.AddFragment(FConstStructView::Make(ExperienceType));
 }

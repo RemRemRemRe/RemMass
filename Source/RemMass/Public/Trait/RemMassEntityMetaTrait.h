@@ -9,8 +9,8 @@
 UCLASS()
 class REMMASS_API URemMassEntityMetaTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Trait Meta Data")
-	FGameplayTagContainer MetaTags;
+    UPROPERTY(EditAnywhere, Category = "Trait Meta Data")
+    FGameplayTagContainer MetaTags;
 };

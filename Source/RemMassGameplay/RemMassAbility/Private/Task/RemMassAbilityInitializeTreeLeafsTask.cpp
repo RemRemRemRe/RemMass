@@ -13,95 +13,97 @@
 
 FRemMassAbilityInitializeTreeLeafsTask::FRemMassAbilityInitializeTreeLeafsTask()
 {
-	bShouldCallTick = false;
+    bShouldCallTick = false;
 }
 
 EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTreeExecutionContext& Context,
-	const FStateTreeTransitionResult& Transition) const
+    const FStateTreeTransitionResult& Transition) const
 {
-	// const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>(); // TODO
-	const auto& Value = *MakeShared<FRemMassInventoryInitialized>();
+    // const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>(); // TODO
+    const auto& Value = *MakeShared<FRemMassInventoryInitialized>();
 
-	RemCheckCondition(Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed,
+        REM_NO_LOG_BUT_ENSURE);
 
-	FMassEntityHandle RootNode{};
-	FMassEntityHandle LastNode{};
+    FMassEntityHandle RootNode{};
+    FMassEntityHandle LastNode{};
 
-	RemCheckCondition(Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
 
-	const auto& Manager = *Value.Manager.Pin();
-	// make ability link list
-	for (auto& InitialItemPair : *Value.InitialItemEntities)
-	{
-		auto& Items = InitialItemPair.Value;
+    const auto& Manager = *Value.Manager.Pin();
+    // make ability link list
+    for (auto& InitialItemPair : *Value.InitialItemEntities)
+    {
+        auto& Items = InitialItemPair.Value;
 
-		bool bValidRoot = RootNode.IsValid();
-		if (!bValidRoot && Items.Num() > 0)
-		{
-			LastNode = RootNode = Items[0];
-		}
+        bool bValidRoot = RootNode.IsValid();
+        if (!bValidRoot && Items.Num() > 0)
+        {
+            LastNode = RootNode = Items[0];
+        }
 
-		for (int32 Index = 0; Index < Items.Num(); ++Index)
-		{
-			// add children node, skipped for root node to prevent infinite loop
-			if (bValidRoot)
-			{
-				const auto& MassEntityHandle = Items[Index];
-				const FMassEntityView EntityView{Manager, LastNode};
-				auto& ChildrenNodes = EntityView.GetFragmentData<FRemMassAbilityTreeChildrenNodesFragment>();
-				ChildrenNodes.Add(MassEntityHandle);
-				LastNode = MassEntityHandle;
-			}
-			else
-			{
-				bValidRoot = true;
-			}
-		}
-	}
+        for (auto Index = 0; Index < Items.Num(); ++Index)
+        {
+            // add children node, skipped for root node to prevent infinite loop
+            if (bValidRoot)
+            {
+                const auto& MassEntityHandle = Items[Index];
+                const FMassEntityView EntityView{Manager, LastNode};
+                auto& ChildrenNodes = EntityView.GetFragmentData<FRemMassAbilityTreeChildrenNodesFragment>();
+                ChildrenNodes.Add(MassEntityHandle);
+                LastNode = MassEntityHandle;
+            }
+            else
+            {
+                bValidRoot = true;
+            }
+        }
+    }
 
-	const FMassEntityView OwnerView{Manager, Value.OwnerEntity};
-	auto& TreeRootsFragment = OwnerView.GetFragmentData<FRemMassAbilityTreeRootsFragment>();
+    const FMassEntityView OwnerView{Manager, Value.OwnerEntity};
+    auto& TreeRootsFragment = OwnerView.GetFragmentData<FRemMassAbilityTreeRootsFragment>();
 
-	// initialize tree leafs
-	TreeRootsFragment.Values[0] = RootNode;
+    // initialize tree leafs
+    TreeRootsFragment.Values[0] = RootNode;
 
-	FRemMassProjectileInfoFragment ProjectileInfoFragment;
-	ProjectileInfoFragment.Efficient = 0.0f;
-	ProjectileInfoFragment.InitialSpeed = 0.0f;
+    FRemMassProjectileInfoFragment ProjectileInfoFragment;
+    ProjectileInfoFragment.Efficient    = 0.0f;
+    ProjectileInfoFragment.InitialSpeed = 0.0f;
 
-	FRemMassProjectileTriggerInfoFragment TriggerInfoFragment;
-	TriggerInfoFragment.TriggerInterval = 0.0f;
-	TriggerInfoFragment.RoundsPerInterval = 0;
-	TriggerInfoFragment.RoundsInterval = 0.0f;
-	TriggerInfoFragment.ShotsPerRound = 0;
-	TriggerInfoFragment.ShotsInterval = 0.0f;
-	// traverse tree leaf to generate projectile spawner
-	DeepFirstSearch(Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
-		TriggerInfoFragment, ProjectileInfoFragment);
+    FRemMassProjectileTriggerInfoFragment TriggerInfoFragment;
+    TriggerInfoFragment.TriggerInterval   = 0.0f;
+    TriggerInfoFragment.RoundsPerInterval = 0;
+    TriggerInfoFragment.RoundsInterval    = 0.0f;
+    TriggerInfoFragment.ShotsPerRound     = 0;
+    TriggerInfoFragment.ShotsInterval     = 0.0f;
+    // traverse tree leaf to generate projectile spawner
+    DeepFirstSearch(Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
+        TriggerInfoFragment, ProjectileInfoFragment);
 
-	return Super::EnterState(Context, Transition);
+    return Super::EnterState(Context, Transition);
 }
 
 void FRemMassAbilityInitializeTreeLeafsTask::DeepFirstSearch(const FMassEntityManager& Manager,
-	const Rem::Mass::Ability::FTreeNodeEntityArray& Values, const Rem::Mass::Ability::FTreeNodeNumType Num,
-	const FRemMassProjectileTriggerInfoFragment& TriggerInfo, const FRemMassProjectileInfoFragment Info)
+    const Rem::Mass::Ability::FTreeNodeEntityArray& Values, const Rem::Mass::Ability::FTreeNodeNumType Num,
+    const FRemMassProjectileTriggerInfoFragment& TriggerInfo, const FRemMassProjectileInfoFragment Info)
 {
-	for (Rem::Mass::Ability::FTreeNodeNumType Index = 0; Index < Num; ++Index)
-	{
-		auto& EntityHandle = Values[Index];
-		if (!EntityHandle.IsValid() || !Manager.IsEntityValid(EntityHandle))
-		{
-			continue;
-		}
+    for (Rem::Mass::Ability::FTreeNodeNumType Index = 0; Index < Num; ++Index)
+    {
+        auto& EntityHandle = Values[Index];
+        if (!EntityHandle.IsValid() || !Manager.IsEntityValid(EntityHandle))
+        {
+            continue;
+        }
 
-		const FMassEntityView EntityView{Manager, EntityHandle};
-		auto& TriggerFragment = EntityView.GetFragmentData<FRemMassProjectileTriggerInfoFragment>();
-		auto& ProjectileInfo = EntityView.GetFragmentData<FRemMassProjectileInfoFragment>();
+        const FMassEntityView EntityView{Manager, EntityHandle};
+        auto& TriggerFragment = EntityView.GetFragmentData<FRemMassProjectileTriggerInfoFragment>();
+        auto& ProjectileInfo  = EntityView.GetFragmentData<FRemMassProjectileInfoFragment>();
 
-		TriggerFragment.Combine(TriggerInfo);
-		ProjectileInfo.Combine(Info);
+        TriggerFragment.Combine(TriggerInfo);
+        ProjectileInfo.Combine(Info);
 
-		const auto& ChildNodesFragment = EntityView.GetFragmentData<FRemMassAbilityTreeChildrenNodesFragment>();
-		DeepFirstSearch(Manager, ChildNodesFragment.GetValues(), ChildNodesFragment.GetNum(), TriggerFragment, ProjectileInfo);
-	}
+        const auto& ChildNodesFragment = EntityView.GetFragmentData<FRemMassAbilityTreeChildrenNodesFragment>();
+        DeepFirstSearch(Manager, ChildNodesFragment.GetValues(), ChildNodesFragment.GetNum(), TriggerFragment,
+            ProjectileInfo);
+    }
 }

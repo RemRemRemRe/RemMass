@@ -8,5 +8,5 @@
 UCLASS(Abstract)
 class REMMASS_API URemMassObserverProcessor : public UMassObserverProcessor
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 };

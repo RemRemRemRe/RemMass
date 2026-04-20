@@ -10,5 +10,5 @@
 
 void URemMassHUDTrait::BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const
 {
-	BuildContext.AddFragment<FRemMassHUDBindingFragment>();
+    BuildContext.AddFragment<FRemMassHUDBindingFragment>();
 }

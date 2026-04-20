@@ -11,12 +11,14 @@ class UCurveTable;
 UCLASS()
 class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBase
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = "Stats", meta = (ShowOnlyInnerProperties))
-	TObjectPtr<UCurveTable> CurveTable;
+    UPROPERTY(EditAnywhere, Category = "Stats", meta = (ShowOnlyInnerProperties))
+    TObjectPtr<UCurveTable> CurveTable;
 
 protected:
-	virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext, const UWorld& World) const override;
-	virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World, FAdditionalTraitRequirements& OutTraitRequirements) const override;
+    virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
+        const UWorld& World) const override;
+    virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,
+        FAdditionalTraitRequirements& OutTraitRequirements) const override;
 };
