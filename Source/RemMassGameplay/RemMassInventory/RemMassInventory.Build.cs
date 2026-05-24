@@ -14,8 +14,9 @@ public class RemMassInventory : ModuleRules
 				"Core",
 				"CoreUObject",
 				"Engine",
-				
-				"MassEntity",
+
+                "MassCore",
+                "MassEntity",
 				"MassSpawner",
 				"GameplayTags",
 				

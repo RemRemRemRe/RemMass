@@ -14,8 +14,9 @@ public class RemMassMovement : ModuleRules
 				"Core",
 				"CoreUObject",
 				"Engine",
-				
-				"MassEntity",
+
+                "MassCore",
+                "MassEntity",
 				"MassCommon",
 				"MassSpawner",
 				

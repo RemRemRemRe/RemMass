@@ -18,7 +18,8 @@ public class RemMassFramework : ModuleRules
 				"DeveloperSettings",
 				"MassActors",
 				"GameplayAbilities",
-				"MassEntity",
+                "MassCore",
+                "MassEntity",
 				
 				"RemCommon",
 			]

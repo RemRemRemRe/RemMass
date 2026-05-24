@@ -15,8 +15,9 @@ public class RemMassHUD : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"UMG",
-				
-				"MassEntity",
+
+                "MassCore",
+                "MassEntity",
 				"MassSpawner",
 				"MassActors",
 				"GameplayTags",

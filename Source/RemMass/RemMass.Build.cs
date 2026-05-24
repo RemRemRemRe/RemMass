@@ -15,8 +15,9 @@ public class RemMass : ModuleRules
 				
 				"CoreUObject",
 				"Engine",
-				
-				"MassEntity",
+
+                "MassCore",
+                "MassEntity",
 				"MassSpawner",
 				"MassActors",
 				"GameplayTags",
