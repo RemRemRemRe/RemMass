@@ -61,10 +61,10 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
         auto* ProjectileSpawner = GameStateSubsystem.GetMassSpawner(FGameplayTagQuery::MakeQuery_MatchAnyTags(
             Rem::GetDefaultRef<URemMassAbilityTags>().GetProjectileMassSpawnerTag().GetSingleTagContainer()));
 
-        RemCheckVariable(ProjectileSpawner, return;, REM_NO_LOG_BUT_ENSURE);
+        RemCheckVariable(ensure, ProjectileSpawner, return;);
 
         auto* EntityRegenerator = ProjectileSpawner->GetSpawnDataGenerator<URemMassProjectileRegenerator>();
-        RemCheckVariable(EntityRegenerator, return;, REM_NO_LOG_BUT_ENSURE);
+        RemCheckVariable(ensure, EntityRegenerator, return;);
 
         FRemProjectileSpawnDataContainer SpawnDataContainer;
         SpawnDataContainer.Reserve(NumEntities);
@@ -73,7 +73,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
         for (auto Index = 0; Index < NumEntities; ++Index)
         {
             const auto PlayerEntityHandle = OwnerView[Index].Value;
-            RemCheckVariable(PlayerEntityHandle, continue;, REM_NO_LOG_BUT_ENSURE);
+            RemCheckVariable(ensure, PlayerEntityHandle, continue;);
 
             const FRemMassNearbyMonsterEntityData* NearbyMonsterEntityData;
             if (NearbyMonsterEntityData = NearbyMonsterEntityDataMap.Find(PlayerEntityHandle);
@@ -83,7 +83,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
                     GameStateSubsystem.GetNearbyMonsterEntityData(PlayerEntityHandle));
             }
 
-            RemCheckVariable(NearbyMonsterEntityData, continue;, REM_NO_LOG_BUT_ENSURE);
+            RemCheckVariable(ensure, NearbyMonsterEntityData, continue;);
 
             auto& TriggerInfo  = TriggerInfoView[Index];
             auto& TriggerState = TriggerStateView[Index];
@@ -139,7 +139,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
             }
 
             const auto ConfigAsset = ConfigAssetView[Index].ProjectileConfigAsset;
-            RemCheckVariable(ConfigAsset, return;, REM_NO_LOG_BUT_ENSURE);
+            RemCheckVariable(ensure, ConfigAsset, return;);
 
             const auto Owner           = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
             const auto& OwnerTransform = Owner.GetFragmentData<FTransformFragment>().GetTransform();

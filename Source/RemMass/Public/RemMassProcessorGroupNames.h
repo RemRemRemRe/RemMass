@@ -8,15 +8,15 @@
 namespace Rem::Mass::ProcessorGroup::Name
 {
 
-inline FName Initializer{TEXTVIEW("Rem.Mass.Initializer")};
+inline FName Initializer{ANSITEXTVIEW("Rem.Mass.Initializer")};
 
-inline FName Player{TEXTVIEW("Rem.Mass.Player")};
-inline FName SpawnProjectile{TEXTVIEW("Rem.Mass.Spawn.Projectile")};
-inline FName Movement{TEXTVIEW("Rem.Mass.Movement")};
-inline FName NearbyMonsterData{TEXTVIEW("Rem.Mass.NearbyMonsterData")};
-inline FName Damage{TEXTVIEW("Rem.Mass.Damage")};
-inline FName Respawn{TEXTVIEW("Rem.Mass.Respawn")};
-inline FName Experience{TEXTVIEW("Rem.Mass.Experience")};
+inline FName Player{ANSITEXTVIEW("Rem.Mass.Player")};
+inline FName SpawnProjectile{ANSITEXTVIEW("Rem.Mass.Spawn.Projectile")};
+inline FName Movement{ANSITEXTVIEW("Rem.Mass.Movement")};
+inline FName NearbyMonsterData{ANSITEXTVIEW("Rem.Mass.NearbyMonsterData")};
+inline FName Damage{ANSITEXTVIEW("Rem.Mass.Damage")};
+inline FName Respawn{ANSITEXTVIEW("Rem.Mass.Respawn")};
+inline FName Experience{ANSITEXTVIEW("Rem.Mass.Experience")};
 inline FName HUD{TEXTVIEW("Rem.Mass.HUD")};
 
 }

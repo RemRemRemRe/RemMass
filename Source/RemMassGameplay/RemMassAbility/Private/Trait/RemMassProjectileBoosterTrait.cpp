@@ -22,7 +22,7 @@ bool URemMassProjectileBoosterTrait::ValidateTemplate(const FMassEntityTemplateB
 {
     if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
     {
-        REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("FRemMassOwnerFragment is missing"));
+        REM_LOG_FUNCTION(LogRemMassAbility, Error, "FRemMassOwnerFragment is missing");
         return false;
     }
 

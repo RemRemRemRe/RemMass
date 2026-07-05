@@ -88,11 +88,11 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 
                 const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
 
-                RemCheckVariable(CurveTable, continue;, REM_NO_LOG_BUT_ENSURE);
+                RemCheckVariable(ensure, CurveTable, continue;);
 
                 // adding experience value
                 {
-                    static const auto ContextString = FString{TEXTVIEW("adding experience value")};
+                    static const auto ContextString = FString{ANSITEXTVIEW("adding experience value")};
                     const auto* Curve = CurveTable->FindCurve(RemMassAbilityTags.GetExpGainPerLevelTag().GetTagName(),
                         ContextString);
 
@@ -108,7 +108,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
                 if (auto& LevelUpExperience = PlayerEntityView.GetFragmentData<FRemMassLevelUpExperienceFragment>();
                     PlayerExperience.Value >= LevelUpExperience.Value)
                 {
-                    static const auto ContextString = FString{TEXTVIEW("level up")};
+                    static const auto ContextString = FString{ANSITEXTVIEW("level up")};
                     const auto* Curve               = CurveTable->FindCurve(
                         RemMassAbilityTags.GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
                     RemCheckVariable(Curve, continue;);

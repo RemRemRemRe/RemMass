@@ -7,6 +7,7 @@
 #include "RemMassInventoryLog.h"
 #include "Fragment/RemMassInventoryFragments.h"
 #include "Macro/RemLogMacros.h"
+#include "Macro/RemMacroUtilities.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassInventoryItemProcessor)
 
@@ -75,7 +76,7 @@ void URemMassInventoryItemProcessor::Execute(FMassEntityManager& EntityManager, 
 
         for (auto Index = 0; Index < NumEntities; ++Index)
         {
-            REM_LOG_FUNCTION(LogRemMassInventory, Log, TEXT("Owner: {0}, Tag: {1}, Count: {2}, State: {3}"),
+            REM_LOG_FUNCTION(LogRemMassInventory, Log, "Owner: {0}, Tag: {1}, Count: {2}, State: {3}",
                 ItemOwnerView[Index].Value.DebugGetDescription(), ItemTagView[Index], ItemCountView[Index],
                 ItemStateView[Index]);
         }

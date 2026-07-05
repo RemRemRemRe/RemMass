@@ -22,13 +22,12 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
     // const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>(); // TODO
     const auto& Value = *MakeShared<FRemMassInventoryInitialized>();
 
-    RemCheckCondition(Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed,
-        REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed);
 
     FMassEntityHandle RootNode{};
     FMassEntityHandle LastNode{};
 
-    RemCheckCondition(Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed);
 
     const auto& Manager = *Value.Manager.Pin();
     // make ability link list
@@ -77,7 +76,8 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
     TriggerInfoFragment.ShotsPerRound     = 0;
     TriggerInfoFragment.ShotsInterval     = 0.0f;
     // traverse tree leaf to generate projectile spawner
-    DeepFirstSearch(Manager, TreeRootsFragment.Values, static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
+    DeepFirstSearch(Manager, TreeRootsFragment.Values,
+        static_cast<Rem::Mass::Ability::FTreeNodeNumType>(TreeRootsFragment.Values.Num()),
         TriggerInfoFragment, ProjectileInfoFragment);
 
     return Super::EnterState(Context, Transition);

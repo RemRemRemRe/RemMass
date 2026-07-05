@@ -25,7 +25,7 @@ bool URemMassInventoryItemTrait::ValidateTemplate(const FMassEntityTemplateBuild
 {
     if (!BuildContext.HasFragment<FRemMassOwnerFragment>())
     {
-        REM_LOG_FUNCTION(LogRemMassInventory, Error, TEXT("FRemMassOwnerFragment is missing"));
+        REM_LOG_FUNCTION(LogRemMassInventory, Error, "FRemMassOwnerFragment is missing");
         return false;
     }
 

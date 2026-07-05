@@ -71,7 +71,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
         const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
         const auto PlayerView = GameStateSubsystem.GetPlayerEntityView();
-        RemCheckCondition(PlayerView.Num() > 0, return, REM_NO_LOG_BUT_ENSURE);
+        RemCheckCondition(ensure, PlayerView.Num() > 0, return);
 
         const auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerView[0]};
 

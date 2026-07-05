@@ -42,7 +42,7 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
         const auto& GameStateSubsystem = Context.GetSubsystemChecked<URemMassGameStateSubsystem>();
         const auto LocalPlayerEntity   = GameStateSubsystem.GetLocalPlayerEntity();
 
-        RemEnsureVariable(LocalPlayerEntity, return;, REM_NO_LOG_BUT_ENSURE);
+        RemEnsureVariable(ensure, LocalPlayerEntity, return;);
 
         const auto LocalPlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), LocalPlayerEntity};
 
@@ -56,7 +56,7 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
         {
             auto& Binding = HUDBindingView[EntityIndex];
 
-            RemEnsureVariable(Binding, continue;, REM_NO_LOG_BUT_ENSURE);
+            RemEnsureVariable(ensure, Binding, continue;);
 
             TArray<FConstStructView> Views{};
             Views.Reserve(Binding.FragmentTypes.Num());
@@ -75,7 +75,7 @@ void URemMassHUDUpdateProcessor::Execute(FMassEntityManager& EntityManager, FMas
 
                 // new finding
                 const auto StructView = LocalPlayerEntityView.GetFragmentDataStruct(Key);
-                RemCheckVariable(StructView, continue;, REM_NO_LOG_BUT_ENSURE);
+                RemCheckVariable(ensure, StructView, continue;);
 
                 StructViewCache.Add(Key, StructView);
                 Views.Add(StructView);

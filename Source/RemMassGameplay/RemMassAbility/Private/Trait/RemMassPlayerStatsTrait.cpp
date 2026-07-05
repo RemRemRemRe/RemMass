@@ -21,7 +21,7 @@ void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bu
     BuildContext.AddFragment_GetRef<FRemMassLevelCurveTableFragment>().Value = CurveTable;
     BuildContext.AddFragment<FRemMassExperienceFragment>();
 
-    static const auto ContextString = FString{TEXTVIEW("URemMassPlayerStatsTrait::BuildTemplate")};
+    static const auto ContextString = FString{ANSITEXTVIEW("URemMassPlayerStatsTrait::BuildTemplate")};
 
     const auto* RealCurve = CurveTable->FindCurve(
         Rem::GetDefaultRef<URemMassAbilityTags>().GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
@@ -38,7 +38,7 @@ bool URemMassPlayerStatsTrait::ValidateTemplate(const FMassEntityTemplateBuildCo
 {
     if (!BuildContext.HasTag<FRemMassPlayerTag>())
     {
-        REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for a player entity"),
+        REM_LOG_FUNCTION(LogRemMassAbility, Error, "{0} is required for a player entity",
             FRemMassPlayerTag::StaticStruct()->GetName());
         return false;
     }

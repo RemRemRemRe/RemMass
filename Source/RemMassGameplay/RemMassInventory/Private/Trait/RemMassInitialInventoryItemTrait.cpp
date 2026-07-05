@@ -32,18 +32,18 @@ void URemMassInitialInventoryItemTrait::BuildTemplate(FMassEntityTemplateBuildCo
 
                     for (const auto& Value : InitialItems)
                     {
-                        RemCheckCondition(Value.ConfigAsset, continue;, REM_NO_LOG_BUT_ENSURE);
+                        RemCheckCondition(ensure, Value.ConfigAsset, continue;);
 
                         auto& Template = Value.ConfigAsset->GetOrCreateEntityTemplate(World);
-                        RemCheckCondition(Template.GetTemplateData().HasFragment<FRemMassOwnerFragment>(), continue;,
-                            REM_NO_LOG_BUT_ENSURE);
+                        RemCheckCondition(ensure, Template.GetTemplateData().HasFragment<FRemMassOwnerFragment>(),
+                            continue;);
 
                         TPair<TObjectPtr<UMassEntityConfigAsset>, TArray<FMassEntityHandle>> InitialItemEntitiesPair{
                             Value.ConfigAsset,
                             TArray<FMassEntityHandle>{}
                         };
 
-                        RemCheckCondition(Value.Pairs.Num() > 0, continue;, REM_NO_LOG_BUT_ENSURE);
+                        RemCheckCondition(ensure, Value.Pairs.Num() > 0, continue;);
 
                         auto& Handles = InitialItemEntitiesPair.Value;
                         Handles.Reserve(Value.Pairs.Num());

@@ -22,7 +22,7 @@ bool URemMassExperienceItemTrait::ValidateTemplate(const FMassEntityTemplateBuil
 {
     if (!BuildContext.HasFragment<FRemMassExperienceTypeFragment>())
     {
-        REM_LOG_FUNCTION(LogRemMassAbility, Error, TEXT("{0} is required for experience item"),
+        REM_LOG_FUNCTION(LogRemMassAbility, Error, "{0} is required for experience item",
             FRemMassExperienceTypeFragment::StaticStruct()->GetName());
         return false;
     }

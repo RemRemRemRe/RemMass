@@ -12,11 +12,11 @@
 void FRemMassHUDWidgetTask::DoWork(UWidget& OwningWidget,
     const TConstArrayView<FConstStructView> DataBindings) const
 {
-    RemCheckCondition(OwningWidget.IsA<UTextBlock>(), return;, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, OwningWidget.IsA<UTextBlock>(), return;);
 
     auto& Text = static_cast<UTextBlock&>(OwningWidget);
 
-    RemCheckCondition(DataBindings.Num() > 0, return;, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, DataBindings.Num() > 0, return;);
 
     if (auto* Level = DataBindings[0].GetPtr<const FRemMassLevelFragment>())
     {

@@ -46,7 +46,7 @@ bool URemMassPlayerRegisterTrait::ValidateTemplate(const FMassEntityTemplateBuil
 {
     if (!BuildContext.HasTag<FRemMassPlayerTag>())
     {
-        REM_LOG_FUNCTION(LogRemMass, Error, TEXT("{0} is required for a player entity"),
+        REM_LOG_FUNCTION(LogRemMass, Error, "{0} is required for a player entity",
             FRemMassPlayerTag::StaticStruct()->GetName());
         return false;
     }

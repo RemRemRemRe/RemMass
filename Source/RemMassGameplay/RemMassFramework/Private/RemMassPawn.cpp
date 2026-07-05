@@ -16,7 +16,7 @@ ARemMassPawn::ARemMassPawn(const FObjectInitializer& ObjectInitializer)
 
     const auto& GameFrameworkSettings = Rem::GetDefaultRef<URemMassFrameworkSettings>();
 
-    MassAgent = ObjectInitializer.CreateDefaultSubobject<UMassAgentComponent>(this, FName{TEXTVIEW("MassAgent")});
+    MassAgent = ObjectInitializer.CreateDefaultSubobject<UMassAgentComponent>(this, FName{ANSITEXTVIEW("MassAgent")});
 
     // construct AbilitySystem
     {

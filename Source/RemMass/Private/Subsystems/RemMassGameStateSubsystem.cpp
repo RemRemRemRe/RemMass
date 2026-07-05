@@ -118,7 +118,7 @@ FVector URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntity
         return MassNearbyMonsterEntityData[Index].NearbyMonsterDirections[0];
     }
 
-    RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, false, REM_NO_HANDLING);
     return {};
 }
 
@@ -140,7 +140,7 @@ double URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(
         return MassNearbyMonsterEntityData[Index].NearbyMonsterDistancesSquared[0];
     }
 
-    RemCheckCondition(false, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
+    RemCheckCondition(ensure, false, REM_NO_HANDLING);
     return {};
 }
 
@@ -181,7 +181,7 @@ void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
 
         if (PlayerPawns.Contains(PlayerPawn))
         {
-            REM_LOG_FUNCTION(LogRemMassGameState, Log, TEXT("Pawn{0} already exist"), PlayerPawn);
+            REM_LOG_FUNCTION(LogRemMassGameState, Log, "Pawn{0} already exist", PlayerPawn);
             return;
         }
 
@@ -205,13 +205,13 @@ void URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
     Super::Initialize(Collection);
 
     const auto* World = GetWorld();
-    RemCheckVariable(World, return;, REM_NO_LOG_BUT_ENSURE);
+    RemCheckVariable(ensure, World, return;);
 
     EntitySubsystem = World->GetSubsystem<UMassEntitySubsystem>();
-    RemCheckVariable(EntitySubsystem, REM_NO_HANDLING, REM_NO_LOG_BUT_ENSURE);
+    RemCheckVariable(ensure, EntitySubsystem, REM_NO_HANDLING);
 
     auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
-    RemCheckVariable(Pawn, return;, REM_NO_LOG_BUT_ENSURE);
+    RemCheckVariable(ensure, Pawn, return;);
 
     const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();
     RemCheckVariable(Agent, return;);
@@ -225,7 +225,7 @@ void URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
     }
     else
     {
-        REM_LOG_FUNCTION(LogRemMassGameState, Log, TEXT("Entity is pending creation for pawn{0}"), Pawn);
+        REM_LOG_FUNCTION(LogRemMassGameState, Log, "Entity is pending creation for pawn{0}", Pawn);
     }
 }
 
