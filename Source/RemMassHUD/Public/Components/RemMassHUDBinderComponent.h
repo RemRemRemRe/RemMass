@@ -1,16 +1,25 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe. 2026. All Rights Reserved.
 
 #pragma once
 
-#include "GameplayTagContainer.h"
-#include "RemWidgetComponentBase.h"
+#include "Components/RemComponentContainer.h"
 #include "Fragment/RemMassHUDFragments.h"
-#include "RemMassHUDBinder.generated.h"
+#include "GameplayTagContainer.h"
 
+#include "RemMassHUDBinderComponent.generated.h"
+
+class UWidget;
 struct FRemMassHUDTask;
 
+/**
+ * Binding configuration authored on a widget: which widget tag to bind and how
+ * the widget's bindings transfer to Mass HUD entities.
+ *
+ * The component pushes the binding data to the HUD entity generator in
+ * Initialize (the widget self-drives component lifecycle after linking).
+ */
 USTRUCT()
-struct FRemMassHUDBinding
+struct REMMASSHUD_API FRemMassHUDBinding
 {
     GENERATED_BODY()
 
@@ -27,9 +36,13 @@ struct FRemMassHUDBinding
     static TArray<FRemMassHUDBindingFragment> TransformBindings(TConstArrayView<FRemMassHUDBinding> Bindings);
 };
 
-
-UCLASS()
-class REMMASSHUD_API URemMassHUDBinder : public URemWidgetComponentBase
+/**
+ * Widget component: transfers the widget's HUD binding configuration to the
+ * Mass HUD entity generator on Initialize (resurrects the previously dead
+ * BeginPlay flow of URemMassHUDBinder).
+ */
+USTRUCT(DisplayName = "Mass HUD Binder")
+struct REMMASSHUD_API FRemMassHUDBinderComponent : public FRemComponentBase
 {
     GENERATED_BODY()
 
@@ -39,13 +52,5 @@ class REMMASSHUD_API URemMassHUDBinder : public URemWidgetComponentBase
     UPROPERTY(EditAnywhere, Category = "Binding", meta = (TitleProperty = Widget, ShowOnlyInnerProperties))
     TArray<FRemMassHUDBinding> Bindings;
 
-protected:
-    virtual void BeginPlay() override;
-
-#if WITH_EDITOR
-
-    virtual void PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent) override;
-
-#endif
-
+    virtual void Initialize(const FContext& Context) override;
 };

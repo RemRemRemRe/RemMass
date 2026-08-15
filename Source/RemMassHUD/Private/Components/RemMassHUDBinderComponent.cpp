@@ -1,16 +1,17 @@
-// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe. 2026. All Rights Reserved.
 
+#include "Components/RemMassHUDBinderComponent.h"
 
-#include "Components/RemMassHUDBinder.h"
-
+#include "Components/RemComponentContainer.inl"
 #include "GameplayTagContainer.h"
+#include "RemComponentBasedWidget.h"
 #include "RemMassHUDTags.h"
 #include "RemMassStatics.inl"
 #include "Components/Widget.h"
 #include "Macro/RemAssertionMacros.h"
 #include "SpawnDataGenerator/RemMassHUDEntityGenerator.h"
 
-#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDBinder)
+#include UE_INLINE_GENERATED_CPP_BY_NAME(RemMassHUDBinderComponent)
 
 FRemMassHUDBindingFragment FRemMassHUDBinding::TransformBinding(const FRemMassHUDBinding& Binding)
 {
@@ -43,22 +44,14 @@ TArray<FRemMassHUDBindingFragment> FRemMassHUDBinding::TransformBindings(
     return TransformedBindings;
 }
 
-void URemMassHUDBinder::BeginPlay()
+void FRemMassHUDBinderComponent::Initialize(const FContext& Context)
 {
-    Super::BeginPlay();
+    auto* Widget = FRemComponentBase::GetOwner<URemComponentBasedWidget>(Context);
+    RemCheckVariable(Widget, return;);
 
-    auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(this,
+    auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(Widget,
         FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
     RemCheckVariable(HUDEntityGenerator, return;);
 
     HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));
 }
-
-#if WITH_EDITOR
-
-void URemMassHUDBinder::PostEditChangeChainProperty(FPropertyChangedChainEvent& PropertyChangedEvent)
-{
-    Super::PostEditChangeChainProperty(PropertyChangedEvent);
-}
-
-#endif
