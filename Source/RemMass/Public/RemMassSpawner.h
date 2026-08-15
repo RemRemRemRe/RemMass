@@ -23,7 +23,7 @@ public:
 
     REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(SpawnDataGenerators)
 
-    REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ActorTags)
+    REM_DEFINE_GETTERS_RETURN_REFERENCE_SIMPLE(ActorTags)
 
     template <std::derived_from<UMassEntitySpawnDataGeneratorBase> T>
     T*

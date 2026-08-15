@@ -3,6 +3,7 @@
 #pragma once
 
 #include "GameplayTagContainer.h"
+#include "Macro/RemGenerateMembersMacro.h"
 #include "RemMassHUDEntitySpawnData.h"
 #include "SpawnDataGenerator/RemMassEntitySpawnDataRegenerator.h"
 
@@ -32,4 +33,7 @@ protected:
 
 public:
     void AddSpawnData(const FGameplayTag& WidgetTag, TConstArrayView<FRemMassHUDBindingFragment> SpawnData);
+
+    REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(ReceivedHUDTags)
+    REM_DEFINE_CONST_ONLY_GETTERS_RETURN_REFERENCE_SIMPLE(SpawnDataContainer)
 };
