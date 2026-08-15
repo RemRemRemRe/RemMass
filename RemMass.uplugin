@@ -46,6 +46,11 @@
             "Name": "RemMassInventory",
             "Type": "Runtime",
             "LoadingPhase": "Default"
+        },
+        {
+            "Name": "RemMassHUDTest",
+            "Type": "UncookedOnly",
+            "LoadingPhase": "Default"
         }
     ],
     "Plugins": [
