@@ -12,6 +12,6 @@ struct REMMASSHUD_API FRemMassHUDWidgetTask : public FRemMassHUDTask
 
     virtual ~FRemMassHUDWidgetTask() override = default;
 
-protected:
+public:
     virtual void DoWork(UWidget& OwningWidget, TConstArrayView<FConstStructView> DataBindings) const override;
 };

@@ -50,7 +50,7 @@ void FRemMassHUDBinderComponent::Initialize(const FContext& Context)
     RemCheckVariable(Widget, return;);
 
     auto* HUDEntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassHUDEntityGenerator>(Widget,
-        FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefaultRef<URemMassHUDTags>().GetHUDMassSpawnerTag()));
+        FGameplayTagQuery::MakeQuery_MatchTag(Rem::GetDefault<URemMassHUDTags>()->GetHUDMassSpawnerTag()));
     RemCheckVariable(HUDEntityGenerator, return;);
 
     HUDEntityGenerator->AddSpawnData(WidgetTag, FRemMassHUDBinding::TransformBindings(Bindings));

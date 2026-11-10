@@ -16,11 +16,12 @@ struct FRemMassAbilityInitializeTreeLeafsTask : public FMassStateTreeTaskBase
 
     FRemMassAbilityInitializeTreeLeafsTask();
 
-protected:
+public:
     virtual EStateTreeRunStatus EnterState(FStateTreeExecutionContext& Context,
         const FStateTreeTransitionResult& Transition) const override;
     virtual const UStruct* GetInstanceDataType() const override;
 
+protected:
     static void DeepFirstSearch(const FMassEntityManager& Manager,
         const Rem::Mass::Ability::FTreeNodeEntityArray& Values,
         const Rem::Mass::Ability::FTreeNodeNumType Num, const FRemMassProjectileTriggerInfoFragment& TriggerInfo,

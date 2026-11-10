@@ -71,7 +71,7 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
         const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
         const auto PlayerView = GameStateSubsystem.GetPlayerEntityView();
-        RemCheckCondition(ensure, PlayerView.Num() > 0, return);
+        RemCheckCondition(REM_ENSURE, PlayerView.Num() > 0, return);
 
         const auto PlayerEntityView = FMassEntityView{Context.GetEntityManagerChecked(), PlayerView[0]};
 
@@ -116,12 +116,14 @@ void URemMassRespawnProcessor::Execute(FMassEntityManager& EntityManager, FMassE
                 auto* EntityGenerator = Rem::Mass::GetSpawnDataGenerator<URemMassExperienceRegenerator>(
                     Manager.GetWorld(),
                     FGameplayTagQuery::MakeQuery_MatchTag(
-                        Rem::GetDefaultRef<URemMassAbilityTags>().GetExpMassSpawnerTag()));
+                        Rem::GetDefault<URemMassAbilityTags>()->GetExpMassSpawnerTag()));
                 RemCheckVariable(EntityGenerator, return;);
 
-                Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedEntityRegeneration{*EntityGenerator};
+                Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedEntityRegeneration{EntityGenerator};
 
-                EntityGenerator->AddSpawnData({ExperienceTypeView, std::move(MovedTransformArray)});
+                EntityGenerator->AddSpawnData(FRemExperienceSpawnDataContainer{.ExpTypeData = ExperienceTypeView,
+                    .TransformData = std::move(MovedTransformArray)
+                });
             });
     });
 }

@@ -5,6 +5,7 @@
 #include "RemMassEntitySpawnDataGeneratorBase.h"
 #include "RemMassLog.h"
 #include "Macro/RemCoreMiscDefines.h"
+#include "RemNotNull.h"
 #include "RemMassEntitySpawnDataRegenerator.generated.h"
 
 namespace Rem::Mass
@@ -33,9 +34,11 @@ protected:
 
     friend struct Rem::Mass::FScopedEntitySpawnDataRegeneration;
 
+public:
     virtual void Generate(UObject& QueryOwner, TConstArrayView<FMassSpawnedEntityType> EntityTypes, int32 Count,
         FFinishedGeneratingSpawnDataSignature& FinishedGeneratingSpawnPointsDelegate) const override;
 
+protected:
     virtual bool CanGenerate() const;
     virtual void GenerateInternal() const REM_VIRTUAL_WARN(LogRemMass);
     virtual void CleanUp() REM_VIRTUAL_WARN(LogRemMass);
@@ -46,11 +49,13 @@ namespace Rem::Mass
 
 struct FScopedEntitySpawnDataRegeneration
 {
+    UE_NONCOPYABLE(FScopedEntitySpawnDataRegeneration)
+
 private:
-    URemMassEntitySpawnDataRegenerator& Regenerator;
+    TNotNull<URemMassEntitySpawnDataRegenerator*> Regenerator;
 
 public:
-    explicit FScopedEntitySpawnDataRegeneration(URemMassEntitySpawnDataRegenerator& InRegenerator)
+    explicit FScopedEntitySpawnDataRegeneration(TNotNull<URemMassEntitySpawnDataRegenerator*> InRegenerator)
         : Regenerator(InRegenerator)
     {
     }
@@ -62,9 +67,9 @@ public:
 
 inline Rem::Mass::FScopedEntitySpawnDataRegeneration::~FScopedEntitySpawnDataRegeneration()
 {
-    if (Regenerator.CanGenerate())
+    if (Regenerator->CanGenerate())
     {
-        Regenerator.GenerateInternal();
-        Regenerator.CleanUp();
+        Regenerator->GenerateInternal();
+        Regenerator->CleanUp();
     }
 }

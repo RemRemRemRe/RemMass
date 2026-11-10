@@ -118,7 +118,7 @@ FVector URemMassGameStateSubsystem::GetNearestMonsterDirection(const FMassEntity
         return MassNearbyMonsterEntityData[Index].NearbyMonsterDirections[0];
     }
 
-    RemCheckCondition(ensure, false, REM_NO_HANDLING);
+    RemCheckCondition(REM_ENSURE, false, REM_NO_HANDLING);
     return {};
 }
 
@@ -140,7 +140,7 @@ double URemMassGameStateSubsystem::GetNearestMonsterDistanceSquared(
         return MassNearbyMonsterEntityData[Index].NearbyMonsterDistancesSquared[0];
     }
 
-    RemCheckCondition(ensure, false, REM_NO_HANDLING);
+    RemCheckCondition(REM_ENSURE, false, REM_NO_HANDLING);
     return {};
 }
 
@@ -161,10 +161,10 @@ ARemMassSpawner* URemMassGameStateSubsystem::GetMassSpawner(const FGameplayTagQu
     return {};
 }
 
-void URemMassGameStateSubsystem::RegisterMassSpawner(ARemMassSpawner& MassSpawner)
+void URemMassGameStateSubsystem::RegisterMassSpawner(TNotNull<ARemMassSpawner*> MassSpawner)
 {
     FRWScopeLock ScopeLock{MassSpawnerLock, SLT_Write};
-    MassSpawners.Add(&MassSpawner);
+    MassSpawners.Add(&*MassSpawner);
 }
 
 void URemMassGameStateSubsystem::AddPlayerEntity(APawn* PlayerPawn)
@@ -205,13 +205,13 @@ void URemMassGameStateSubsystem::Initialize(FSubsystemCollectionBase& Collection
     Super::Initialize(Collection);
 
     const auto* World = GetWorld();
-    RemCheckVariable(ensure, World, return;);
+    RemCheckVariable(REM_ENSURE, World, return;);
 
     EntitySubsystem = World->GetSubsystem<UMassEntitySubsystem>();
-    RemCheckVariable(ensure, EntitySubsystem, REM_NO_HANDLING);
+    RemCheckVariable(REM_ENSURE, EntitySubsystem, REM_NO_HANDLING);
 
     auto* Pawn = URemObjectStatics::GetFirstLocalPlayerPawn(World);
-    RemCheckVariable(ensure, Pawn, return;);
+    RemCheckVariable(REM_ENSURE, Pawn, return;);
 
     const auto* Agent = Pawn->FindComponentByClass<UMassAgentComponent>();
     RemCheckVariable(Agent, return;);

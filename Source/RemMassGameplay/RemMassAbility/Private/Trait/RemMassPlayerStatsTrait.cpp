@@ -24,7 +24,7 @@ void URemMassPlayerStatsTrait::BuildTemplate(FMassEntityTemplateBuildContext& Bu
     static const auto ContextString = FString{ANSITEXTVIEW("URemMassPlayerStatsTrait::BuildTemplate")};
 
     const auto* RealCurve = CurveTable->FindCurve(
-        Rem::GetDefaultRef<URemMassAbilityTags>().GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
+        Rem::GetDefault<URemMassAbilityTags>()->GetRequiredExpToLevelUpTag().GetTagName(), ContextString);
 
     RemCheckVariable(RealCurve, return;);
 

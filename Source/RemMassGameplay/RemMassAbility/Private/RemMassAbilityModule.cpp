@@ -2,8 +2,11 @@
 
 #include "RemMassAbilityModule.h"
 
+namespace
+{
 class FRemMassAbilityModule : public IRemMassAbilityModule
 {
+public:
     /** IModuleInterface implementation */
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
@@ -22,4 +25,5 @@ void FRemMassAbilityModule::ShutdownModule()
     // This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
     // we call this function before unloading the module.
     IRemMassAbilityModule::ShutdownModule();
+}
 }

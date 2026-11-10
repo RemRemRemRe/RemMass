@@ -15,7 +15,7 @@ class REMMASSINVENTORY_API URemMassInitialInventoryItemTrait : public URemMassEn
     UPROPERTY(EditAnywhere, Category = "Item", meta = (TitleProperty = "Tag", GameplayTagFilter = "InventoryItem"))
     TArray<FRemMassInventoryTagCountPairContainer> InitialItems;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

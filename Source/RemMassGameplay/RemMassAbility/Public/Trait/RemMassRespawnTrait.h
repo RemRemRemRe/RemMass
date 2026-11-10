@@ -15,7 +15,7 @@ class REMMASSABILITY_API URemMassRespawnTrait : public URemMassEntityTraitBase
     UPROPERTY(EditAnywhere, Category = "Respawn", meta = (ShowOnlyInnerProperties))
     FRemMassRespawnRadiusFragment RespawnRadius;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

@@ -24,8 +24,8 @@ void FRemMassHUDBindingFragment::UpdateWidget(const TConstArrayView<FConstStruct
 
 bool FRemMassHUDBindingFragment::IsValid() const
 {
-    RemCheckCondition(ensure, FragmentTypes.Num() > 0, return false);
-    RemCheckVariable(ensure, Task, return false);
+    RemCheckCondition(REM_ENSURE, FragmentTypes.Num() > 0, return false);
+    RemCheckVariable(REM_ENSURE, Task, return false);
 
     return Widget.Get() != nullptr;
 }

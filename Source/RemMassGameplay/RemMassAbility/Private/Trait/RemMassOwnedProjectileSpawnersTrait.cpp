@@ -34,7 +34,7 @@ void URemMassOwnedProjectileSpawnersTrait::BuildTemplate(FMassEntityTemplateBuil
                         TArray<FMassEntityHandle> Handles;
                         SpawnerSystem.SpawnEntities(Template, 1, Handles);
 
-                        RemCheckCondition(ensure, Handles.Num() > 0, continue;);
+                        RemCheckCondition(REM_ENSURE, Handles.Num() > 0, continue;);
 
                         FMassEntityView View{System, Handles[0]};
                         View.GetFragmentData<FRemMassOwnerFragment>().Value = OwnerHandle;

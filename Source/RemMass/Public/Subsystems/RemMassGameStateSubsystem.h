@@ -5,6 +5,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "MassEntityTypes.h"
 #include "Macro/RemGenerateMembersMacro.h"
+#include "RemNotNull.h"
 #include "RemMassGameStateSubsystem.generated.h"
 
 struct FMassEntityHandle;
@@ -81,7 +82,7 @@ public:
     double GetNearestMonsterDistanceSquared(FMassEntityHandle PlayerEntityHandle) const;
 
     ARemMassSpawner* GetMassSpawner(const FGameplayTagQuery& SpawnerQuery) const;
-    void RegisterMassSpawner(ARemMassSpawner& MassSpawner);
+    void RegisterMassSpawner(TNotNull<ARemMassSpawner*> MassSpawner);
 
     UFUNCTION(BlueprintCallable, Category = "Rem|Mass|GameState")
     void AddPlayerEntity(APawn* PlayerPawn);

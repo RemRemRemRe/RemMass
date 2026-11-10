@@ -19,5 +19,5 @@ void ARemMassSpawner::PreInitializeComponents()
     auto* GameStateSubsystem = GetWorld()->GetSubsystem<URemMassGameStateSubsystem>();
     RemCheckVariable(GameStateSubsystem, return;);
 
-    GameStateSubsystem->RegisterMassSpawner(*this);
+    GameStateSubsystem->RegisterMassSpawner(this);
 }

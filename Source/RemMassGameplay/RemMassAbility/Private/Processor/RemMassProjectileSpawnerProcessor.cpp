@@ -59,12 +59,12 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
         const auto OwnerView          = Context.GetFragmentView<FRemMassOwnerFragment>();
 
         auto* ProjectileSpawner = GameStateSubsystem.GetMassSpawner(FGameplayTagQuery::MakeQuery_MatchAnyTags(
-            Rem::GetDefaultRef<URemMassAbilityTags>().GetProjectileMassSpawnerTag().GetSingleTagContainer()));
+            Rem::GetDefault<URemMassAbilityTags>()->GetProjectileMassSpawnerTag().GetSingleTagContainer()));
 
-        RemCheckVariable(ensure, ProjectileSpawner, return;);
+        RemCheckVariable(REM_ENSURE, ProjectileSpawner, return;);
 
         auto* EntityRegenerator = ProjectileSpawner->GetSpawnDataGenerator<URemMassProjectileRegenerator>();
-        RemCheckVariable(ensure, EntityRegenerator, return;);
+        RemCheckVariable(REM_ENSURE, EntityRegenerator, return;);
 
         FRemProjectileSpawnDataContainer SpawnDataContainer;
         SpawnDataContainer.Reserve(NumEntities);
@@ -73,7 +73,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
         for (auto Index = 0; Index < NumEntities; ++Index)
         {
             const auto PlayerEntityHandle = OwnerView[Index].Value;
-            RemCheckVariable(ensure, PlayerEntityHandle, continue;);
+            RemCheckVariable(REM_ENSURE, PlayerEntityHandle, continue;);
 
             const FRemMassNearbyMonsterEntityData* NearbyMonsterEntityData;
             if (NearbyMonsterEntityData = NearbyMonsterEntityDataMap.Find(PlayerEntityHandle);
@@ -83,7 +83,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
                     GameStateSubsystem.GetNearbyMonsterEntityData(PlayerEntityHandle));
             }
 
-            RemCheckVariable(ensure, NearbyMonsterEntityData, continue;);
+            RemCheckVariable(REM_ENSURE, NearbyMonsterEntityData, continue;);
 
             auto& TriggerInfo  = TriggerInfoView[Index];
             auto& TriggerState = TriggerStateView[Index];
@@ -139,7 +139,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
             }
 
             const auto ConfigAsset = ConfigAssetView[Index].ProjectileConfigAsset;
-            RemCheckVariable(ensure, ConfigAsset, return;);
+            RemCheckVariable(REM_ENSURE, ConfigAsset, return;);
 
             const auto Owner           = FMassEntityView{Context.GetEntityManagerChecked(), PlayerEntityHandle};
             const auto& OwnerTransform = Owner.GetFragmentData<FTransformFragment>().GetTransform();
@@ -189,7 +189,7 @@ void URemMassProjectileSpawnerProcessor::Execute(FMassEntityManager& EntityManag
                 {
                     if (WeakRegenerator.IsValid())
                     {
-                        Rem::Mass::FScopedEntitySpawnDataRegeneration SpawnDataRegeneration{*WeakRegenerator.Get()};
+                        Rem::Mass::FScopedEntitySpawnDataRegeneration SpawnDataRegeneration{WeakRegenerator.Get()};
                     }
                 });
         }

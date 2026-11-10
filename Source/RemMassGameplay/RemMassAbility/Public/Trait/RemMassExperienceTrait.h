@@ -15,7 +15,7 @@ class REMMASSABILITY_API URemMassExperienceTrait : public URemMassEntityTraitBas
     UPROPERTY(EditAnywhere, Category = "Experience", meta = (ShowOnlyInnerProperties))
     FRemMassExperienceTypeFragment ExperienceType;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

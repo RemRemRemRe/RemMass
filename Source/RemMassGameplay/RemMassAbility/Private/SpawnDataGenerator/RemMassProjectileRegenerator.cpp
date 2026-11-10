@@ -44,7 +44,7 @@ void URemMassProjectileRegenerator::GenerateInternal() const
         }
     }
 
-    RemCheckCondition(ensure, Results.Num() > 0, return;);
+    RemCheckCondition(REM_ENSURE, Results.Num() > 0, return;);
     SavedFinishedGeneratingSpawnPointsDelegate.Execute(Results);
 }
 

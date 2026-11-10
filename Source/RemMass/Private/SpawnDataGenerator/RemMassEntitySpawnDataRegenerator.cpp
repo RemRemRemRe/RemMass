@@ -11,7 +11,7 @@ void URemMassEntitySpawnDataRegenerator::Generate(UObject& QueryOwner,
 {
     auto* MutableThis = const_cast<ThisClass*>(this);
 
-    Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedGenerate{*MutableThis};
+    Rem::Mass::FScopedEntitySpawnDataRegeneration ScopedGenerate{MutableThis};
 
     MutableThis->SavedQueryOwner                            = &QueryOwner;
     MutableThis->SavedEntityTypes                           = EntityTypes;

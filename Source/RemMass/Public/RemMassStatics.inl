@@ -1,8 +1,7 @@
-﻿// Copyright RemRemRemRe, All Rights Reserved.
+// Copyright RemRemRemRe, All Rights Reserved.
 
 #pragma once
 
-#include "MassEntityTypes.h"
 #include "MassEntitySubsystem.h"
 #include "RemMassSpawner.h"
 #include "RemMassStatics.h"

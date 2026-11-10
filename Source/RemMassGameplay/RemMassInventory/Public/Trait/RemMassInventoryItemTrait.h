@@ -10,7 +10,7 @@ class REMMASSINVENTORY_API URemMassInventoryItemTrait : public URemMassEntityTra
 {
     GENERATED_BODY()
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
     virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,

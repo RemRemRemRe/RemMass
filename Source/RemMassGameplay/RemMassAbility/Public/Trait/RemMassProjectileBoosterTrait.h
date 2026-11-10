@@ -18,7 +18,7 @@ class REMMASSABILITY_API URemMassProjectileBoosterTrait : public URemMassEntityT
     UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
     FRemMassProjectileInfoFragment ProjectileInfo;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
     virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,

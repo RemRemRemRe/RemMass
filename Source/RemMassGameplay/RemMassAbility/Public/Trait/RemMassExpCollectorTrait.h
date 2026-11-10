@@ -14,7 +14,7 @@ class REMMASSABILITY_API URemMassExpCollectorTrait : public URemMassEntityTraitB
     UPROPERTY(EditAnywhere, Category = "Experience", meta = (ShowOnlyInnerProperties))
     FRemMassExpCollectRadiusFragment Radius;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

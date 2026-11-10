@@ -22,12 +22,13 @@ EStateTreeRunStatus FRemMassAbilityInitializeTreeLeafsTask::EnterState(FStateTre
     // const auto& Value = EventContext.EventData.Get<FRemMassInventoryInitialized>(); // TODO
     const auto& Value = *MakeShared<FRemMassInventoryInitialized>();
 
-    RemCheckCondition(ensure, Value.Manager.IsValid() && Value.InitialItemEntities, return EStateTreeRunStatus::Failed);
+    RemCheckCondition(REM_ENSURE, Value.Manager.IsValid() && Value.InitialItemEntities,
+        return EStateTreeRunStatus::Failed);
 
     FMassEntityHandle RootNode{};
     FMassEntityHandle LastNode{};
 
-    RemCheckCondition(ensure, Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed);
+    RemCheckCondition(REM_ENSURE, Value.InitialItemEntities->Num() > 1, return EStateTreeRunStatus::Failed);
 
     const auto& Manager = *Value.Manager.Pin();
     // make ability link list

@@ -15,7 +15,7 @@ class REMMASSABILITY_API URemMassProjectileSpawnerTrait : public URemMassProject
     UPROPERTY(EditAnywhere, Category = "Projectile Spawner")
     TObjectPtr<UMassEntityConfigAsset> ProjectileConfigAsset;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

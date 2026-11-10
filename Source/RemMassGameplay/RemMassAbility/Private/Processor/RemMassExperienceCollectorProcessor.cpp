@@ -51,7 +51,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
         const auto TransformView      = Context.GetFragmentView<FTransformFragment>();
         const auto ExperienceTypeView = Context.GetFragmentView<FRemMassExperienceTypeFragment>();
 
-        const auto& RemMassAbilityTags = Rem::GetDefaultRef<URemMassAbilityTags>();
+        const auto& RemMassAbilityTags = *Rem::GetDefault<URemMassAbilityTags>();
 
         TArray<FMassEntityHandle> CollectedExpEntities;
         auto bCheckIfCollected = false;
@@ -88,7 +88,7 @@ void URemMassExperienceCollectorProcessor::Execute(FMassEntityManager& EntityMan
 
                 const auto CurveTable = PlayerEntityView.GetFragmentData<FRemMassLevelCurveTableFragment>().Value.Get();
 
-                RemCheckVariable(ensure, CurveTable, continue;);
+                RemCheckVariable(REM_ENSURE, CurveTable, continue;);
 
                 // adding experience value
                 {

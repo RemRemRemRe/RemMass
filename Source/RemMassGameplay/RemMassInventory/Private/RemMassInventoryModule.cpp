@@ -13,8 +13,11 @@ bool IRemMassInventoryModule::IsAvailable()
     return FModuleManager::Get().IsModuleLoaded("RemMassInventory");
 }
 
+namespace
+{
 class FRemMassInventoryModule final : public IRemMassInventoryModule
 {
+public:
     /** IModuleInterface implementation */
     virtual void StartupModule() override;
     virtual void ShutdownModule() override;
@@ -33,4 +36,5 @@ void FRemMassInventoryModule::ShutdownModule()
     // This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
     // we call this function before unloading the module.
     IRemMassInventoryModule::ShutdownModule();
+}
 }

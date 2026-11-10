@@ -15,7 +15,7 @@ class REMMASSABILITY_API URemMassHealthTrait : public URemMassEntityTraitBase
     UPROPERTY(EditAnywhere, Category = "Health", meta = (ShowOnlyInnerProperties))
     FRemMassHealthFragment Health;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

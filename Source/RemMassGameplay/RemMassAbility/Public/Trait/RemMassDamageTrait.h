@@ -24,7 +24,7 @@ class REMMASSABILITY_API URemMassDamageTrait : public URemMassEntityTraitBase
     UPROPERTY(EditAnywhere, Category = "Damage", meta = (ShowOnlyInnerProperties, EditCondition = "bDamageSource"))
     FRemMassDamageRadiusFragment DamageRadius;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
 };

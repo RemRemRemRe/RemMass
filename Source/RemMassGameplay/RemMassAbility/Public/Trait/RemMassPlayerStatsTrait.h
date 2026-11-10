@@ -16,7 +16,7 @@ class REMMASSABILITY_API URemMassPlayerStatsTrait : public URemMassEntityTraitBa
     UPROPERTY(EditAnywhere, Category = "Stats", meta = (ShowOnlyInnerProperties))
     TObjectPtr<UCurveTable> CurveTable;
 
-protected:
+public:
     virtual void BuildTemplate(FMassEntityTemplateBuildContext& BuildContext,
         const UWorld& World) const override;
     virtual bool ValidateTemplate(const FMassEntityTemplateBuildContext& BuildContext, const UWorld& World,

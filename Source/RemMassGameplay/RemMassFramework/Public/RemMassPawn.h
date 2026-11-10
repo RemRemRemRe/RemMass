@@ -28,7 +28,7 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Rem|Ability")
     UAbilitySystemComponent* GetAbilitySystem() const;
 
-protected:
+public:
     virtual UPawnMovementComponent* GetMovementComponent() const override;
     virtual void PawnClientRestart() override;
 };
